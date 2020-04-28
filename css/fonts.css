@@ -1,0 +1,113 @@
+/*@import url(https://fonts.googleapis.com/css?family=Permanent+Marker);
+
+/* FREE FOR COMMERCIAL USE */
+
+@font-face {
+    font-family: 'MavenPro';
+    src: url('../fonts/MavenPro-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'MavenPro';
+    src: url('../fonts/MavenPro-Medium.ttf');
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: 'MavenPro';
+    src: url('../fonts/MavenPro-Bold.ttf');
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: 'MavenPro';
+    src: url('../fonts/MavenPro-Black.ttf');
+    font-weight: 900;
+}
+
+/* UNKNOWN */
+
+
+/*@font-face {
+    font-family: 'Niagara';
+    src: url('../fonts/NIAGSOL.TTF');
+}
+
+@font-face {
+    font-family: 'KlinicSlabMedium';
+    src: url('../fonts/KlinicSlabMedium.otf');
+}
+
+@font-face {
+    font-family: 'EdmondSansBold';
+    src: url('../fonts/Edmondsans-Bold.otf');
+}*/
+
+@font-face {
+    font-family: 'EdmondSansMedium';
+    src: url('../fonts/Edmondsans-Medium.otf');
+}
+/*
+@font-face {
+    font-family: 'EdmondSansRegular';
+    src: url('../fonts/Edmondsans-Regular.otf');
+}*/
+
+@font-face {
+    font-family: 'FairviewRegular';
+    src: url('../fonts/Fairview_Regular.otf');
+}
+
+@font-face {
+    font-family: 'FairviewSmallCaps';
+    src: url('../fonts/Fairview_SmallCaps.otf');
+}
+
+/*@font-face {
+    font-family: 'Corbel';
+    src: url('../fonts/corbel.ttf');
+}
+
+@font-face {
+    font-family: 'Corbel Bold';
+    src: url('../fonts/corbelb.ttf');
+}
+
+@font-face {
+    font-family: 'Telegrama';
+    src: url('../fonts/telegrama_render.otf');
+}
+
+@font-face {
+    font-family: 'NotCourierSansBold';
+    src: url('../fonts/csb.otf');
+}
+
+@font-face {
+    font-family: 'NotCourierSans';
+    src: url('../fonts/cs.otf');
+}
+
+@font-face {
+    font-family: 'Ubuntu';
+    src: url('../fonts/ubuntu.ttf');
+}
+
+@font-face {
+    font-family: 'Matrix';
+    src: url('../fonts/matrix-smallcaps.ttf');
+}
+*/
+
+/* COMMERCIAL USE PAID ONLY */
+/*
+@font-face {
+    font-family: 'MavenPro200';
+    src: url('../fonts/unlicensed/MavenProLight-200.otf');
+}
+
+@font-face {
+    font-family: 'MavenPro300';
+    src: url('../fonts/unlicensed/MavenProLight-300.otf');
+}
+*/

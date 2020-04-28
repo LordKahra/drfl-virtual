@@ -1,0 +1,77 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+html, body, * {
+    padding: 0;
+    font-family: 'Roboto', serif;
+    font-size: 16px;
+}
+
+a {
+    color: inherit;
+    text-decoration: inherit;
+}
+
+[data-type], [data-type] > * {
+    padding: 4px;
+    margin: 4px;
+}
+
+[data-type="mod"] > header,
+[data-type="character"] > header,
+[data-type="characters"] > header {
+    font-weight: bold;
+}
+
+[data-type="characters"] {
+    padding: 8px;
+}
+
+[data-type="characters"] > * {
+    padding: 8px;
+}
+
+[data-type="mod"] {
+    border: 2px solid #bbb;
+    margin: 4px;
+}
+
+[data-type="mod"] > header {
+
+}
+
+[data-type="character"] {
+    border: 2px solid #ddd;
+    /*display: flex;*/
+    padding: 0;
+
+}
+
+[data-type="character"] > * {
+    padding: 4px;
+    border: 2px solid #bbb;
+}
+
+
+[data-type="character"] > [data-type="name"] {
+    font-weight: bold;
+}
+
+
+[data-type="character"] > [data-type="types"] {
+    text-align: center;
+}
+
+[data-type="attributes"] {
+
+    display: flex;
+}
+
+[data-type="attributes"] > * {
+    flex-grow: 1;
+    align-content: center;
+    text-align: center;
+}
+
+[data-type="description"] > header, [data-type="skill"] > header {
+    font-weight: bold;
+}
