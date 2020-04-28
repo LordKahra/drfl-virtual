@@ -29,3 +29,6 @@ require_once SITE_ROOT . "/src/view/page/SkillPage.php";
 
 // VIEW - RECORDS
 
+// VIEW - TRASH AGILE RUSH JOB BULLSHIT LMAO
+require_once SITE_ROOT . '/character_functions.php';
+

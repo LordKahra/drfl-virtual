@@ -1,0 +1,35 @@
+body > header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 4px;
+}
+
+body > header > *,
+body > header > * > *
+{
+    padding: 4px;
+    margin: 4px;
+}
+
+body > header > main {
+    flex-grow: 1;
+    vertical-align: center;
+}
+
+body > header > nav {
+    flex-grow: 0;
+}
+
+body > header > nav > ul {
+    display: flex;
+    flex-direction: row;
+}
+
+body > header > nav > ul > li {
+    flex-grow: 1;
+    list-style-type: none;
+    text-align: center;
+    padding: 4px;
+    margin: 4px;
+}

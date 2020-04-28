@@ -154,12 +154,12 @@ function renderHeader($title) {
 <html>
 <head>
     <title><?=$title;?></title>
-
-    <style>* { font-family: Verdana; }</style>
     <link rel="stylesheet" type="text/css" href="<?php echo SITE_HOST; ?>/css/main.css"/>
+    <link rel="stylesheet" type="text/css" href="<?php echo SITE_HOST; ?>/css/nav.css"/>
 </head>
 <body>
 <header>
+    <main><a href="index.php">DRFL Virtual Event</a></main>
     <nav>
         <ul>
             <li><a href="character.php">Characters</a></li>
