@@ -87,10 +87,12 @@ function getAllCharactersWithSkills() {
     // Get their skills.
     foreach($characters as &$character) {
         $character_skills = getCharacterSkills($character['id']);
+        $lineage_skills = getLineageSkills($character['lineage_id']);
         $type_skills = getTypeSkills($character['type_id']);
 
         $skills = array();
         if ($character_skills)  foreach ($character_skills  as $skill) $skills[] = $skill;
+        if ($lineage_skills)    foreach ($lineage_skills    as $skill) $skills[] = $skill;
         if ($type_skills)       foreach ($type_skills       as $skill) $skills[] = $skill;
         $character['skills'] = $skills;
     }
@@ -105,10 +107,12 @@ function getCharacterWithSkills(int $id) {
 
     // Get the skills.
     $character_skills = getCharacterSkills($id);
+    $lineage_skills = getLineageSkills($character['lineage_id']);
     $type_skills = getTypeSkills($character['type_id']);
 
     $skills = array();
     if ($character_skills)  foreach ($character_skills  as $skill) $skills[] = $skill;
+    if ($lineage_skills)    foreach ($lineage_skills    as $skill) $skills[] = $skill;
     if ($type_skills)       foreach ($type_skills       as $skill) $skills[] = $skill;
     $character['skills'] = $skills;
 
@@ -132,6 +136,13 @@ WHERE id IN (SELECT skill_id FROM r_character_skills WHERE character_id = $id)";
 function getTypeSkills(int $id) {
     $query =
 "SELECT * FROM skills WHERE id IN (SELECT skill_id FROM r_type_skills WHERE type_id = $id)";
+
+    return getQueryResults($query);
+}
+
+function getLineageSkills(int $id) {
+    $query =
+"SELECT * FROM skills WHERE id IN (SELECT skill_id FROM r_lineage_skills WHERE lineage_id = $id)";
 
     return getQueryResults($query);
 }
