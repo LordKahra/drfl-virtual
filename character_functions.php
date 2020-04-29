@@ -266,6 +266,7 @@ function renderMod(array $mod) {
     <div data-type="mod">
         <header>
             <div data-type="name"><a href="mod.php?id=<?=$mod['id']?>"><?=$mod['name']?></a></div>
+            <div><?=$mod['location']?></div>
             <div><?=$mod['host']?> - <?=$mod['start']?></div>
         </header>
         <div><?=nl2br($mod['description'])?></div>
