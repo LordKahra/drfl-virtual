@@ -191,7 +191,7 @@ function renderCharacter($character) {
         <?php } ?>
         <div data-type="description">
             <header>Description</header>
-            <main><?=$character['description']?></main>
+            <main><?=nl2br($character['description'])?></main>
         </div>
     </div>
     <?php
@@ -201,10 +201,12 @@ function renderModSmall(array $mod) {
     ?>
     <a href="mod.php?id=<?=$mod['id']?>"><div data-type="mod">
         <div><b><?=$mod['name']?></b></div>
+        <div><b>Location:</b> <?=$mod['location']?></div>
+        <div><?=$mod['host']?> - <?=$mod['start']?></div>
         <div><?=
             strlen($mod['description']) > 300 ?
-                substr($mod['description'], 0, 300) . "..." :
-                $mod['description']
+                nl2br(substr($mod['description'], 0, 300)) . "..." :
+                nl2br($mod['description'])
             ?></div>
     </div></a>
     <?php
@@ -227,7 +229,7 @@ function renderMod(array $mod) {
             <div><a href="mod.php?id=<?=$mod['id']?>"><?=$mod['name']?></a></div>
             <div><?=$mod['host']?> - <?=$mod['start']?></div>
         </header>
-        <div><?=$mod['description']?></div>
+        <div><?=nl2br($mod['description'])?></div>
         <?php
         if(array_key_exists('characters', $mod) && is_array($mod['characters'])) {
             ?><div data-type="characters">
@@ -259,7 +261,7 @@ function renderSingleModPage($mod) {
 
 function renderMultiModPage($mods) {
     renderHeader("Mods");
-    renderModList($mods);
+    //renderModList($mods);
     foreach($mods as $mod) {
         renderModSmall($mod);
     }
