@@ -5,10 +5,14 @@ html {
     color: #111;
 }
 
-html, body, * {
-    padding: 0;
+html, body {
     font-family: 'Roboto', serif;
     font-size: 16px;
+
+}
+
+html, body, * {
+    padding: 0;
 }
 
 a {
@@ -47,6 +51,15 @@ a {
 [data-type="mod"] > header > [data-type="name"] {
     font-size: 36px;
     padding: 4px 0;
+}
+[data-type="mod"][data-style="small"] > header {
+    padding: 4px 8px;
+    margin: 4px 32px;
+}
+
+[data-type="mod"][data-style="small"] > header > [data-type="name"] {
+    padding: 0;
+    font-size: 24px;
 }
 
 [data-type="characters"] {

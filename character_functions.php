@@ -55,9 +55,10 @@ function getModWithCharacters(int $id) {
 }
 
 function getModCharacters($mod_id) {
-    $query = CHARACTER_SELECT . " WHERE toon.id IN (SELECT character_id FROM r_mod_characters WHERE mod_id = $mod_id)";
+    return getAllCharactersWithSkills("toon.id IN (SELECT character_id FROM r_mod_characters WHERE mod_id = $mod_id)");
+    //$query = CHARACTER_SELECT . " WHERE toon.id IN (SELECT character_id FROM r_mod_characters WHERE mod_id = $mod_id)";
 
-    return getQueryResults($query);
+    //return getQueryResults($query);
 }
 
 
@@ -73,18 +74,26 @@ function getCharacter(int $id) {
     return false;
 }
 
-function getAllCharacters() {
-    $character_array = getQueryResults(CHARACTER_SELECT);
+function getAllCharacters(string $where="", string $order_by="`name`") {
+
+    $character_array = getQueryResults(
+            CHARACTER_SELECT .
+            ($where ? " \nWHERE $where" : "") .
+            ($order_by ? " \nORDER BY $order_by" : "")
+    );
     if (!$character_array) return false;
     return $character_array;
 }
 
-function getAllCharactersWithSkills() {
+
+
+function getAllCharactersWithSkills(string $where="") {
     // Get the characters.
-    $characters = getAllCharacters();
+    $characters = getAllCharacters($where);
     //var_dump($characters);
 
     // Get their skills.
+    if (!$characters) return array();
     foreach($characters as &$character) {
         $character_skills = getCharacterSkills($character['id']);
         $lineage_skills = getLineageSkills($character['lineage_id']);
@@ -150,7 +159,11 @@ function getLineageSkills(int $id) {
 function getQueryResults($query) {
     global /** @var mysqli $mysqli */ $mysqli;
 
+    echo "\n<!-- Running query: $query -->";
+
     $result = $mysqli->query($query);
+    if (!$result) return false;
+
     $record = mysqli_fetch_all($result, MYSQLI_ASSOC);
     if (!$record) {
         //(new MissingPage("Character - Not Found", "That character was not found."))->render();
@@ -211,15 +224,29 @@ function renderCharacter($character) {
 
 function renderModSmall(array $mod) {
     ?>
-    <a href="mod.php?id=<?=$mod['id']?>"><div data-type="mod">
-        <div data-type="name"><b><?=$mod['name']?></b></div>
+    <a href="mod.php?id=<?=$mod['id']?>"><div data-type="mod" data-style="small">
+        <header><div data-type="name"><b><?=$mod['name']?></b></div></header>
         <div><b>Location:</b> <?=$mod['location']?></div>
         <div><?=$mod['host']?> - <?=$mod['start']?></div>
+        <div><b>Characters:</b> <?php
+            if (array_key_exists('characters', $mod) && is_array($mod['characters'])) {
+                $character_names = array();
+                foreach ($mod['characters'] as $character) {
+                    //$character_names[] = "<a href='character.php?id=" . $character['id'] . "'>" . $character['name'] . "</a>";
+                    $character_names[] = $character['name'];
+                }
+                echo implode(", ", $character_names);
+            } else {
+                echo "None.";
+            }
+        ?> </div>
+
         <div><?=
             strlen($mod['description']) > 300 ?
                 nl2br(substr($mod['description'], 0, 300)) . "..." :
                 nl2br($mod['description'])
             ?></div>
+
     </div></a>
     <?php
 }
