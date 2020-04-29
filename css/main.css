@@ -84,12 +84,16 @@ a {
 
 [data-type="character"] > [data-type="types"] {
     text-align: center;
+    font-weight: bold;
 }
 
-[data-type="types"] {
 
-    font-size: 20px;
+[data-type="character"] > [data-type="description"] {
+    font-style: italic;
+    text-align: center;
 }
+
+
 
 [data-type="attributes"] {
 

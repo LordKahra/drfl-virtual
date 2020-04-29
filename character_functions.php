@@ -187,10 +187,9 @@ function renderCharacter($character) {
         <header><a href="character.php?id=<?=$character['id']?>"><?=$character['name']?></a></header>
 
         <div data-type="types"><?=$character['type']?> - <?=$character['lineage']?> - <?=$character['strain']?></div>
-        <div data-type="attributes">
-            <div>⚔️4d6<?=($character['attack']?$character['attack']:'')?></div>
-            <div>🛡️ <?=$character['defense']?></div>
-            <div>💓️ <?=($character['successes']?$character['successes']:'')?></div>
+        <div data-type="description">
+
+            <main><?=nl2br($character['description'])?></main>
         </div>
         <?php
             if(array_key_exists('skills', $character) && is_array($character['skills']))
@@ -200,10 +199,12 @@ function renderCharacter($character) {
             <div><?=$skill['text']?></div>
         </div>
         <?php } ?>
-        <div data-type="description">
-            <header>Description</header>
-            <main><?=nl2br($character['description'])?></main>
+        <div data-type="attributes">
+            <div>⚔️4d6<?=($character['attack']?$character['attack']:'')?></div>
+            <div>🛡️ <?=$character['defense']?></div>
+            <div>💓️ <?=($character['successes']?$character['successes']:'')?></div>
         </div>
+
     </div>
     <?php
 }
