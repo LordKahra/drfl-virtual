@@ -211,7 +211,7 @@ function renderCharacter($character) {
 function renderModSmall(array $mod) {
     ?>
     <a href="mod.php?id=<?=$mod['id']?>"><div data-type="mod">
-        <div><b><?=$mod['name']?></b></div>
+        <div data-type="name"><b><?=$mod['name']?></b></div>
         <div><b>Location:</b> <?=$mod['location']?></div>
         <div><?=$mod['host']?> - <?=$mod['start']?></div>
         <div><?=
@@ -237,7 +237,7 @@ function renderMod(array $mod) {
     ?>
     <div data-type="mod">
         <header>
-            <div><a href="mod.php?id=<?=$mod['id']?>"><?=$mod['name']?></a></div>
+            <div data-type="name"><a href="mod.php?id=<?=$mod['id']?>"><?=$mod['name']?></a></div>
             <div><?=$mod['host']?> - <?=$mod['start']?></div>
         </header>
         <div><?=nl2br($mod['description'])?></div>

@@ -1,5 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
+html {
+    background: #fff;
+    color: #111;
+}
+
 html, body, * {
     padding: 0;
     font-family: 'Roboto', serif;
@@ -9,46 +14,66 @@ html, body, * {
 a {
     color: inherit;
     text-decoration: inherit;
+    font-size: inherit;
 }
 
 [data-type], [data-type] > * {
-    padding: 4px;
-    margin: 4px;
+
 }
 
 [data-type="mod"] > header,
 [data-type="character"] > header,
 [data-type="characters"] > header {
     font-weight: bold;
+    font-size: 24px;
+}
+
+[data-type="mod"] {
+    /*border: 2px solid #bbb;*/
+    /*background: #f8f8f8;*/
+    border-radius: 16px;
+    margin: 4px;
+}
+
+[data-type="mod"] > * {
+    padding: 4px;
+    margin: 4px;
+}
+[data-type="mod"] > header {
+    padding: 4px 8px;
+    margin: 4px 32px;
+}
+
+[data-type="mod"] > header > [data-type="name"] {
+    font-size: 36px;
+    padding: 4px 0;
 }
 
 [data-type="characters"] {
+    border-radius: 16px;
     padding: 8px;
+    /*background: #e8e8e8;*/
 }
 
 [data-type="characters"] > * {
     padding: 8px;
-}
-
-[data-type="mod"] {
-    border: 2px solid #bbb;
-    margin: 4px;
-}
-
-[data-type="mod"] > header {
-
+    margin: 8px;
 }
 
 [data-type="character"] {
-    border: 2px solid #ddd;
-    /*display: flex;*/
-    padding: 0;
+    border-radius: 16px;
+    background: #f0d0d0;
+    color: #111;
+    margin: 16px;
+    /*display: flex;402020*/
+    padding: 4px;
 
 }
 
 [data-type="character"] > * {
     padding: 4px;
-    border: 2px solid #bbb;
+    margin: 8px;
+    border-radius: 8px;
 }
 
 
@@ -59,6 +84,11 @@ a {
 
 [data-type="character"] > [data-type="types"] {
     text-align: center;
+}
+
+[data-type="types"] {
+
+    font-size: 20px;
 }
 
 [data-type="attributes"] {
