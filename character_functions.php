@@ -135,23 +135,48 @@ function getCharacterWithSkills(int $id) {
  */
 function getCharacterSkills(int $id) {
     $query =
-"SELECT * 
+"SELECT
+  skills.id AS id,
+  skills.name AS name,
+  skills.text AS text,
+  r_character_skills.uses AS uses
 FROM skills 
-WHERE id IN (SELECT skill_id FROM r_character_skills WHERE character_id = $id)";
+LEFT JOIN r_character_skills 
+    ON r_character_skills.character_id = $id
+    AND r_character_skills.skill_id = skills.id
+WHERE skills.id IN (SELECT skill_id FROM r_character_skills WHERE character_id = $id)";
 
     return getQueryResults($query);
 }
 
 function getTypeSkills(int $id) {
     $query =
-"SELECT * FROM skills WHERE id IN (SELECT skill_id FROM r_type_skills WHERE type_id = $id)";
+"SELECT
+  skills.id AS id,
+  skills.name AS name,
+  skills.text AS text,
+  r_type_skills.uses AS uses
+FROM skills
+LEFT JOIN r_type_skills 
+    ON r_type_skills.type_id = $id
+    AND r_type_skills.skill_id = skills.id
+WHERE id IN (SELECT skill_id FROM r_type_skills WHERE type_id = $id)";
 
     return getQueryResults($query);
 }
 
 function getLineageSkills(int $id) {
     $query =
-"SELECT * FROM skills WHERE id IN (SELECT skill_id FROM r_lineage_skills WHERE lineage_id = $id)";
+"SELECT
+  skills.id AS id,
+  skills.name AS name,
+  skills.text AS text,
+  r_lineage_skills.uses AS uses
+FROM skills
+LEFT JOIN r_lineage_skills 
+    ON r_lineage_skills.lineage_id = $id
+    AND r_lineage_skills.skill_id = skills.id
+WHERE id IN (SELECT skill_id FROM r_lineage_skills WHERE lineage_id = $id)";
 
     return getQueryResults($query);
 }
@@ -208,7 +233,7 @@ function renderCharacter($character) {
             if(array_key_exists('skills', $character) && is_array($character['skills']))
                 foreach($character['skills'] as $skill) { ?>
         <div data-type="skill">
-            <header><?=$skill['name']?></header>
+            <header><?=$skill['name'] . ($skill['uses'] == 1 ? "" : " x {$skill['uses']}")?></header>
             <div><?=$skill['text']?></div>
         </div>
         <?php } ?>
