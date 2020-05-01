@@ -189,7 +189,7 @@ WHERE id IN (SELECT skill_id FROM r_lineage_skills WHERE lineage_id = $id)";
 function getQueryResults($query) {
     global /** @var mysqli $mysqli */ $mysqli;
 
-    echo "\n<!-- Running query: $query -->";
+    //echo "\n<!-- Running query: $query -->";
 
     $result = $mysqli->query($query);
     if (!$result) return false;
@@ -211,10 +211,13 @@ function renderHeader($title, $type=false) {
 
 function renderModHeader() {
     ?>
-    <ul>
-        <li><b>FILTERS</b></li>
-        <li><a href="mod.php?filter=unfinished">Unfinished</a></li>
-    </ul>
+    <nav>
+        <ul>
+            <li><b>FILTERS</b></li>
+            <li><a href="mod.php?filter=unfinished">Unfinished</a></li>
+            <li><a href="mod.php?filter=unfinished">Unfinished</a></li>
+        </ul>
+    </nav>
     <?php
 }
 
@@ -230,18 +233,20 @@ function renderHeaderStart($title) {
 </head>
 <body>
 <header>
-    <main><a href="index.php">DRFL Virtual Event</a></main>
-    <nav>
-        <ul>
-            <li><a href="character.php">Characters</a></li>
-            <li><a href="mod.php">Mods</a></li>
-        </ul>
-
+    <main>
+        <main><a href="index.php">DRFL Virtual Event</a></main>
+        <nav>
+            <ul>
+                <li><a href="character.php">Characters</a></li>
+                <li><a href="mod.php">Mods</a></li>
+            </ul>
+        </nav>
+    </main>
 <?php
 }
 
 function renderHeaderEnd() { ?>
-    </nav>
+
 </header>
 <?php
 }
@@ -327,8 +332,17 @@ function renderMod(array $mod) {
     <div data-type="mod">
         <header>
             <div data-type="name"><a href="mod.php?id=<?=$mod['id']?>"><?=$mod['name']?></a></div>
-            <div><?=$mod['location']?></div>
-            <div><?=$mod['host']?> - <?=$mod['start']?></div>
+            <div class="row">
+                <div><b>Location:</b> <?=$mod['location']?></div>
+                <div><b>Where: </b><?=$mod['host']?></div>
+                <div><b>When: </b><?=$mod['start']?></div>
+            </div>
+            <div class="row">
+                <div></div>
+                <div><b>Map Status:</b> <?=$mod['map_status']?></div>
+                <div><b>Roll20 Status:</b> <?=$mod['roll20_status']?></div>
+                <div><b>Ready:</b> <?=($mod['is_ready'] ? "Yes" : "No")?></div>
+            </div>
         </header>
         <div><?=nl2br($mod['description'])?></div>
         <?php
