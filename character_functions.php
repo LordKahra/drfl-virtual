@@ -251,20 +251,24 @@ function renderModSmall(array $mod) {
     ?>
     <a href="mod.php?id=<?=$mod['id']?>"><div data-type="mod" data-style="small">
         <header><div data-type="name"><b><?=$mod['name']?></b></div></header>
-        <div><b>Location:</b> <?=$mod['location']?></div>
-        <div><?=$mod['host']?> - <?=$mod['start']?></div>
-        <div><b>Characters:</b> <?php
-            if (array_key_exists('characters', $mod) && is_array($mod['characters'])) {
-                $character_names = array();
-                foreach ($mod['characters'] as $character) {
-                    //$character_names[] = "<a href='character.php?id=" . $character['id'] . "'>" . $character['name'] . "</a>";
-                    $character_names[] = $character['name'];
-                }
-                echo implode(", ", $character_names);
-            } else {
-                echo "None.";
-            }
-        ?> </div>
+        <div class="row"><div><b>Location:</b> <?=$mod['location']?></div><div><?=$mod['host']?> - <?=$mod['start']?></div></div>
+        <div class="row">
+            <div>
+                <b>Characters:</b>
+                <?php if (array_key_exists('characters', $mod) && is_array($mod['characters'])) {
+                    $character_names = array();
+                    foreach ($mod['characters'] as $character) {
+                        //$character_names[] = "<a href='character.php?id=" . $character['id'] . "'>" . $character['name'] . "</a>";
+                        $character_names[] = $character['name'];
+                    }
+                    echo implode(", ", $character_names);
+                } else {
+                    echo "None.";
+                } ?>
+            </div>
+            <div><b>Map Status:</b> <?=$mod['map_status']?></div>
+            <div><b>Roll20 Status:</b> <?=$mod['roll20_status']?></div>
+        </div>
 
         <div><?=
             strlen($mod['description']) > 300 ?

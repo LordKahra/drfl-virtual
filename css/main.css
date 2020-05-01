@@ -21,6 +21,15 @@ a {
     font-size: inherit;
 }
 
+.row {
+    display: flex;
+    flex-direction: row;
+}
+
+.row > * {
+    flex-grow: 1;
+}
+
 [data-type], [data-type] > * {
 
 }
