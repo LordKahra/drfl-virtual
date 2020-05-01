@@ -26,7 +26,7 @@ if ($mod_id) {
     switch($filter) {
         case "unfinished":
             $mods = getAllModsWithCharacters(
-                "(location LIKE '???' OR description LIKE '???' OR map_status IS NULL OR roll20_status IS NULL OR (roll20_status NOT LIKE 'READY' AND roll20_status NOT LIKE 'NONE')) AND host NOT LIKE 'Skipped'"
+                "(location LIKE '???' OR description LIKE '???' OR map_status IS NULL OR roll20_status IS NULL OR (roll20_status NOT LIKE 'READY' AND roll20_status NOT LIKE 'NONE') OR NOT is_ready) AND host NOT LIKE 'Skipped'"
             );
             break;
         case false:

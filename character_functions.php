@@ -299,6 +299,7 @@ function renderModSmall(array $mod) {
             </div>
             <div><b>Map Status:</b> <?=$mod['map_status']?></div>
             <div><b>Roll20 Status:</b> <?=$mod['roll20_status']?></div>
+            <div><b>Ready:</b> <?=($mod['is_ready'] ? "Yes" : "No")?></div>
         </div>
 
         <div><?=
