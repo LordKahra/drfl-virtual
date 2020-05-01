@@ -27,9 +27,14 @@ function getMod(int $id) {
     return false;
 }
 
-function getAllModsWithCharacters() {
+function getAllModsWithCharacters(string $where="") {
+    // Create the query.
+    $query = "SELECT * FROM mods " .
+        ($where ? "WHERE $where" : "") .
+        "ORDER BY `name`";
+
     // Get all mods.
-    $mods = getQueryResults("SELECT * FROM mods ORDER BY `name`");
+    $mods = getQueryResults($query);
     if (!$mods) return false;
 
     // Get their characters.
@@ -198,7 +203,24 @@ function getQueryResults($query) {
     return $record;
 }
 
-function renderHeader($title) {
+function renderHeader($title, $type=false) {
+    renderHeaderStart($title);
+    if ($type == "mod") renderModHeader();
+    renderHeaderEnd();
+}
+
+function renderModHeader() {
+    ?>
+    <ul>
+        <li><b>FILTERS</b></li>
+        <li><a href="mod.php?filter=unfinished">Unfinished</a></li>
+    </ul>
+    <?php
+}
+
+
+
+function renderHeaderStart($title) {
 ?><!DOCTYPE html>
 <html>
 <head>
@@ -214,6 +236,11 @@ function renderHeader($title) {
             <li><a href="character.php">Characters</a></li>
             <li><a href="mod.php">Mods</a></li>
         </ul>
+
+<?php
+}
+
+function renderHeaderEnd() { ?>
     </nav>
 </header>
 <?php
@@ -251,7 +278,11 @@ function renderModSmall(array $mod) {
     ?>
     <a href="mod.php?id=<?=$mod['id']?>"><div data-type="mod" data-style="small">
         <header><div data-type="name"><b><?=$mod['name']?></b></div></header>
-        <div class="row"><div><b>Location:</b> <?=$mod['location']?></div><div><?=$mod['host']?> - <?=$mod['start']?></div></div>
+            <div class="row">
+                <div><b>Location:</b> <?=$mod['location']?></div>
+                <div><b>Where: </b><?=$mod['host']?></div>
+                <div><b>When: </b><?=$mod['start']?></div>
+            </div>
         <div class="row">
             <div>
                 <b>Characters:</b>
@@ -329,8 +360,11 @@ function renderSingleModPage($mod) {
 }
 
 function renderMultiModPage($mods) {
-    renderHeader("Mods");
+    renderHeader("Mods", "mod");
     //renderModList($mods);
+    ?>
+
+    <?php
     foreach($mods as $mod) {
         renderModSmall($mod);
     }

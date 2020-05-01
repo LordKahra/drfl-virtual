@@ -27,7 +27,15 @@ a {
 }
 
 .row > * {
+    flex-grow: .1;
+}
+
+.row > :first-child {
     flex-grow: 1;
+}
+
+.row > :last-child {
+    flex-grow: 0;
 }
 
 [data-type], [data-type] > * {
