@@ -158,14 +158,14 @@ function getTypeSkills(int $id) {
     $query =
 "SELECT
   skills.id AS id,
-  skills.name AS name,
+  skills.name AS `name`,
   skills.text AS text,
   r_type_skills.uses AS uses
 FROM skills
 LEFT JOIN r_type_skills 
     ON r_type_skills.type_id = $id
     AND r_type_skills.skill_id = skills.id
-WHERE id IN (SELECT skill_id FROM r_type_skills WHERE type_id = $id)";
+WHERE skills.id IN (SELECT skill_id FROM r_type_skills WHERE type_id = $id)";
 
     return getQueryResults($query);
 }
@@ -181,7 +181,7 @@ FROM skills
 LEFT JOIN r_lineage_skills 
     ON r_lineage_skills.lineage_id = $id
     AND r_lineage_skills.skill_id = skills.id
-WHERE id IN (SELECT skill_id FROM r_lineage_skills WHERE lineage_id = $id)";
+WHERE skills.id IN (SELECT skill_id FROM r_lineage_skills WHERE lineage_id = $id)";
 
     return getQueryResults($query);
 }
@@ -189,7 +189,7 @@ WHERE id IN (SELECT skill_id FROM r_lineage_skills WHERE lineage_id = $id)";
 function getQueryResults($query) {
     global /** @var mysqli $mysqli */ $mysqli;
 
-    //echo "\n<!-- Running query: $query -->";
+    //echo "\n<br/>Running query: $query";
 
     $result = $mysqli->query($query);
     if (!$result) return false;
