@@ -1,8 +1,11 @@
 <?php
 
+use drflvirtual\src\model\Mod;
+use drflvirtual\src\view\page\ModPage;
+
 require_once 'src/config/app_config.php';
 require_once 'src/config/global_config.php';
-require_once 'character_functions.php';
+require_once 'src/procedural/character_functions.php';
 
 global /** @var mysqli $mysqli */ $mysqli;
 
@@ -13,12 +16,15 @@ $filter = (isset($_GET["filter"]) ? mysqli_real_escape_string($mysqli, $_GET["fi
 // If valid ID, render single mod page.
 if ($mod_id) {
 
-// Get the character.
-    $mod = getModWithCharacters($mod_id);
+// Get the mod.
+    $mod_array = getModWithCharacters($mod_id);
+    $mod = Mod::constructFromArray($mod_array);
 
 // Render.
 
-    renderSingleModPage($mod);
+    $page = new ModPage($mod->getName(), $mod);
+
+    $page->render();
 
 } else {
     $mods = false;

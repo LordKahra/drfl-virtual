@@ -1,0 +1,41 @@
+table[data-type="event"] {
+    width: 100%;
+    table-layout: fixed;
+}
+
+table[data-type="event"] td {
+    border: 1px dashed #eee;
+}
+
+[data-type="event"] ul {
+    list-style-type: none;
+}
+
+[data-type="mod_list"] > header {
+    text-align: center;
+    font-weight: bold;
+    background: #eee;
+    border-radius: 20px;
+    margin: 8px 4px;
+    padding: 4px;
+}
+
+[data-type="event"] [data-type="mod"] {
+
+}
+
+[data-type="mod"][data-style="card"] > header {
+    margin: 4px 8px;
+}
+
+[data-type="mod"][data-style="card"] > header > [data-type="name"] {
+    font-size: 12px;
+}
+
+[data-status="READY"] [data-type="mod"] > header {
+    background-color: #eeffee;
+}
+
+[data-status="READY"] [data-type="mod"] > header [data-ui="button"] {
+    background-color: #ddeedd;
+}

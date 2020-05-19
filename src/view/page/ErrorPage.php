@@ -1,6 +1,6 @@
 <?php
 
-namespace boffer\src\view\page;
+namespace drflvirtual\src\view\page;
 
 
 class ErrorPage extends Page {

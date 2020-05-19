@@ -1,12 +1,14 @@
 <?php
 
-namespace boffer\src\view\page;
+namespace drflvirtual\src\view\page;
 
 abstract class Page {
     protected $title;
+    protected $type;
 
-    public function __construct(string $title) {
+    public function __construct(string $title, string $type) {
         $this->title = $title;
+        $this->type = $type;
     }
 
     // ACCESS
@@ -18,6 +20,13 @@ abstract class Page {
         return $this->title;
     }
 
+    /**
+     * @return string
+     */
+    public function getType(): string {
+         return $this->type;
+    }
+
     // RENDERS
 
     function render() {
@@ -27,23 +36,44 @@ abstract class Page {
     }
 
     function renderHeader() {
-        ?><!DOCTYPE html>
-<html>
-<head>
-    <title><?=$this->getTitle();?></title>
+        $this->renderHeaderStart();
+        $this->renderHeaderMiddle();
+        $this->renderHeaderEnd();
+    }
 
-    <style>* { font-family: Verdana; }</style>
-    <link rel="stylesheet" type="text/css" href="<?php echo SITE_HOST; ?>/css/main.css"/>
-</head>
-<body>
+    function renderHeaderStart() {
+        ?><!DOCTYPE html>
+    <html>
+    <head>
+        <title><?=$this->getTitle();?></title>
+        <link rel="stylesheet" type="text/css" href="<?php echo SITE_HOST; ?>/css/main.css"/>
+        <link rel="stylesheet" type="text/css" href="<?php echo SITE_HOST; ?>/css/nav.css"/>
+        <link rel="stylesheet" type="text/css" href="<?php echo SITE_HOST; ?>/css/event.css"/>
+        <link rel="stylesheet" type="text/css" href="<?php echo SITE_HOST; ?>/css/visible.css"/>
+        <script src="<?php echo SITE_HOST; ?>/js/jquery-1.12.3.js"></script>
+        <script src="<?php echo SITE_HOST; ?>/js/view.js"></script>
+    </head>
+    <body>
     <header>
-        <nav>
-            <ul>
-                <li><a href="skill.php">Skills</a></li>
-                <li><a href="exercise.php">Exercises</a></li>
-            </ul>
-        </nav>
-    </header>
+        <main>
+            <main><a href="../../index.php">DRFL Virtual Event</a></main>
+            <nav>
+                <ul>
+                    <li><a href="character.php">Characters</a></li>
+                    <li><a href="mod.php">Mods</a></li>
+                    <li><a href="event.php">Events</a></li>
+                </ul>
+            </nav>
+        </main>
+        <?php
+    }
+
+    function renderHeaderMiddle() {
+        // Intentionally left blank.
+    }
+
+    function renderHeaderEnd() { ?>
+        </header>
         <?php
     }
 

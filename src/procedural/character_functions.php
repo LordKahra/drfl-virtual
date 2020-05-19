@@ -13,7 +13,8 @@
     type.name AS type,
     strain.id AS strain_id,
     lineage.id AS lineage_id,
-    type.id AS type_id
+    type.id AS type_id,
+    toon.core AS core
 FROM characters toon
 LEFT JOIN z_strains strain ON toon.strain_id = strain.id
 LEFT JOIN z_lineages lineage ON strain.lineage_id = lineage.id
@@ -31,7 +32,7 @@ function getAllModsWithCharacters(string $where="") {
     // Create the query.
     $query = "SELECT * FROM mods " .
         ($where ? "WHERE $where" : "") .
-        "ORDER BY `name`";
+        " ORDER BY `name`";
 
     // Get all mods.
     $mods = getQueryResults($query);
@@ -214,7 +215,7 @@ function renderModHeader() {
     <nav>
         <ul>
             <li><b>FILTERS</b></li>
-            <li><a href="mod.php?filter=unfinished">Unfinished</a></li>
+            <li><a href="mod.php">All</a></li>
             <li><a href="mod.php?filter=unfinished">Unfinished</a></li>
         </ul>
     </nav>
@@ -230,6 +231,9 @@ function renderHeaderStart($title) {
     <title><?=$title;?></title>
     <link rel="stylesheet" type="text/css" href="<?php echo SITE_HOST; ?>/css/main.css"/>
     <link rel="stylesheet" type="text/css" href="<?php echo SITE_HOST; ?>/css/nav.css"/>
+    <link rel="stylesheet" type="text/css" href="<?php echo SITE_HOST; ?>/css/visible.css"/>
+    <script src="<?php echo SITE_HOST; ?>/js/jquery-1.12.3.js"></script>
+    <script src="<?php echo SITE_HOST; ?>/js/view.js"></script>
 </head>
 <body>
 <header>
@@ -251,7 +255,7 @@ function renderHeaderEnd() { ?>
 <?php
 }
 
-function renderCharacter($character) {
+function renderCharacterArray($character) {
     ?>
     <div data-type="character">
         <header><a href="character.php?id=<?=$character['id']?>"><?=$character['name']?></a></header>
@@ -281,39 +285,46 @@ function renderCharacter($character) {
 
 function renderModSmall(array $mod) {
     ?>
-    <a href="mod.php?id=<?=$mod['id']?>"><div data-type="mod" data-style="small">
-        <header><div data-type="name"><b><?=$mod['name']?></b></div></header>
+    <div data-type="mod" data-style="small" data-fold="true" data-active="false" id="mod_<?=$mod["id"];?>">
+        <header>
+            <button data-ui="button" href="#" onclick="toggleById('mod_<?=$mod["id"];?>')">🔎</button>
+            <span data-type="name"><b><a href="mod.php?id=<?=$mod['id']?>"><?=$mod['name']?></a></b></span>
+        </header>
+        <main>
             <div class="row">
                 <div><b>Location:</b> <?=$mod['location']?></div>
                 <div><b>Where: </b><?=$mod['host']?></div>
                 <div><b>When: </b><?=$mod['start']?></div>
             </div>
-        <div class="row">
-            <div>
-                <b>Characters:</b>
-                <?php if (array_key_exists('characters', $mod) && is_array($mod['characters'])) {
-                    $character_names = array();
-                    foreach ($mod['characters'] as $character) {
-                        //$character_names[] = "<a href='character.php?id=" . $character['id'] . "'>" . $character['name'] . "</a>";
-                        $character_names[] = $character['name'];
-                    }
-                    echo implode(", ", $character_names);
-                } else {
-                    echo "None.";
-                } ?>
+            <div class="row">
+                <div>
+                    <b>Characters:</b>
+                    <?php if (array_key_exists('characters', $mod) && is_array($mod['characters'])) {
+                        $character_names = array();
+                        foreach ($mod['characters'] as $character) {
+                            //$character_names[] = "<a href='character.php?id=" . $character['id'] . "'>" . $character['name'] . "</a>";
+                            $character_names[] = $character['name'];
+                        }
+                        echo implode(", ", $character_names);
+                    } else {
+                        echo "None.";
+                    } ?>
+                </div>
+                <div><b>Map Status:</b> <?=$mod['map_status']?></div>
+                <div><b>Roll20 Status:</b> <?=$mod['roll20_status']?></div>
+                <div><b>Ready:</b> <?=($mod['is_ready'] ? "Yes" : "No")?></div>
             </div>
-            <div><b>Map Status:</b> <?=$mod['map_status']?></div>
-            <div><b>Roll20 Status:</b> <?=$mod['roll20_status']?></div>
-            <div><b>Ready:</b> <?=($mod['is_ready'] ? "Yes" : "No")?></div>
-        </div>
 
-        <div><?=
-            strlen($mod['description']) > 300 ?
-                nl2br(substr($mod['description'], 0, 300)) . "..." :
-                nl2br($mod['description'])
-            ?></div>
+            <div><?=
+                strlen($mod['description']) > 300 ?
+                    nl2br(substr($mod['description'], 0, 300)) . "..." :
+                    nl2br($mod['description'])
+                ?></div>
+        </main>
 
-    </div></a>
+
+
+    </div>
     <?php
 }
 
@@ -327,51 +338,16 @@ function renderModList(array $mods) {
     <?php
 }
 
-function renderMod(array $mod) {
-    ?>
-    <div data-type="mod">
-        <header>
-            <div data-type="name"><a href="mod.php?id=<?=$mod['id']?>"><?=$mod['name']?></a></div>
-            <div class="row">
-                <div><b>Location:</b> <?=$mod['location']?></div>
-                <div><b>Where: </b><?=$mod['host']?></div>
-                <div><b>When: </b><?=$mod['start']?></div>
-            </div>
-            <div class="row">
-                <div></div>
-                <div><b>Map Status:</b> <?=$mod['map_status']?></div>
-                <div><b>Roll20 Status:</b> <?=$mod['roll20_status']?></div>
-                <div><b>Ready:</b> <?=($mod['is_ready'] ? "Yes" : "No")?></div>
-            </div>
-        </header>
-        <div><?=nl2br($mod['description'])?></div>
-        <?php
-        if(array_key_exists('characters', $mod) && is_array($mod['characters'])) {
-            ?><div data-type="characters">
-                <header>Characters</header><?php
-                foreach ($mod['characters'] as $character) renderCharacter($character);
-        }
-        ?></div>
-    </div>
-    <?php
-}
-
 function renderSingleCharacterPage($character) {
     renderHeader($character['name']);
-    renderCharacter($character);
+    renderCharacterArray($character);
 }
 
 function renderMultiCharacterPage($characters) {
     renderHeader("Characters");
     foreach($characters as $character) {
-        renderCharacter($character);
+        renderCharacterArray($character);
     }
-}
-
-function renderSingleModPage($mod) {
-    renderHeader($mod['name']);
-    //var_dump($mod);
-    renderMod($mod);
 }
 
 function renderMultiModPage($mods) {
