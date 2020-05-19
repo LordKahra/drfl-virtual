@@ -32,10 +32,10 @@ table[data-type="event"] td {
     font-size: 12px;
 }
 
-[data-status="READY"] [data-type="mod"] > header {
+[data-status="100"] [data-type="mod"] > header {
     background-color: #eeffee;
 }
 
-[data-status="READY"] [data-type="mod"] > header [data-ui="button"] {
+[data-status="100"] [data-type="mod"] > header [data-ui="button"] {
     background-color: #ddeedd;
 }

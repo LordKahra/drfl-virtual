@@ -77,7 +77,7 @@ class EventPage extends Page {
      */
     function renderModSetIfExists(int $key, string $title, array $mod_statuses) {
         ?>
-        <div data-type="mod_list">
+        <div data-status="<?=$key?>" data-type="mod_list">
         <header>
             <?=$title?>
         </header>
