@@ -59,6 +59,7 @@ class Event {
     public static function constructFromArray(array $event) {
         // Create a holding array for mods.
         $mods = array();
+        //var_dump($event);
 
         // Get the mods.
         foreach($event['mods'] as $mod_array) {

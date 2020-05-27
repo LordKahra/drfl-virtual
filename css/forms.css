@@ -1,0 +1,8 @@
+form[data-action="delete"] > input[type="submit"] {
+    border: 0;
+    background: #ecc;
+    border-style: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+}

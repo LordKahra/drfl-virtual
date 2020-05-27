@@ -1,5 +1,7 @@
 <?php
 
+use drflvirtual\src\model\database\EventDatabase;
+
 function getEvent(int $id) {
     $event_array = getQueryResults("SELECT * FROM events WHERE id = $id");
 
@@ -41,6 +43,8 @@ function getAllEventsWithMods(string $where="") {
 }
 
 function getEventMods(int $id) {
+    $db = new EventDatabase();
+
     return getAllModsWithCharacters("event_id = $id");
 }
 

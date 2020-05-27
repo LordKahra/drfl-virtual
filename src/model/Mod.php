@@ -19,6 +19,7 @@ class Mod {
     protected $event_id;
 
     protected $characters = array();
+    protected $guides = array();
 
     /**
      * Mod constructor.
@@ -29,6 +30,7 @@ class Mod {
      * @param string $location
      * @param string $description
      * @param Character[] $characters
+     * @param Player[] $guides
      */
     public function __construct(
         int $id,
@@ -42,7 +44,8 @@ class Mod {
         bool $is_ready,
         bool $is_statted,
         int $event_id,
-        array $characters
+        array $characters,
+        array $guides
     ) {
         $this->id = $id;
         $this->name = $name;
@@ -59,16 +62,23 @@ class Mod {
         foreach ($characters as $character) {
             $this->characters[$character->getId()] = $character;
         }
+
+        foreach ($guides as $guide) {
+            $this->guides[$guide->getId()] = $guide;
+        }
     }
 
     public static function constructFromArray(array $mod) {
         // Create a holding array for characters.
         $characters = array();
+        $guides = array();
 
-        // Get the characters.
-        foreach($mod['characters'] as $char_array) {
-            $characters[] = Character::constructFromArray($char_array);
+        // Get the details.
+        if ($mod['guides']) foreach($mod['characters'] as $char_array) $characters[] = Character::constructFromArray($char_array);
+        if ($mod['guides']) foreach($mod['guides'] as $guide_array) {
+            $guides[] = Player::constructFromArray($guide_array);
         }
+
 
         return new Mod(
             $mod['id'],
@@ -82,7 +92,8 @@ class Mod {
             $mod['is_ready'],
             $mod['is_statted'],
             $mod['event_id'],
-            $characters
+            $characters,
+            $guides
         );
     }
 
@@ -174,8 +185,11 @@ class Mod {
         return ($this->characters ? $this->characters : array());
     }
 
-    public function calculateStuff() : bool {
-
+    /**
+     * @return Player[]
+     */
+    public function getGuides(): array {
+        return $this->guides;
     }
 
     private function validateDescription() : bool {

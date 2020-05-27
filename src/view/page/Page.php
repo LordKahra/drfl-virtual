@@ -48,6 +48,7 @@ abstract class Page {
         <title><?=$this->getTitle();?></title>
         <link rel="stylesheet" type="text/css" href="<?php echo SITE_HOST; ?>/css/main.css"/>
         <link rel="stylesheet" type="text/css" href="<?php echo SITE_HOST; ?>/css/nav.css"/>
+        <link rel="stylesheet" type="text/css" href="<?php echo SITE_HOST; ?>/css/forms.css"/>
         <link rel="stylesheet" type="text/css" href="<?php echo SITE_HOST; ?>/css/event.css"/>
         <link rel="stylesheet" type="text/css" href="<?php echo SITE_HOST; ?>/css/visible.css"/>
         <script src="<?php echo SITE_HOST; ?>/js/jquery-1.12.3.js"></script>
@@ -62,6 +63,7 @@ abstract class Page {
                     <li><a href="character.php">Characters</a></li>
                     <li><a href="mod.php">Mods</a></li>
                     <li><a href="event.php">Events</a></li>
+                    <li><a href="admin.php">Admin</a></li>
                 </ul>
             </nav>
         </main>
