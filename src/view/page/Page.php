@@ -50,6 +50,7 @@ abstract class Page {
         <link rel="stylesheet" type="text/css" href="<?php echo SITE_HOST; ?>/css/nav.css"/>
         <link rel="stylesheet" type="text/css" href="<?php echo SITE_HOST; ?>/css/forms.css"/>
         <link rel="stylesheet" type="text/css" href="<?php echo SITE_HOST; ?>/css/event.css"/>
+        <link rel="stylesheet" type="text/css" href="<?php echo SITE_HOST; ?>/css/mod.css"/>
         <link rel="stylesheet" type="text/css" href="<?php echo SITE_HOST; ?>/css/visible.css"/>
         <script src="<?php echo SITE_HOST; ?>/js/jquery-1.12.3.js"></script>
         <script src="<?php echo SITE_HOST; ?>/js/view.js"></script>

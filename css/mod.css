@@ -1,0 +1,11 @@
+[data-type="mod"][data-style="admin"] {
+    border-radius: 16px;
+    background: #f8f8f8;
+    margin: 4px;
+    padding: 4px;
+}
+
+[data-type="mod"][data-style="admin"] > form {
+    background: #ddd;
+    border-radius: 8px;
+}

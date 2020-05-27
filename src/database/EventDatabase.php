@@ -341,12 +341,31 @@ WHERE skills.id IN (SELECT skill_id FROM r_lineage_skills WHERE lineage_id = $id
         return $result;
     }
 
+    public function addCharacterToMod(int $mod_id, int $character_id) {
+        $query = "INSERT INTO r_mod_characters (mod_id, character_id) VALUES ($mod_id, $character_id) ON DUPLICATE KEY UPDATE id=id";
+        // id=id avoids increasing auto increment. :)
+
+        $result = $this->runUpsertQuery($query);
+
+        var_dump($result);
+
+        return $result;
+    }
+
     ////////////////////////////////
     // DELETE
     ////////////////////////////////
 
     public function deleteGuideFromMod(int $mod_id, int $guide_id) {
         $query = "DELETE FROM r_mod_guides WHERE mod_id = $mod_id AND guide_id = $guide_id";
+
+        $result = $this->runDeleteQuery($query);
+
+        return $result;
+    }
+
+    public function deleteCharacterFromMod(int $mod_id, int $character_id) {
+        $query = "DELETE FROM r_mod_characters WHERE mod_id = $mod_id AND character_id = $character_id";
 
         $result = $this->runDeleteQuery($query);
 
