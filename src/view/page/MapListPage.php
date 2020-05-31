@@ -74,7 +74,7 @@ class MapListPage extends Page {
             <div data-style="map" data-fold="true" data-active="false" id="map_<?=$map->getId()?>">
                 <header>
                     <button data-ui="button" href="#" onclick="toggleById('map_<?=$map->getId();?>')">🔎</button>
-                    <span data-type="name"><b><a href="map.php?id=<?=$map->getId()?>"><?=$map->getName()?></a> ---  <?=$map->getStatus()?></b></span>
+                    <span data-type="name"><b><a href="map.php?id=<?=$map->getId()?>"><?=$map->getId()?> - <?=$map->getName()?></a> ---  <?=$map->getStatus()?></b></span>
                     <p>Creator: #<?=$map->getCreatorId()?><?=($player ? " - {$player->getName()}" : "")?></p>
                     <p><?=$map->getDescription()?></p>
                 </header>
