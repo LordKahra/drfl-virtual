@@ -10,23 +10,23 @@ $db = new EventDatabase();
 
 $action = (isset($_POST["action"])     ? $db->escape($_POST["action"])     : false);
 $mod_id = (isset($_POST["mod_id"])     ? $db->escape($_POST["mod_id"])     : false);
-$guide_id = (isset($_POST["guide_id"]) ? $db->escape($_POST["guide_id"])   : false);
+$map_id = (isset($_POST["map_id"]) ? $db->escape($_POST["map_id"])   : false);
 
 if (!$action) exit("No action selected.");
-if (!$mod_id || !$guide_id) exit("No mod or guide id.");
+if (!$mod_id || !$map_id) exit("No mod or map id.");
 
 // Act.
 $message = "";
 switch (strtolower($action)) {
     case "add":
-        echo "<br/>Adding guide.";
-        $db->addGuideToMod($mod_id, $guide_id);
-        $message="Guide added to mod.";
+        echo "<br/>Adding map.";
+        $db->addMapToMod($mod_id, $map_id);
+        $message="Map added to mod.";
         break;
     case "delete":
-        echo "<br/>Removing guide.";
-        $db->deleteGuideFromMod($mod_id, $guide_id);
-        $message="Guide deleted from mod.";
+        echo "<br/>Removing map.";
+        $db->deleteMapFromMod($mod_id, $map_id);
+        $message="Map deleted from mod.";
         break;
     default:
         $message = "Invalid action chosen: $action";

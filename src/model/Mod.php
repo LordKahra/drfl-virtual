@@ -13,13 +13,14 @@ class Mod {
     protected $location;
     protected $description;
     protected $map_status;
-    protected $roll20_status;
+    protected $tabletop_status;
     protected $is_ready;
     protected $is_statted;
     protected $event_id;
 
     protected $characters = array();
     protected $guides = array();
+    protected $maps = array();
 
     /**
      * Mod constructor.
@@ -40,12 +41,13 @@ class Mod {
         string $location,
         string $description,
         string $map_status,
-        string $roll20_status,
+        string $tabletop_status,
         bool $is_ready,
         bool $is_statted,
         int $event_id,
         array $characters,
-        array $guides
+        array $guides,
+        array $maps
     ) {
         $this->id = $id;
         $this->name = $name;
@@ -54,7 +56,7 @@ class Mod {
         $this->location = $location;
         $this->description = $description;
         $this->map_status = $map_status;
-        $this->roll20_status = $roll20_status;
+        $this->tabletop_status = $tabletop_status;
         $this->is_ready = $is_ready;
         $this->is_statted = $is_statted;
         $this->event_id = $event_id;
@@ -66,19 +68,22 @@ class Mod {
         foreach ($guides as $guide) {
             $this->guides[$guide->getId()] = $guide;
         }
+
+        foreach ($maps as $map) {
+            $this->maps[$map->getId()] = $map;
+        }
     }
 
     public static function constructFromArray(array $mod) {
         // Create a holding array for characters.
         $characters = array();
         $guides = array();
+        $maps = array();
 
         // Get the details.
-        if ($mod['guides']) foreach($mod['characters'] as $char_array) $characters[] = Character::constructFromArray($char_array);
-        if ($mod['guides']) foreach($mod['guides'] as $guide_array) {
-            $guides[] = Player::constructFromArray($guide_array);
-        }
-
+        if ($mod['characters']) foreach($mod['characters'] as $char_array)  $characters[] = Character::constructFromArray($char_array);
+        if ($mod['guides'])     foreach($mod['guides'] as $guide_array)     $guides[] = Player::constructFromArray($guide_array);
+        if ($mod['maps'])       foreach($mod['maps'] as $map_array)         $maps[] = Map::constructFromArray($map_array);
 
         return new Mod(
             $mod['id'],
@@ -88,12 +93,13 @@ class Mod {
             $mod['location'],
             $mod['description'],
             $mod['map_status'] ? $mod['map_status'] : "",
-            $mod['roll20_status'] ? $mod['roll20_status'] : "",
+            $mod['tabletop_status'] ? $mod['tabletop_status'] : "",
             $mod['is_ready'],
             $mod['is_statted'],
             $mod['event_id'],
             $characters,
-            $guides
+            $guides,
+            $maps
         );
     }
 
@@ -154,7 +160,7 @@ class Mod {
      * @return string
      */
     public function getTabletopStatus(): string {
-        return $this->roll20_status;
+        return $this->tabletop_status;
     }
 
     /**
@@ -169,6 +175,17 @@ class Mod {
      */
     public function isStatted(): bool {
         return $this->is_statted;
+    }
+
+    public function isTabletop(): bool {
+        switch(strtolower($this->getHost())) {
+            case "roll20":
+            case "astral":
+                return true;
+            case "discord":
+            default:
+                return false;
+        }
     }
 
     /**
@@ -190,6 +207,13 @@ class Mod {
      */
     public function getGuides(): array {
         return $this->guides;
+    }
+
+    /**
+     * @return Map[]
+     */
+    public function getMaps(): array {
+        return $this->maps;
     }
 
     private function validateDescription() : bool {
@@ -270,7 +294,7 @@ class Mod {
         // Check if it's statted.
         if (!$this->isStatted()) $errors[] = Mod::ERRORS["NO_STATS"];
 
-        // Check Roll20 Status.
+        // Check Tabletop Status.
         switch(strtolower($this->getTabletopStatus())) {
             case "ready":
                 break;
@@ -279,7 +303,7 @@ class Mod {
                     $errors[] = Mod::ERRORS["INVALID_TABLETOP_STATUS"];
                 }
             default:
-                // The roll20 is incomplete.
+                // The tabletop is incomplete.
                 $errors[] = Mod::ERRORS["TABLETOP_INCOMPLETE"];
         }
 
@@ -398,17 +422,17 @@ class Mod {
         // TABLETOP ////////////////////
         ////////////////////////////////
 
-        // Check Roll20 Status.
+        // Check Tabletop Status.
         switch(strtolower($this->getTabletopStatus())) {
             case "ready":
                 break;
             case "none":
                 if (strtolower($this->getHost()) == "roll20"|| strtolower($this->getHost()) == "astral") {
-                    return static::STATUS_ROLL20_INCOMPLETE;
+                    return static::STATUS_TABLETOP_INCOMPLETE;
                 }
             default:
-                // The roll20 is incomplete.
-                return static::STATUS_ROLL20_INCOMPLETE;
+                // The tabletop is incomplete.
+                return static::STATUS_TABLETOP_INCOMPLETE;
         }
 
         ////////////////////////////////
@@ -428,7 +452,7 @@ class Mod {
 
         // Host: Discord || Roll20 || Skipped || Astral
         // Map Status: UPLOADED || NULL
-        // Roll20Status: READY || NONE
+        // TabletopStatus: READY || NONE
     }
 
     const INCOMPLETE_MARKER = "???";
@@ -438,7 +462,7 @@ class Mod {
     const STATUS_UNSCHEDULED = 30;
     const STATUS_MAP_INCOMPLETE = 60;
     const STATUS_NEEDS_STATS = 70;
-    const STATUS_ROLL20_INCOMPLETE = 80;
+    const STATUS_TABLETOP_INCOMPLETE = 80;
     const STATUS_VERIFICATION = 90;
     const STATUS_READY = 100;
 
@@ -448,7 +472,7 @@ class Mod {
         "UNSCHEDULED" => Mod::STATUS_UNSCHEDULED,
         "MAP_INCOMPLETE" => Mod::STATUS_MAP_INCOMPLETE,
         "NEEDS_STATS" => Mod::STATUS_NEEDS_STATS,
-        "ROLL20_INCOMPLETE" => Mod::STATUS_ROLL20_INCOMPLETE,
+        "TABLETOP_INCOMPLETE" => Mod::STATUS_TABLETOP_INCOMPLETE,
         "VERIFICATION" => Mod::STATUS_VERIFICATION,
         "READY" => Mod::STATUS_READY,
     );

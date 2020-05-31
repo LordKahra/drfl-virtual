@@ -44,6 +44,12 @@ a {
 
 }
 
+[data-style="raw"], [data-style="raw"] * {
+    font-weight: normal;
+    font-size: 16px;
+    font-family: monospace;
+}
+
 [data-type="mod"] > header,
 [data-type="character"] > header,
 [data-type="characters"] > header {

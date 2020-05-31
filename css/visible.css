@@ -12,11 +12,11 @@
 
 /* MOD STYLE - SMALL */
 
-[data-type="mod"][data-fold="true"][data-active="false"] {
+[data-fold="true"][data-active="false"] {
 
 }
 
-[data-type="mod"][data-fold="true"][data-active="false"] > main {
+[data-fold="true"][data-active="false"] > main {
     display: none;
 }
 

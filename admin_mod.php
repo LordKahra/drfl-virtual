@@ -22,8 +22,11 @@ switch($filter) {
     case "event":
         $mods = $db->getMods("event_id = $filter_id", '`name`');
         break;
-    default:
+    case "all":
         $mods = $db->getMods("", '`name`');
+    case "current":
+    default:
+        $mods = $db->getMods("event_id = " . CURRENT_EVENT, '`name`');
         break;
 }
 

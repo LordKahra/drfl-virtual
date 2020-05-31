@@ -62,7 +62,7 @@ class Event {
         //var_dump($event);
 
         // Get the mods.
-        foreach($event['mods'] as $mod_array) {
+        if (array_key_exists('mods', $event)) foreach($event['mods'] as $mod_array) {
             $mods[] = Mod::constructFromArray($mod_array);
         }
 

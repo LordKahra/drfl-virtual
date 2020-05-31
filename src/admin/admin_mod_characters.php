@@ -33,6 +33,6 @@ switch (strtolower($action)) {
 }
 
 // Done. Redirect or link back to the admin page.
-header("Location: " . SITE_HOST . "/admin_mod.php?mod_id=$mod_id&message=".urlencode($message));
+header("Location: " . SITE_HOST . "/admin_mod.php?mod_id=$mod_id&message=".urlencode($message) . "#mod_$mod_id");
 ?>
 <!--a href="<?=SITE_HOST?>/admin_mod.php?mod_id=<?=$mod_id?>">Done. Back to mod.</a-->

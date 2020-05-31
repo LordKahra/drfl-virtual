@@ -26,6 +26,8 @@ class EventPage extends Page {
         // Calculate where all the mods are in the table.
         $mod_statuses = array();
 
+        //var_dump($this->getEvent()->getMods());
+
         foreach($this->getEvent()->getMods() as $mod) {
             $status = $mod->calculateStatus();
 
@@ -62,7 +64,7 @@ class EventPage extends Page {
                     <?php $this->renderModSetIfExists(Mod::STATUS['MAP_INCOMPLETE'], "Scheduled", $mod_statuses); ?>
                 </td>
                 <td data-status="NEEDS_STATS">      <?php $this->renderModSetIfExists(Mod::STATUS['NEEDS_STATS'], "Mapped", $mod_statuses); ?></td>
-                <td data-status="ROLL20_INCOMPLETE"><?php $this->renderModSetIfExists(Mod::STATUS['ROLL20_INCOMPLETE'], "Statted", $mod_statuses); ?></td>
+                <td data-status="TABLETOP_INCOMPLETE"><?php $this->renderModSetIfExists(Mod::STATUS['TABLETOP_INCOMPLETE'], "Statted", $mod_statuses); ?></td>
                 <td data-status="VERIFICATION">
                     <?php $this->renderModSetIfExists(Mod::STATUS['VERIFICATION'], "Verification", $mod_statuses); ?>
                     <?php $this->renderModSetIfExists(Mod::STATUS['READY'], "Complete", $mod_statuses); ?>
@@ -108,7 +110,7 @@ class EventPage extends Page {
                     <li><b>Where: </b><?=$mod->getHost()?></li>
                     <li><b>When: </b><?=$mod->getStartString()?></li>
                     <li><b>Map Status:</b> <?=$mod->getMapStatus()?></li>
-                    <li><b>Roll20 Status:</b> <?=$mod->getTabletopStatus()?></li>
+                    <li><b>Tabletop Status:</b> <?=$mod->getTabletopStatus()?></li>
                     <li><b>Ready:</b> <?=($mod->isReady() ? "Yes" : "No")?></li>
                     <li></li>
                     <li></li>

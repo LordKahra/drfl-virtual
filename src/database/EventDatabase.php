@@ -4,11 +4,14 @@ namespace drflvirtual\src\model\database;
 
 use Character;
 use drflvirtual\src\model\Event;
+use drflvirtual\src\model\Map;
 use drflvirtual\src\model\Mod;
 use drflvirtual\src\model\Player;
 use EventNotFoundException;
+use MapNotFoundException;
 use ModNotFoundException;
 use mysqli;
+use PlayerNotFoundException;
 
 class EventDatabase {
     const CHARACTER_SELECT =
@@ -33,9 +36,13 @@ LEFT JOIN z_character_types type ON lineage.type_id = type.id";
 
     protected $mysqli;
 
+    protected $players;
+
     public function __construct() {
         $this->mysqli = new mysqli(DATABASE_HOST, DATABASE_USERNAME, DATABASE_PASSWORD, DATABASE_NAME);
 
+        // Load global data.
+        $this->players = $this->getPlayers();
     }
 
     ////////////////////////////////
@@ -54,9 +61,11 @@ LEFT JOIN z_character_types type ON lineage.type_id = type.id";
         // Get details.
         $character_arrays = $this->getRawModCharacters($id);
         $guide_arrays = $this->getRawModGuides($id);
+        $map_arrays = $this->getRawModMaps($id);
 
         $mod_array['characters'] = (is_array($character_arrays)) ? $character_arrays : array();
         $mod_array['guides'] = (is_array($guide_arrays)) ? $guide_arrays : array();
+        $mod_array['maps'] = (is_array($map_arrays)) ? $map_arrays : array();
 
         $mod = Mod::constructFromArray($mod_array);
 
@@ -77,12 +86,41 @@ LEFT JOIN z_character_types type ON lineage.type_id = type.id";
         return $event;
     }
 
+    /**
+     * @param int $id
+     * @return Map
+     * @throws MapNotFoundException
+     */
+    public function getMap(int $id) : Map {
+        $array = $this->getRawMap($id);
+        if (!$array) throw new MapNotFoundException($id);
+
+        $map = Map::constructFromArray($array);
+
+        return $map;
+    }
+
+    /**
+     * @param int $id
+     * @return Player
+     * @throws PlayerNotFoundException
+     */
+    public function getPlayer(int $id) : Player {
+        if (!array_key_exists($id, $this->players)) throw new PlayerNotFoundException($id);
+        return $this->players[$id];
+    }
+
     ////////////////////////////////
     // GET - PUBLIC - PLURAL
     ////////////////////////////////
 
-    public function getEvents(string $where="") : array {
-        $arrays = $this->getRawEventsWithDetails($where);
+    /**
+     * @param string $where
+     * @param bool $details
+     * @return Event[]
+     */
+    public function getEvents(string $where="", bool $details=true) : array {
+        $arrays = $details ? $this->getRawEventsWithDetails($where) : $this->getRawEvents($where);
 
         $events = array();
         foreach ($arrays as $array) {
@@ -93,7 +131,7 @@ LEFT JOIN z_character_types type ON lineage.type_id = type.id";
         return $events;
     }
 
-    public function getMods(string $where="", string $order="") : array {
+    public function getMods(string $where="", string $order="`name`") : array {
         $mod_arrays = $this->getRawModsWithDetails($where, $order);
 
         $mods = array();
@@ -114,7 +152,7 @@ LEFT JOIN z_character_types type ON lineage.type_id = type.id";
 
         $players = array();
         foreach($player_arrays as $player_array) {
-            $players[] = Player::constructFromArray($player_array);
+            $players[$player_array['id']] = Player::constructFromArray($player_array);
         }
 
         return $players;
@@ -125,14 +163,31 @@ LEFT JOIN z_character_types type ON lineage.type_id = type.id";
      * @return Character[]
      */
     public function getCharacters(string $where="") : array {
-        $character_arrays = $this->getRawCharactersWithSkills($where);
+        $arrays = $this->getRawCharactersWithSkills($where);
 
         $characters = array();
-        foreach($character_arrays as $character_array) {
-            $characters[] = Character::constructFromArray($character_array);
+        foreach($arrays as $array) {
+            $characters[] = Character::constructFromArray($array);
         }
 
         return $characters;
+    }
+
+    /**
+     * @param string $where
+     * @return Map[]
+     */
+    public function getMaps(string $where="", string $order="`name`") : array {
+        $arrays = $this->getRawMaps($where, $order);
+
+        if (!$arrays) return array();
+
+        $maps = array();
+        foreach($arrays as $array) {
+            $maps[$array['id']] = Map::constructFromArray($array);
+        }
+
+        return $maps;
     }
 
     ////////////////////////////////
@@ -157,6 +212,10 @@ LEFT JOIN z_character_types type ON lineage.type_id = type.id";
 
     private function getRawModGuides($mod_id) {
         return $this->getRawPlayers("id IN (SELECT guide_id FROM r_mod_guides WHERE mod_id = $mod_id)");
+    }
+
+    private function getRawModMaps($mod_id) {
+        return $this->getRawMaps("id IN (SELECT map_id FROM r_mod_maps WHERE mod_id = $mod_id)");
     }
 
     ////////////////////////////////
@@ -184,7 +243,7 @@ LEFT JOIN z_character_types type ON lineage.type_id = type.id";
         return $event_arrays;
     }
 
-    private function getRawModsWithDetails(string $where="", $order="") {
+    private function getRawModsWithDetails(string $where="", $order="`name`") {
         // Get the mods.
         $mod_arrays = $this->getRawMods($where, $order);
 
@@ -193,7 +252,9 @@ LEFT JOIN z_character_types type ON lineage.type_id = type.id";
         foreach($mod_arrays as &$mod_array) {
             $mod_array['characters'] = $this->getRawModCharacters($mod_array['id']);
             $mod_array['guides'] = $this->getRawModGuides($mod_array['id']);
+            $mod_array['maps'] = $this->getRawModMaps($mod_array['id']);
         }
+        //var_dump($mod_arrays);
 
         return $mod_arrays;
     }
@@ -221,22 +282,39 @@ LEFT JOIN z_character_types type ON lineage.type_id = type.id";
     }
 
     ////////////////////////////////
-    // GET - PRIVATE - RAW
+    // GET - PRIVATE - RELATIONS
     ////////////////////////////////
     ///
-    private function getRawEvent(int $id) {
-        $array = $this->runGetQuery("SELECT * FROM events WHERE id = $id");
+    public function getModMapRelations(string $where="") {
+        return $this->runGetQuery("SELECT * FROM r_mod_maps " . ($where ? "WHERE $where" : ""));
+    }
 
-        if (!$array) return false;
-        if (is_array($array['0'])) return $array['0'];
-        return false;
+    ////////////////////////////////
+    // GET - PRIVATE - RAW
+    ////////////////////////////////
+
+    private function getRawMaps(string $where="", string $order="`name`") {
+        return $this->runGetQuery("SELECT * FROM maps " . ($where ? "WHERE $where" : "") . ($order ? " ORDER BY $order " : ""));
+    }
+
+    private function getRawEvent(int $id) {
+        return $this->runGetQuery("SELECT * FROM events WHERE id = $id");
     }
 
     private function getRawEvents(string $where="") {
-        $array = $this->runGetQuery("SELECT * FROM events " . ($where ? "WHERE $where" : ""));
+        return $this->runGetQuery("SELECT * FROM events " . ($where ? "WHERE $where" : ""));
+    }
 
-        if (!$array) return false;
-        return $array;
+    private function getRawMods(string $where="", string $order="`name`") {
+        return $this->runGetQuery("SELECT * FROM mods " . ($where ? " WHERE $where " : "") . ($order ? " ORDER BY $order " : ""));
+    }
+
+    private function getRawCharacters(string $where="", string $order_by="`name`") {
+        return $this->runGetQuery(static::CHARACTER_SELECT . ($where ? " \nWHERE $where" : "") . ($order_by ? " \nORDER BY $order_by" : ""));
+    }
+
+    private function getRawPlayers(string $where="", string $order_by="`name`") {
+        return $this->runGetQuery("SELECT * FROM players " . ($where ? " \nWHERE $where" : "") . ($order_by ? " \nORDER BY $order_by" : ""));
     }
 
     private function getRawMod(int $id) {
@@ -247,36 +325,17 @@ LEFT JOIN z_character_types type ON lineage.type_id = type.id";
         return false;
     }
 
-    private function getRawMods(string $where="", string $order="") {
-        $mod_array = $this->runGetQuery(
-            "SELECT * FROM mods "
-            . ($where ? " WHERE $where " : "")
-            . ($order ? " ORDER BY $order " : "")
-        );
+    private function getRawMap(int $id) {
+        $array = $this->getRawMaps("id = $id");
 
-        if (!$mod_array) return false;
-        return $mod_array;
+        if (!$array) return false;
+        if (is_array($array['0'])) return $array['0'];
+        return false;
     }
 
-    private function getRawCharacters(string $where="", string $order_by="`name`") {
-        $character_array = $this->runGetQuery(
-            static::CHARACTER_SELECT .
-            ($where ? " \nWHERE $where" : "") .
-            ($order_by ? " \nORDER BY $order_by" : "")
-        );
-        if (!$character_array) return false;
-        return $character_array;
-    }
-
-    private function getRawPlayers(string $where="", string $order_by="`name`") {
-        $player_array = $this->runGetQuery(
-            "SELECT * FROM players " .
-            ($where ? " \nWHERE $where" : "") .
-            ($order_by ? " \nORDER BY $order_by" : "")
-        );
-        if (!$player_array) return false;
-        return $player_array;
-    }
+    ////////////////////////////////////
+    // GET - PRIVATE - RAW - RELATION
+    ////////////////////////////////////
 
     private function getCharacterSkills(int $id) {
         $query =
@@ -330,8 +389,9 @@ WHERE skills.id IN (SELECT skill_id FROM r_lineage_skills WHERE lineage_id = $id
     // WRITE
     ////////////////////////////////
 
-    public function addGuideToMod(int $mod_id, int $guide_id) {
-        $query = "INSERT INTO r_mod_guides (mod_id, guide_id) VALUES ($mod_id, $guide_id) ON DUPLICATE KEY UPDATE id=id";
+    private function addRelation(int $left_id, int $right_id, string $table, string $left_column, string $right_column) {
+
+        $query = "INSERT INTO $table (`$left_column`, `$right_column`) VALUES ($left_id, $right_id) ON DUPLICATE KEY UPDATE id=id";
         // id=id avoids increasing auto increment. :)
 
         $result = $this->runUpsertQuery($query);
@@ -341,15 +401,37 @@ WHERE skills.id IN (SELECT skill_id FROM r_lineage_skills WHERE lineage_id = $id
         return $result;
     }
 
-    public function addCharacterToMod(int $mod_id, int $character_id) {
-        $query = "INSERT INTO r_mod_characters (mod_id, character_id) VALUES ($mod_id, $character_id) ON DUPLICATE KEY UPDATE id=id";
-        // id=id avoids increasing auto increment. :)
+    private function setValue(string $table, int $id, string $field, string $value) {
+        // Escape values.
+        $table = $this->escape($table);
+        $id = $this->escape($id);
+        $field = $this->escape($field);
+        $value = $this->escape($value);
 
-        $result = $this->runUpsertQuery($query);
+        // Run query.
+        $query = "UPDATE $table SET `$field` = '$value' WHERE id = $id";
+
+        $result = $this->runUpdateQuery($query);
 
         var_dump($result);
 
         return $result;
+    }
+
+    public function addGuideToMod(int $mod_id, int $guide_id) {
+        return $this->addRelation($mod_id, $guide_id, "r_mod_guides", "mod_id", "guide_id");
+    }
+
+    public function addCharacterToMod(int $mod_id, int $character_id) {
+        return $this->addRelation($mod_id, $character_id, "r_mod_characters", "mod_id", "character_id");
+    }
+
+    public function addMapToMod(int $mod_id, int $map_id) {
+        return $this->addRelation($mod_id, $map_id, "r_mod_maps", "mod_id", "map_id");
+    }
+
+    public function setModDetail(int $mod_id, string $field, string $value) {
+        return $this->setValue("mods", $mod_id, $field, $value);
     }
 
     ////////////////////////////////
@@ -366,6 +448,14 @@ WHERE skills.id IN (SELECT skill_id FROM r_lineage_skills WHERE lineage_id = $id
 
     public function deleteCharacterFromMod(int $mod_id, int $character_id) {
         $query = "DELETE FROM r_mod_characters WHERE mod_id = $mod_id AND character_id = $character_id";
+
+        $result = $this->runDeleteQuery($query);
+
+        return $result;
+    }
+
+    public function deleteMapFromMod(int $mod_id, int $map_id) {
+        $query = "DELETE FROM r_mod_maps WHERE mod_id = $mod_id AND map_id = $map_id";
 
         $result = $this->runDeleteQuery($query);
 
@@ -400,6 +490,19 @@ WHERE skills.id IN (SELECT skill_id FROM r_lineage_skills WHERE lineage_id = $id
         return $result;
     }
 
+    private function runUpdateQuery($query) {
+        echo("<br/><br/>" . $query);
+
+        $result = $this->mysqli->query($query);
+
+        // Handle errors.
+        if (!$result) {
+            var_dump($this->mysqli);
+        }
+
+        return $result;
+    }
+
     private function runDeleteQuery($query) {
         return $this->mysqli->query($query);
     }
@@ -411,4 +514,6 @@ WHERE skills.id IN (SELECT skill_id FROM r_lineage_skills WHERE lineage_id = $id
     public function escape($string) {
         return mysqli_real_escape_string($this->mysqli, $string);
     }
+
+
 }

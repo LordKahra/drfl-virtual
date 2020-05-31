@@ -27,19 +27,6 @@ class ModPage extends Page {
         return $this->mod;
     }
 
-    function renderHeaderMiddle() {
-        parent::renderHeaderMiddle();
-        ?>
-        <nav>
-            <ul>
-                <li><b>FILTERS</b></li>
-                <li><a href="mod.php">All</a></li>
-                <li><a href="mod.php?filter=unfinished">Unfinished</a></li>
-            </ul>
-        </nav>
-        <?php
-    }
-
     function renderBody() {
         ?>
         <div data-type="mod">
@@ -53,7 +40,7 @@ class ModPage extends Page {
                 <div class="row">
                     <div></div>
                     <div><b>Map Status:</b> <?=$this->getMod()->getMapStatus()?></div>
-                    <div><b>Roll20 Status:</b> <?=$this->getMod()->getTabletopStatus()?></div>
+                    <div><b>Tabletop Status:</b> <?=$this->getMod()->getTabletopStatus()?></div>
                     <div><b>Ready:</b> <?=($this->getMod()->isReady() ? "Yes" : "No")?></div>
                 </div>
             </header>
