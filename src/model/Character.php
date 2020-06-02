@@ -1,8 +1,10 @@
 <?php
 
+use drflvirtual\src\model\NamedObject;
+use drflvirtual\src\model\Player;
 use drflvirtual\src\model\Skill;
 
-class Character {
+class Character implements NamedObject {
     private $id;
     private $name;
     private $strain_id;
@@ -13,6 +15,7 @@ class Character {
     private $core;
 
     private $skills = array();
+    private $casting = array();
 
     /**
      * Character constructor.
@@ -28,6 +31,7 @@ class Character {
      * @param string $lineage
      * @param string $strain
      * @param Skill[] $skills
+     * @param Player[] $casting
      */
     public function __construct(
         int $id,
@@ -41,7 +45,8 @@ class Character {
         string $type,
         string $lineage,
         string $strain,
-        array $skills
+        array $skills,
+        array $casting
     ) {
         $this->id = $id;
         $this->name = $name;
@@ -58,15 +63,27 @@ class Character {
         foreach ($skills as $skill) {
             $this->skills[$skill->getId()] = $skill;
         }
+
+        foreach ($casting as $player) {
+            $this->casting[$player->getId()] = $player;
+        }
+
+        //var_dump($casting);
+        //var_dump($this);
     }
 
     public static function constructFromArray(array $character) {
         // Create array for skills.
         $skills = array();
+        $casting = array();
 
-        foreach ($character['skills'] as $skill_array) {
+        if ($character['skills']) foreach ($character['skills'] as $skill_array) {
             $skills[] = Skill::constructFromArray($skill_array);
-        }
+        } else $skills = array();
+
+        if ($character['casting']) foreach ($character['casting'] as $player_array) {
+            $casting[] = Player::constructFromArray($player_array);
+        } else $casting = array();
 
         return new Character(
             $character['id'],
@@ -80,7 +97,8 @@ class Character {
             $character['type'],
             $character['lineage'],
             $character['strain'],
-            $skills
+            $skills,
+            $casting
         );
     }
 
@@ -88,7 +106,7 @@ class Character {
         return $this->id;
     }
 
-    public function getName() {
+    public function getName() : string {
         return $this->name;
     }
 
@@ -130,6 +148,13 @@ class Character {
      */
     public function getSkills():array {
         return $this->skills;
+    }
+
+    /**
+     * @return Player[]
+     */
+    public function getCasting(): array {
+        return $this->casting;
     }
 
     /**

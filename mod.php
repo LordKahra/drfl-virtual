@@ -45,8 +45,19 @@ if ($mod_id) {
         case "event":
             $filter_query = "event_id = $filter_id";
             break;
+        case "guide":
+            $filter_query = "id IN (SELECT guide_id FROM r_mod_guides WHERE guide_id = $filter_id)";
+            break;
+        case "current_guide":
+            $filter_query = "id IN (SELECT guide_id FROM r_mod_guides WHERE guide_id = $filter_id) AND id = " . CURRENT_EVENT;
+            break;
+        case "all":
+            $filter_query = "";
+            break;
+        case "current":
         case false:
         default:
+            $filter_query = "event_id = " . CURRENT_EVENT;
             break;
     }
 

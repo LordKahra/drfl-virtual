@@ -23,6 +23,7 @@ require_once SITE_ROOT . "/src/config/database_connection.php";
 require_once SITE_ROOT . "/src/database/EventDatabase.php";
 
 // MODEL
+require_once SITE_ROOT . "/src/model/NamedObject.php";
 require_once SITE_ROOT . "/src/model/Player.php";
 require_once SITE_ROOT . "/src/model/Map.php";
 require_once SITE_ROOT . "/src/model/Skill.php";
@@ -37,6 +38,7 @@ require_once SITE_ROOT . "/src/view/page/ListPage.php";
 require_once SITE_ROOT . "/src/view/page/MissingPage.php";
 
 require_once SITE_ROOT . "/src/view/page/EventListPage.php";
+require_once SITE_ROOT . "/src/view/page/EventSchedulePage.php";
 require_once SITE_ROOT . "/src/view/page/EventPage.php";
 require_once SITE_ROOT . "/src/view/page/MapPage.php";
 require_once SITE_ROOT . "/src/view/page/ModPage.php";
@@ -45,6 +47,7 @@ require_once SITE_ROOT . "/src/view/page/MapListPage.php";
 
 // ADMIN
 require_once SITE_ROOT . "/src/view/page/AdminPage.php";
+require_once SITE_ROOT . "/src/view/page/AdminCharacterPage.php";
 require_once SITE_ROOT . "/src/view/page/AdminModPage.php";
 
 

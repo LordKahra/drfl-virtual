@@ -5,7 +5,7 @@ namespace drflvirtual\src\model;
 use Character;
 use DateTime;
 
-class Mod {
+class Mod implements NamedObject {
     protected $id;
     protected $name;
     protected $host;
@@ -37,6 +37,7 @@ class Mod {
         int $id,
         string $name,
         string $host,
+        string $space,
         string $start,
         string $location,
         string $description,
@@ -52,6 +53,7 @@ class Mod {
         $this->id = $id;
         $this->name = $name;
         $this->host = $host;
+        $this->space = $space;
         $this->start = new DateTime($start);
         $this->location = $location;
         $this->description = $description;
@@ -89,6 +91,7 @@ class Mod {
             $mod['id'],
             $mod['name'],
             $mod['host'],
+            $mod['space'],
             $mod['start'],
             $mod['location'],
             $mod['description'],
@@ -113,7 +116,7 @@ class Mod {
     /**
      * @return mixed
      */
-    public function getName() {
+    public function getName() : string {
         return $this->name;
     }
 
@@ -125,6 +128,13 @@ class Mod {
     }
 
     /**
+     * @return string
+     */
+    public function getSpace(): string {
+        return strval($this->space);
+    }
+
+    /**
      * @return DateTime
      */
     public function getStart() {
@@ -133,6 +143,10 @@ class Mod {
 
     public function getStartString() {
         return $this->start->format('Y-m-d Hi');
+    }
+
+    public function getStartTimestamp() {
+        return $this->start->getTimestamp();
     }
 
     /**

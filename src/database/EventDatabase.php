@@ -163,7 +163,7 @@ LEFT JOIN z_character_types type ON lineage.type_id = type.id";
      * @return Character[]
      */
     public function getCharacters(string $where="") : array {
-        $arrays = $this->getRawCharactersWithSkills($where);
+        $arrays = $this->getRawCharactersWithDetails($where);
 
         $characters = array();
         foreach($arrays as $array) {
@@ -207,7 +207,7 @@ LEFT JOIN z_character_types type ON lineage.type_id = type.id";
     }
 
     private function getRawModCharacters($mod_id) {
-        return $this->getRawCharactersWithSkills("toon.id IN (SELECT character_id FROM r_mod_characters WHERE mod_id = $mod_id)");
+        return $this->getRawCharactersWithDetails("toon.id IN (SELECT character_id FROM r_mod_characters WHERE mod_id = $mod_id)");
     }
 
     private function getRawModGuides($mod_id) {
@@ -259,7 +259,7 @@ LEFT JOIN z_character_types type ON lineage.type_id = type.id";
         return $mod_arrays;
     }
 
-    private function getRawCharactersWithSkills(string $where="") {
+    private function getRawCharactersWithDetails(string $where="") {
         // Get the characters.
         $characters = $this->getRawCharacters($where);
 
@@ -269,12 +269,15 @@ LEFT JOIN z_character_types type ON lineage.type_id = type.id";
             $character_skills = $this->getCharacterSkills($character['id']);
             $lineage_skills = $this->getLineageSkills($character['lineage_id']);
             $type_skills = $this->getTypeSkills($character['type_id']);
+            $casting = $this->getCharacterCasting($character['id']);
 
             $skills = array();
             if ($character_skills)  foreach ($character_skills  as $skill) $skills[] = $skill;
             if ($lineage_skills)    foreach ($lineage_skills    as $skill) $skills[] = $skill;
             if ($type_skills)       foreach ($type_skills       as $skill) $skills[] = $skill;
             $character['skills'] = $skills;
+
+            $character['casting'] = $casting;
         }
 
         // Done.
@@ -336,6 +339,12 @@ LEFT JOIN z_character_types type ON lineage.type_id = type.id";
     ////////////////////////////////////
     // GET - PRIVATE - RAW - RELATION
     ////////////////////////////////////
+
+    private function getCharacterCasting(int $id) {
+        $query = "SELECT * FROM players WHERE id IN (SELECT player_id FROM r_character_casting WHERE character_id = $id)";
+
+        return $this->runGetQuery($query);
+    }
 
     private function getCharacterSkills(int $id) {
         $query =
@@ -430,8 +439,16 @@ WHERE skills.id IN (SELECT skill_id FROM r_lineage_skills WHERE lineage_id = $id
         return $this->addRelation($mod_id, $map_id, "r_mod_maps", "mod_id", "map_id");
     }
 
-    public function setModDetail(int $mod_id, string $field, string $value) {
-        return $this->setValue("mods", $mod_id, $field, $value);
+    public function addCharacterCasting(int $character_id, int $player_id) {
+        return $this->addRelation($character_id, $player_id, "r_character_casting", "character_id", "player_id");
+    }
+
+    public function setCharacterDetail(int $id, string $field, string $value) {
+        return $this->setValue("characters", $id, $field, $value);
+    }
+
+    public function setModDetail(int $id, string $field, string $value) {
+        return $this->setValue("mods", $id, $field, $value);
     }
 
     ////////////////////////////////
@@ -448,6 +465,14 @@ WHERE skills.id IN (SELECT skill_id FROM r_lineage_skills WHERE lineage_id = $id
 
     public function deleteCharacterFromMod(int $mod_id, int $character_id) {
         $query = "DELETE FROM r_mod_characters WHERE mod_id = $mod_id AND character_id = $character_id";
+
+        $result = $this->runDeleteQuery($query);
+
+        return $result;
+    }
+
+    public function deleteCharacterCasting(int $character_id, int $player_id) {
+        $query = "DELETE FROM r_character_casting WHERE character_id = $character_id AND player_id = $player_id";
 
         $result = $this->runDeleteQuery($query);
 

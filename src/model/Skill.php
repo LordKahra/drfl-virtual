@@ -2,7 +2,7 @@
 
 namespace drflvirtual\src\model;
 
-class Skill {
+class Skill implements NamedObject {
     protected $id;
     protected $name;
     protected $text;

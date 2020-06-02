@@ -47,6 +47,9 @@ if ($map_id) {
         case "player":
             $filter_query = "creator_id = $filter_id";
             break;
+        case "player_current":
+            $filter_query = "creator_id = $filter_id AND id IN (SELECT map_id FROM r_mod_maps WHERE mod_id IN (SELECT id FROM mods WHERE event_id = " . CURRENT_EVENT . "))";
+            break;
         case false:
         case "current":
         default:

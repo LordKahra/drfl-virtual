@@ -3,7 +3,7 @@
 namespace drflvirtual\src\model;
 
 
-class Event {
+class Event implements NamedObject {
     protected $id;
     protected $name;
     protected $start;
@@ -91,7 +91,7 @@ class Event {
     /**
      * @return string
      */
-    public function getName(): string {
+    public function getName() : string {
         return $this->name;
     }
 

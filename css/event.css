@@ -3,6 +3,10 @@ table[data-type="event"] {
     table-layout: fixed;
 }
 
+table[data-type="event"][data-style="schedule"] tr > th:first-child {
+    width: 80px;
+}
+
 table[data-type="event"] td {
     border: 1px dashed #eee;
 }

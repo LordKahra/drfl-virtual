@@ -3,7 +3,7 @@
 namespace drflvirtual\src\model;
 
 
-class Player {
+class Player implements NamedObject {
     protected $id;
     protected $name;
     protected $is_guide;

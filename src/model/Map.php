@@ -3,7 +3,7 @@
 namespace drflvirtual\src\model;
 
 
-class Map {
+class Map implements NamedObject {
     protected $id;
     protected $name;
     protected $status;
