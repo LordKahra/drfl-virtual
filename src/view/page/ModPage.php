@@ -1,22 +1,22 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Lord Kahra
- * Date: 5/18/2020
- * Time: 19:08
- */
 
 namespace drflvirtual\src\view\page;
 
 
 use Character;
+use drflvirtual\src\model\database\EventDatabase;
+use drflvirtual\src\model\Map;
 use drflvirtual\src\model\Mod;
+use PlayerNotFoundException;
 
 class ModPage extends Page {
+    protected $db;
+
     protected $mod;
 
     public function __construct(string $title, Mod $mod) {
         parent::__construct($title, "mod");
+        $this->db = new EventDatabase();
         $this->mod = $mod;
     }
 
@@ -45,6 +45,7 @@ class ModPage extends Page {
                 </div>
             </header>
             <div><?=nl2br($this->getMod()->getDescription())?></div>
+            <div><?php foreach($this->getMod()->getMaps() as $map) $this->renderMap($map); ?></div>
             <?php
             if($this->getMod()->getCharacters()) {
             ?><div data-type="characters">
@@ -55,6 +56,28 @@ class ModPage extends Page {
         </div>
         <?php
     }
+
+    function renderMap(Map $map) {
+        $player = false;
+        try {
+            $player = $this->db->getPlayer($map->getCreatorId());
+        } catch (PlayerNotFoundException $e) {
+            // Do nothing.
+        }
+
+        ?>
+        <div data-style="map" data-fold="true" data-active="false" id="map_<?=$map->getId()?>">
+            <header>
+                <button data-ui="button" href="#" onclick="toggleById('map_<?=$map->getId();?>')">🔎</button>
+                <span data-type="name"><b><a href="map.php?id=<?=$map->getId()?>"><?=$map->getId()?> - <?=$map->getName()?></a> ---  <?=$map->getStatus()?></b></span>
+                <p>Creator: #<?=$map->getCreatorId()?><?=($player ? " - {$player->getName()}" : "")?></p>
+                <p><?=$map->getDescription()?></p>
+            </header>
+            <main data-style="image">
+                <img src="<?=SITE_HOST . "/res/images/maps/{$map->getId()}.png"?>">
+            </main>
+        </div>
+    <?php }
 
     function renderCharacter(Character $character) {
         ?>
