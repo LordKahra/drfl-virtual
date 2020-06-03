@@ -202,6 +202,10 @@ class Mod implements NamedObject {
         }
     }
 
+    public function hasGuides() : bool {
+        return $this->guides ? true : false;
+    }
+
     /**
      * @return int
      */
@@ -261,6 +265,10 @@ class Mod implements NamedObject {
         return $this->getStart() > new DateTime('2020-02-01');
     }
 
+    private function validateGuides() : bool {
+        return $this->hasGuides();
+    }
+
     public function getErrors() : array {
         $errors = array();
         if (!$this->validateDescription()) $errors[] = Mod::ERRORS["DESC_INCOMPLETE"];
@@ -268,6 +276,7 @@ class Mod implements NamedObject {
         if (!$this->validateName()) $errors[] = Mod::ERRORS["NO_NAME"];
         if (!$this->validateLocation()) $errors[] = Mod::ERRORS["NO_LOCATION"];
         if (!$this->validateHost()) $errors[] = Mod::ERRORS["NO_HOST"];
+        if (!$this->validateGuides()) $errors[] = Mod::ERRORS["NO_GUIDES"];
         if (!$this->validateMapStatus()) $errors[] = Mod::ERRORS["NO_MAP_STATUS"];
 
         // More complex checks.
@@ -327,23 +336,6 @@ class Mod implements NamedObject {
         return $errors;
     }
 
-    const ERRORS = array(
-        "DESC_INCOMPLETE" => "The description is incomplete.",
-        "NO_EVENT" => "This mod doesn't have an event.",
-        "NO_NAME" => "This mod doesn't have a name.",
-        "NO_LOCATION" => "This mod doesn't have a location.",
-        "NO_HOST" => "This mod doesn't have a host.",
-        "NO_MAP_STATUS" => "This mod doesn't have a map status.",
-        "INVALID_HOST" => "The host is invalid.",
-        "NO_START" => "This mod hasn't been scheduled.",
-        "INVALID_MAP_STATUS" => "A tabletop mod can't have no map.",
-        "NO_MAP" => "The map isn't ready yet.",
-        "NO_STATS" => "This mod doesn't have stats.",
-        "INVALID_TABLETOP_STATUS" => "This mod can't be run without the virtual tabletop ready (mismatched state).",
-        "TABLETOP_INCOMPLETE" => "This mod's virtual tabletop isn't ready.",
-        "VERIFICATION" => "This mod still needs final verification/testing.",
-    );
-
     public function calculateStatus() : int {
         ////////////////////////////////
         // WRITING /////////////////////
@@ -398,6 +390,11 @@ class Mod implements NamedObject {
 
         if ($this->getStart() < new DateTime('2020-02-01')) {
             // The start date is prior to the creation of the site. GET A REAL DATE.
+            return static::STATUS_UNSCHEDULED;
+        }
+
+        if (!$this->validateGuides()) {
+            // This can't be scheduled without guides.
             return static::STATUS_UNSCHEDULED;
         }
 
@@ -474,8 +471,8 @@ class Mod implements NamedObject {
     const STATUS_BEING_WRITTEN = 10;
     const STATUS_NEEDS_DETAILS = 20;
     const STATUS_UNSCHEDULED = 30;
-    const STATUS_MAP_INCOMPLETE = 60;
-    const STATUS_NEEDS_STATS = 70;
+    const STATUS_MAP_INCOMPLETE = 50;
+    const STATUS_NEEDS_STATS = 60;
     const STATUS_TABLETOP_INCOMPLETE = 80;
     const STATUS_VERIFICATION = 90;
     const STATUS_READY = 100;
@@ -489,6 +486,69 @@ class Mod implements NamedObject {
         "TABLETOP_INCOMPLETE" => Mod::STATUS_TABLETOP_INCOMPLETE,
         "VERIFICATION" => Mod::STATUS_VERIFICATION,
         "READY" => Mod::STATUS_READY,
+    );
+
+    const ERRORS = array(
+        "DESC_INCOMPLETE" => array(
+            "icon" => "📜",
+            "message" => "The description is incomplete."
+        ),
+        "NO_EVENT" => array(
+            "icon" => "📆",
+            "message" => "This mod doesn't have an event."
+        ),
+        "NO_NAME" => array(
+            "icon" => "✏️",
+            "message" => "This mod doesn't have a name."
+        ),
+        "NO_LOCATION" => array(
+            "icon" => "🏝️",
+            "message" => "This mod doesn't have a location."
+        ),
+        "NO_HOST" => array(
+            "icon" => "🖥️",
+            "message" => "This mod doesn't have a host."
+        ),
+        "NO_GUIDES" => array(
+            "icon" => "😮",
+            "message" => "This mod doesn't have any guides."
+        ),
+        "NO_MAP_STATUS" => array(
+            "icon" => "🗺️",
+            "message" => "This mod doesn't have a map status."
+        ),
+        "INVALID_HOST" => array(
+            "icon" => "🖥️",
+            "message" => "The host is invalid."
+        ),
+        "NO_START" => array(
+            "icon" => "🕛",
+            "message" => "This mod hasn't been scheduled."
+        ),
+        "INVALID_MAP_STATUS" => array(
+            "icon" => "🗺️",
+            "message" => "A tabletop mod can't have no map."
+        ),
+        "NO_MAP" => array(
+            "icon" => "🗺️",
+            "message" => "The map isn't ready yet."
+        ),
+        "NO_STATS" => array(
+            "icon" => "⚔️",
+            "message" => "This mod doesn't have stats."
+        ),
+        "INVALID_TABLETOP_STATUS" => array(
+            "icon" => "🗺️",
+            "message" => "This mod can't be run without the virtual tabletop ready (mismatched state)."
+        ),
+        "TABLETOP_INCOMPLETE" => array(
+            "icon" => "🗺️",
+            "message" => "This mod's virtual tabletop isn't ready."
+        ),
+        "VERIFICATION" => array(
+            "icon" => "",
+            "message" => "This mod still needs final verification/testing."
+        ),
     );
 
 }

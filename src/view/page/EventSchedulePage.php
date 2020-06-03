@@ -123,11 +123,15 @@ class EventSchedulePage extends Page {
             <header>
                 <button data-ui="button" href="#" onclick="toggleById('mod_<?=$mod->getId();?>')">🔎</button>
                 <span data-type="name"><b><a href="mod.php?id=<?=$mod->getId()?>"><?=$mod->getName()?></a></b></span>
+                <br/>
+                <?php foreach ($mod->getErrors() as $error) { ?>
+                    <?=$error["icon"]?>
+                <?php } ?>
             </header>
             <main>
                 <ul>
                     <?php foreach ($mod->getErrors() as $error) { ?>
-                        <li class="error"><?=$error?></li>
+                        <li class="error"><?=$error["message"]?></li>
                     <?php } ?>
                 </ul>
                 <ul>
