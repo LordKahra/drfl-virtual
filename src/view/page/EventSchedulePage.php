@@ -14,7 +14,7 @@ class EventSchedulePage extends Page {
     protected $spaces;
 
     public function __construct(string $title, Event $event) {
-        parent::__construct("Event Schedule - " . $event->getName(), "event");
+        parent::__construct("Schedule - " . $event->getName(), "event");
         $this->event = $event;
 
         $this->generateModSchedule();
@@ -132,6 +132,15 @@ class EventSchedulePage extends Page {
                 </ul>
                 <ul>
                     <li><b>Location:</b> <?=$mod->getLocation()?></li>
+                    <li><b>Guide:</b>
+                        <?php if (is_array($mod->getGuides())) {
+                            $guide_names = array();
+                            foreach($mod->getGuides() as $guide) {
+                                $guide_names[] = $guide->getName();
+                            }
+                            echo implode(", ", $guide_names);
+                        } ?>
+                    </li>
                     <li><b>Where: </b><?=$mod->getHost()?></li>
                     <li><b>When: </b><?=$mod->getStartString()?></li>
                     <li><b>Map Status:</b> <?=$mod->getMapStatus()?></li>
