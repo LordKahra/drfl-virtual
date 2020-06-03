@@ -529,7 +529,7 @@ class Mod implements NamedObject {
             "message" => "This mod hasn't been scheduled."
         ),
         "INVALID_MAP_STATUS" => array(
-            "icon" => "🗺️",
+            "icon" => "⚠",
             "message" => "A tabletop mod can't have no map."
         ),
         "NO_MAP" => array(
@@ -541,11 +541,11 @@ class Mod implements NamedObject {
             "message" => "This mod doesn't have stats."
         ),
         "INVALID_TABLETOP_STATUS" => array(
-            "icon" => "🗺️",
+            "icon" => "⚠",
             "message" => "This mod can't be run without the virtual tabletop ready (mismatched state)."
         ),
         "TABLETOP_INCOMPLETE" => array(
-            "icon" => "🗺️",
+            "icon" => "👥",
             "message" => "This mod's virtual tabletop isn't ready."
         ),
         "VERIFICATION" => array(
