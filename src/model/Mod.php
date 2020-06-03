@@ -324,6 +324,9 @@ class Mod implements NamedObject {
             case "none":
                 if (strtolower($this->getHost()) == "roll20" || strtolower($this->getHost()) == "astral") {
                     $errors[] = Mod::ERRORS["INVALID_TABLETOP_STATUS"];
+                } else {
+                    // This is fine.
+                    break;
                 }
             default:
                 // The tabletop is incomplete.
