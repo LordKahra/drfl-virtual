@@ -227,6 +227,15 @@ class Mod implements NamedObject {
         return $this->guides;
     }
 
+    public function getGuideString(string $delimiter=", ") : string {
+        if (!$this->getGuides()) return "";
+
+        foreach($this->getGuides() as $guide) {
+            $guide_names[] = $guide->getName();
+        }
+        return implode($delimiter, $guide_names);
+    }
+
     /**
      * @return Map[]
      */

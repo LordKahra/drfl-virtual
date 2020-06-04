@@ -5,6 +5,7 @@ namespace drflvirtual\src\view\page;
 use DateTime;
 use drflvirtual\src\model\Event;
 use drflvirtual\src\model\Mod;
+use ModCardComponent;
 
 class EventSchedulePage extends Page {
     protected $event;
@@ -107,7 +108,7 @@ class EventSchedulePage extends Page {
                     <th><?=$date->format('l Hi')?></th>
                     <?php foreach ($this->spaces as $space) { ?>
                         <td>
-                            <?php foreach ($this->getSchedule()[$timestamp][$space] as $mod) $this->renderMod($mod); ?>
+                            <?php foreach ($this->getSchedule()[$timestamp][$space] as $mod) (new ModCardComponent($mod))->render(); ?>
                         </td>
                     <?php } ?>
                 </tr>
@@ -123,10 +124,12 @@ class EventSchedulePage extends Page {
             <header>
                 <button data-ui="button" href="#" onclick="toggleById('mod_<?=$mod->getId();?>')">🔎</button>
                 <span data-type="name"><b><a href="mod.php?id=<?=$mod->getId()?>"><?=$mod->getName()?></a></b></span>
-                <br/>
-                <?php foreach ($mod->getErrors() as $error) { ?>
-                    <?=$error["icon"]?>
-                <?php } ?>
+                <div style="font-size: 10px; margin: 2px;">Guide: <?=$mod->getGuideString();?></div>
+                <div>
+                    <?php foreach ($mod->getErrors() as $error) { ?>
+                        <?=$error["icon"]?>
+                    <?php } ?>
+                </div>
             </header>
             <main>
                 <ul>
@@ -136,15 +139,7 @@ class EventSchedulePage extends Page {
                 </ul>
                 <ul>
                     <li><b>Location:</b> <?=$mod->getLocation()?></li>
-                    <li><b>Guide:</b>
-                        <?php if (is_array($mod->getGuides())) {
-                            $guide_names = array();
-                            foreach($mod->getGuides() as $guide) {
-                                $guide_names[] = $guide->getName();
-                            }
-                            echo implode(", ", $guide_names);
-                        } ?>
-                    </li>
+                    <li><b>Guide:</b> <?=$mod->getGuideString();?></li>
                     <li><b>Where: </b><?=$mod->getHost()?></li>
                     <li><b>When: </b><?=$mod->getStartString()?></li>
                     <li><b>Map Status:</b> <?=$mod->getMapStatus()?></li>

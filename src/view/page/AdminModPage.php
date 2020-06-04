@@ -50,7 +50,7 @@ class AdminModPage extends Page {
         ?>
         <main data-type="mod" data-style="admin" id="mod_<?=$mod->getId()?>">
             <header>
-                <div data-type="name"><?=$mod->getName()?></div>
+                <div data-type="name"><a href="<?=SITE_HOST?>/mod.php?id=<?=$mod->getId()?>"><?=$mod->getName()?></a></div>
 
                 <div class="row">
                     <div><b>Location:</b> <?=$mod->getLocation()?></div>

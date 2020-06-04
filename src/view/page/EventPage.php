@@ -5,6 +5,7 @@ namespace drflvirtual\src\view\page;
 
 use drflvirtual\src\model\Event;
 use drflvirtual\src\model\Mod;
+use ModCardComponent;
 
 class EventPage extends Page {
     protected $event;
@@ -93,53 +94,6 @@ class EventPage extends Page {
     }
 
     function renderMod(Mod $mod) {
-        ?>
-        <div data-type="mod" data-style="card" data-fold="true" data-active="false" id="mod_<?=$mod->getId();?>">
-            <header>
-                <button data-ui="button" href="#" onclick="toggleById('mod_<?=$mod->getId();?>')">🔎</button>
-                <span data-type="name"><b><a href="mod.php?id=<?=$mod->getId()?>"><?=$mod->getName()?></a></b></span>
-                <br/>
-                <?php foreach ($mod->getErrors() as $error) { ?>
-                    <?=$error["icon"]?>
-                <?php } ?>
-            </header>
-            <main>
-                <ul>
-                    <?php foreach ($mod->getErrors() as $error) { ?>
-                        <li class="error"><?=$error["message"]?></li>
-                    <?php } ?>
-                </ul>
-                <ul>
-                    <li><b>Location:</b> <?=$mod->getLocation()?></li>
-                    <li><b>Where: </b><?=$mod->getHost()?></li>
-                    <li><b>When: </b><?=$mod->getStartString()?></li>
-                    <li><b>Map Status:</b> <?=$mod->getMapStatus()?></li>
-                    <li><b>Tabletop Status:</b> <?=$mod->getTabletopStatus()?></li>
-                    <li><b>Ready:</b> <?=($mod->isReady() ? "Yes" : "No")?></li>
-                    <li></li>
-                    <li></li>
-                </ul>
-                <div>
-                    <b>Characters:</b>
-                    <?php if (is_array($mod->getCharacters())) {
-                        $character_names = array();
-                        foreach ($mod->getCharacters() as $character) {
-                            //$character_names[] = "<a href='character.php?id=" . $character['id'] . "'>" . $character['name'] . "</a>";
-                            $character_names[] = $character->getName();
-                        }
-                        echo implode(", ", $character_names);
-                    } else {
-                        echo "None.";
-                    } ?>
-                </div>
-
-                <div><?=
-                    strlen($mod->getDescription()) > 300 ?
-                        nl2br(substr($mod->getDescription(), 0, 300)) . "..." :
-                        nl2br($mod->getDescription())
-                    ?></div>
-            </main>
-        </div>
-        <?php
+        (new ModCardComponent($mod))->render();
     }
 }

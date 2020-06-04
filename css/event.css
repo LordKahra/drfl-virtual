@@ -29,7 +29,7 @@ table[data-type="event"] td {
 }
 
 [data-type="mod"][data-style="card"] > header {
-    margin: 4px 8px;
+    margin: 0;
 }
 
 [data-type="mod"][data-style="card"] > header > [data-type="name"] {

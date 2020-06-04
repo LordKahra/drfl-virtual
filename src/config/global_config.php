@@ -31,6 +31,10 @@ require_once SITE_ROOT . "/src/model/Character.php";
 require_once SITE_ROOT . "/src/model/Mod.php";
 require_once SITE_ROOT . "/src/model/Event.php";
 
+// VIEW - COMPONENTS
+require_once SITE_ROOT . "/src/view/component/Component.php";
+require_once SITE_ROOT . "/src/view/component/ModCardComponent.php";
+
 // VIEW - PAGES
 require_once SITE_ROOT . "/src/view/page/Page.php";
 require_once SITE_ROOT . "/src/view/page/ErrorPage.php";

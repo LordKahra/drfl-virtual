@@ -23,6 +23,11 @@ a {
     font-size: inherit;
 }
 
+td {
+    margin: 0;
+    padding: 0;
+}
+
 .row {
     display: flex;
     flex-direction: row;
@@ -61,7 +66,7 @@ a {
     /*border: 2px solid #bbb;*/
     /*background: #f8f8f8;*/
     border-radius: 16px;
-    margin: 4px;
+    margin: 2px;
 }
 
 [data-type="mod"] > * {
@@ -89,8 +94,17 @@ a {
     background: #ddd;
     border-style: none;
     border-radius: 50%;
-    width: 40px;
-    height: 40px;
+    font-size: 10px;
+    width: 20px;
+    height: 20px;
+}
+
+[data-ui="icons"] {
+    font-size: 14px;
+}
+
+[data-style="card"] [data-ui="subtitle"] {
+    font-size: 10px; margin: 2px;
 }
 
 [data-type="mod"][data-style="small"] > header > [data-ui="button"] {
