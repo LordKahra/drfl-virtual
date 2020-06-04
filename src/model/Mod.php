@@ -145,12 +145,20 @@ class Mod implements NamedObject {
         return $this->start;
     }
 
-    public function getStartString() {
-        return $this->start->format('Y-m-d Hi');
-    }
-
     public function getStartTimestamp() {
         return $this->start->getTimestamp();
+    }
+
+    public function getStartFormatted($format) {
+        return $this->start->format($format);
+    }
+
+    public function getStartString() {
+        return $this->getStartFormatted('Y-m-d Hi');
+    }
+
+    public function getStartTime() {
+        return $this->getStartFormatted('Hi');
     }
 
     /**

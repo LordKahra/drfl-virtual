@@ -165,6 +165,8 @@ use drflvirtual\src\model\database\EventDatabase;use drflvirtual\src\model\Named
         $db = new EventDatabase();
         // Need events without details.
         $events = $db->getEvents("", false);
+        // Need guides.
+        $players = $db->getGuides();
         ?>
         <nav>
             <ul>
@@ -174,6 +176,9 @@ use drflvirtual\src\model\database\EventDatabase;use drflvirtual\src\model\Named
                 <li><a href="mod.php?filter=unfinished">Unfinished</a></li>
                 <li>
                     <?php $this->renderSelectForm("By Event:", "event", $events,"mod.php") ?>
+                </li>
+                <li>
+                    <?php $this->renderSelectForm("By Guide (Current Event):", "current_guide", $players, "mod.php"); ?>
                 </li>
             </ul>
         </nav>

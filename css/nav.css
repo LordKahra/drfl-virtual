@@ -23,7 +23,7 @@ body > header > main {
 
 body > header > main > main {
     flex-grow: 1;
-    vertical-align: center;
+    align-self: center;
 }
 
 body > header > main > nav {

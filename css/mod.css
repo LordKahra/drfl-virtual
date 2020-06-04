@@ -9,3 +9,45 @@
     background: #ddd;
     border-radius: 8px;
 }
+
+[data-type="mod"] > header > [data-ui="subtitle"] {
+    font-size: 14px;
+}
+
+[data-type="mod"][data-ui="list"] {
+
+}
+
+[data-type="mod"][data-ui="list"] > header {
+    display: flex;
+    align-content: center;
+}
+
+[data-type="mod"][data-ui="list"] > header > * {
+    flex-grow: 0;
+    align-self: center;
+
+}
+
+[data-type="mod"][data-ui="list"] > header > button {
+    width: 40px;
+    height: 40px;
+}
+
+[data-type="mod"][data-ui="list"] > header > [data-type="name"] {
+    flex-grow: 1;
+    margin-left: 4px;
+}
+
+[data-type="mod"][data-ui="list"] > header > [data-ui="subtitle"] {
+    margin: 4px;
+}
+
+[data-type="mod"][data-ui="list"] > main {
+    margin: -4px 20px 4px;
+    border: 4px solid #eee;
+    border-top: 0;
+    border-radius: 0 0 20px 20px;
+
+}
+

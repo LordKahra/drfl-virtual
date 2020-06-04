@@ -79,7 +79,6 @@ img {
 }
 [data-type="mod"] > header {
     padding: 4px 8px;
-    margin: 4px 32px;
     background: #eee;
     border-radius: 20px;
 }

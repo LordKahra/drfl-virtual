@@ -37,6 +37,7 @@ if ($mod_id) {
 } else {
     // Create the query, if any.
     $filter_query = "";
+    $filter_sort = "";
 
     switch($filter) {
         case "unfinished":
@@ -46,10 +47,12 @@ if ($mod_id) {
             $filter_query = "event_id = $filter_id";
             break;
         case "guide":
-            $filter_query = "id IN (SELECT guide_id FROM r_mod_guides WHERE guide_id = $filter_id)";
+            $filter_query = "id IN (SELECT mod_id FROM r_mod_guides WHERE guide_id = $filter_id)";
             break;
         case "current_guide":
-            $filter_query = "id IN (SELECT guide_id FROM r_mod_guides WHERE guide_id = $filter_id) AND id = " . CURRENT_EVENT;
+            $filter_query = "id IN (SELECT mod_id FROM r_mod_guides WHERE guide_id = $filter_id AND mod_id IN (SELECT id FROM mods WHERE event_id = " . CURRENT_EVENT . "))";
+            // Sort this one by time.
+            $filter_sort = 'start';
             break;
         case "all":
             $filter_query = "";
@@ -62,7 +65,7 @@ if ($mod_id) {
     }
 
     // Get the mods.
-    $mods = $db->getMods($filter_query);
+    $mods = $db->getMods($filter_query, $filter_sort);
 
     // Create the page.
     $page = new ModListPage($mods);

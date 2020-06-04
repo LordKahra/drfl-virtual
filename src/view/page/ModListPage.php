@@ -7,28 +7,39 @@ use drflvirtual\src\model\Mod;
 class ModListPage extends Page {
     protected $mods;
 
+    protected $unfolded;
+
     /**
      * ModListPage constructor.
      * @param Mod[] $mods
      */
-    public function __construct(array $mods) {
+    public function __construct(array $mods, bool $unfolded=false) {
         parent::__construct("Mod List", "mod");
 
         $this->mods = $mods;
+
+        $this->unfolded = $unfolded;
     }
 
     function renderBody() {
         foreach($this->mods as $mod) {
-            $this->renderMod($mod);
+            $this->renderMod($mod, $this->unfolded);
         }
     }
 
-    function renderMod(Mod $mod) {
+    function renderMod(Mod $mod, bool $active=false) {
         ?>
-        <div data-type="mod" data-style="small" data-fold="true" data-active="false" id="mod_<?=$mod->getId();?>">
+        <div data-type="mod" data-ui="list" data-fold="true" data-active="<?=($active ? "true" : "false")?>" id="mod_<?=$mod->getId();?>">
             <header>
                 <button data-ui="button" href="#" onclick="toggleById('mod_<?=$mod->getId();?>')">🔎</button>
-                <span data-type="name"><b><a href="mod.php?id=<?=$mod->getId()?>"><?=$mod->getName()?></a></b></span>
+                <span data-type="name">
+                    <b><a href="mod.php?id=<?=$mod->getId()?>"><?=$mod->getName()?></a></b>
+                </span>
+
+                <div data-ui="subtitle"><b>Where: </b><?=$mod->getHost()?> - <?=$mod->getSpace()?></div>
+                <div data-ui="subtitle">
+                    When: <?=$mod->getStartFormatted('F - l Hi')?>
+                </div>
             </header>
             <main>
                 <div class="row">
@@ -52,11 +63,7 @@ class ModListPage extends Page {
                     <div><b>Ready:</b> <?=($mod->isReady() ? "Yes" : "No")?></div>
                 </div>
 
-                <div><?=
-                    strlen($mod->getDescription()) > 300 ?
-                        nl2br(substr($mod->getDescription(), 0, 300)) . "..." :
-                        nl2br($mod->getDescription())
-                    ?></div>
+                <div><?=nl2br($mod->getDescription())?></div>
             </main>
 
 
