@@ -26,6 +26,7 @@ require_once SITE_ROOT . "/src/database/EventDatabase.php";
 
 // MODEL
 require_once SITE_ROOT . "/src/model/NamedObject.php";
+require_once SITE_ROOT . "/src/model/Strain.php";
 require_once SITE_ROOT . "/src/model/Player.php";
 require_once SITE_ROOT . "/src/model/Map.php";
 require_once SITE_ROOT . "/src/model/Skill.php";

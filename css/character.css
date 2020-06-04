@@ -4,3 +4,7 @@ img[data-type="character"] {
     border: 4px solid #ddd;
     max-height: 256px;
 }
+
+[data-type="character"] input[type="number"] {
+    width: 50px;
+}

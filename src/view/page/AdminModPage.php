@@ -102,6 +102,15 @@ class AdminModPage extends Page {
                     <form data-action="set" action="<?=SITE_HOST?>/src/admin/admin_mod_details.php" method="POST">
                         <input type="hidden" name="action" value="set"/>
                         <input type="hidden" name="mod_id" value="<?= $mod->getId() ?>"/>
+                        <input type="hidden" name="field" value="is_statted"/>
+                        Statted: <input type="checkbox" name="value" value="1" <?=($mod->isStatted() ? "checked" : "")?>  onchange="this.form.submit()" />
+                    </form>
+                </div>
+
+                <div>
+                    <form data-action="set" action="<?=SITE_HOST?>/src/admin/admin_mod_details.php" method="POST">
+                        <input type="hidden" name="action" value="set"/>
+                        <input type="hidden" name="mod_id" value="<?= $mod->getId() ?>"/>
                         <input type="hidden" name="field" value="is_ready"/>
                         Ready: <input type="checkbox" name="value" value="1" <?=($mod->isReady() ? "checked" : "")?>  onchange="this.form.submit()" />
                     </form>

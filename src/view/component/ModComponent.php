@@ -50,7 +50,20 @@ class ModComponent extends Component {
                     </div>
                     <div><b>Map Status:</b> <?=$this->mod->getMapStatus()?></div>
                     <div><b>Tabletop Status:</b> <?=$this->mod->getTabletopStatus()?></div>
+                    <div><b>Statted:</b> <?=($this->mod->isStatted() ? "Yes" : "No")?></div>
                     <div><b>Ready:</b> <?=($this->mod->isReady() ? "Yes" : "No")?></div>
+                </div>
+                <div class="row">
+                    <div>
+                        <b>Guides:</b> <?=$this->mod->getGuideString(", ");?>
+                    </div>
+                </div>
+                <div class="row">
+                    <div><b>Errors:</b> <?=$this->mod->getCalculatedStatus();?>
+                    <?php foreach($this->mod->getErrors() as $error) { ?>
+                        <div><?=$error['message'];?></div>
+                    <?php } ?>
+                    </div>
                 </div>
 
                 <div><?=nl2br($this->mod->getDescription())?></div>

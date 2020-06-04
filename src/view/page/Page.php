@@ -49,6 +49,8 @@ use drflvirtual\src\model\database\EventDatabase;use drflvirtual\src\model\Named
         <link rel="stylesheet" type="text/css" href="<?php echo SITE_HOST; ?>/css/main.css"/>
         <link rel="stylesheet" type="text/css" href="<?php echo SITE_HOST; ?>/css/nav.css"/>
         <link rel="stylesheet" type="text/css" href="<?php echo SITE_HOST; ?>/css/forms.css"/>
+        <link rel="stylesheet" type="text/css" href="<?php echo SITE_HOST; ?>/css/card.css"/>
+
         <link rel="stylesheet" type="text/css" href="<?php echo SITE_HOST; ?>/css/event.css"/>
         <link rel="stylesheet" type="text/css" href="<?php echo SITE_HOST; ?>/css/map.css"/>
         <link rel="stylesheet" type="text/css" href="<?php echo SITE_HOST; ?>/css/mod.css"/>

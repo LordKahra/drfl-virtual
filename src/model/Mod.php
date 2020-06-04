@@ -474,8 +474,10 @@ class Mod implements NamedObject {
             case "ready":
                 break;
             case "none":
-                if (strtolower($this->getHost()) == "roll20"|| strtolower($this->getHost()) == "astral") {
+                if (strtolower($this->getHost()) == "roll20" || strtolower($this->getHost()) == "astral") {
                     return static::STATUS_TABLETOP_INCOMPLETE;
+                } else {
+                    break;
                 }
             default:
                 // The tabletop is incomplete.

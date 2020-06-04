@@ -1,0 +1,8 @@
+[data-ui="card"] {
+    border: 0;
+    border-radius: 16px;
+    background: #f0f0f0;
+    color: #111;
+    margin: 4px;
+    padding: 4px;
+}

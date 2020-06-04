@@ -7,6 +7,8 @@ use drflvirtual\src\model\Event;
 use drflvirtual\src\model\Map;
 use drflvirtual\src\model\Mod;
 use drflvirtual\src\model\Player;
+use drflvirtual\src\model\Skill;
+use drflvirtual\src\model\Strain;
 use EventNotFoundException;
 use MapNotFoundException;
 use ModNotFoundException;
@@ -36,6 +38,8 @@ LEFT JOIN z_character_types type ON lineage.type_id = type.id";
 
     protected $mysqli;
 
+    // GLOBAL VALUES
+    protected $strains;
     protected $players;
 
     public function __construct() {
@@ -175,6 +179,25 @@ LEFT JOIN z_character_types type ON lineage.type_id = type.id";
 
     /**
      * @param string $where
+     * @return Skill[]
+     */
+    public function getSkills(string $where="") : array {
+        $arrays = $this->getRawSkills($where);
+
+        $skills = array();
+        foreach($arrays as $array) {
+            // Set uses if necessary.
+            if (!array_key_exists('uses', $array)) $array['uses'] = 1;
+
+            // Create skill object.
+            $skills[] = Skill::constructFromArray($array);
+        }
+
+        return $skills;
+    }
+
+    /**
+     * @param string $where
      * @return Map[]
      */
     public function getMaps(string $where="", string $order="`name`") : array {
@@ -188,6 +211,19 @@ LEFT JOIN z_character_types type ON lineage.type_id = type.id";
         }
 
         return $maps;
+    }
+
+    public function getStrains(string $where="") : array {
+        $arrays = $this->getRawStrains($where);
+
+        if (!$arrays) return array();
+
+        $strains = array();
+        foreach ($arrays as $array) {
+            $strains[$array['id']] = Strain::constructFromArray($array);
+        }
+
+        return $strains;
     }
 
     ////////////////////////////////
@@ -316,8 +352,16 @@ LEFT JOIN z_character_types type ON lineage.type_id = type.id";
         return $this->runGetQuery(static::CHARACTER_SELECT . ($where ? " \nWHERE $where" : "") . ($order_by ? " \nORDER BY $order_by" : ""));
     }
 
+    private function getRawStrains(string $where="", string $order="`name`") {
+        return $this->runGetQuery("SELECT * FROM z_strains " . ($where ? " WHERE $where " : "") . ($order ? " ORDER BY $order " : ""));
+    }
+
     private function getRawPlayers(string $where="", string $order_by="`name`") {
         return $this->runGetQuery("SELECT * FROM players " . ($where ? " \nWHERE $where" : "") . ($order_by ? " \nORDER BY $order_by" : ""));
+    }
+
+    private function getRawSkills(string $where="", string $order_by="`name`") {
+        return $this->runGetQuery("SELECT * FROM skills " . ($where ? " \nWHERE $where" : "") . ($order_by ? " \nORDER BY $order_by" : ""));
     }
 
     private function getRawMod(int $id) {
@@ -410,6 +454,18 @@ WHERE skills.id IN (SELECT skill_id FROM r_lineage_skills WHERE lineage_id = $id
         return $result;
     }
 
+    private function addSkillRelation(int $left_id, int $right_id, string $table, string $left_column, string $right_column, int $uses) {
+
+        $query = "INSERT INTO $table (`$left_column`, `$right_column`, `uses`) VALUES ($left_id, $right_id, $uses) ON DUPLICATE KEY UPDATE id=id";
+        // id=id avoids increasing auto increment. :)
+
+        $result = $this->runUpsertQuery($query);
+
+        var_dump($result);
+
+        return $result;
+    }
+
     private function setValue(string $table, int $id, string $field, string $value) {
         // Escape values.
         $table = $this->escape($table);
@@ -443,12 +499,32 @@ WHERE skills.id IN (SELECT skill_id FROM r_lineage_skills WHERE lineage_id = $id
         return $this->addRelation($character_id, $player_id, "r_character_casting", "character_id", "player_id");
     }
 
+    public function addCharacterSkill(int $character_id, int $skill_id, int $uses=1) {
+        return $this->addSkillRelation($character_id, $skill_id, "r_character_skills", "character_id", "skill_id", $uses);
+    }
+
     public function setCharacterDetail(int $id, string $field, string $value) {
         return $this->setValue("characters", $id, $field, $value);
     }
 
     public function setModDetail(int $id, string $field, string $value) {
         return $this->setValue("mods", $id, $field, $value);
+    }
+
+    public function insertCharacter(string $name, int $strain_id, int $attack , int $defense, int $successes, string $description, bool $core) {
+        $query =
+            "INSERT INTO characters (`name`, `strain_id`, `attack`, `defense`, `successes`, `description`, `core`) " .
+                "VALUES ('$name','$strain_id','$attack','$defense','$successes','$description'," . ($core ? '1' : '0') . ")";
+
+        return $this->runInsertQuery($query);
+    }
+
+    public function insertSkill($name, $text) {
+        $query =
+            "INSERT INTO skills (`name`, `text`) " .
+            "VALUES ('$name', '$text')";
+
+        return $this->runInsertQuery($query);
     }
 
     ////////////////////////////////
@@ -479,6 +555,14 @@ WHERE skills.id IN (SELECT skill_id FROM r_lineage_skills WHERE lineage_id = $id
         return $result;
     }
 
+    public function deleteCharacterSkill(int $character_id, int $skill_id) {
+        $query = "DELETE FROM r_character_skills WHERE character_id = $character_id AND skill_id = $skill_id";
+
+        $result = $this->runDeleteQuery($query);
+
+        return $result;
+    }
+
     public function deleteMapFromMod(int $mod_id, int $map_id) {
         $query = "DELETE FROM r_mod_maps WHERE mod_id = $mod_id AND map_id = $map_id";
 
@@ -500,6 +584,19 @@ WHERE skills.id IN (SELECT skill_id FROM r_lineage_skills WHERE lineage_id = $id
         }
 
         return $record;
+    }
+
+    private function runInsertQuery($query) {
+        echo("<br/><br/>" . $query);
+
+        $result = $this->mysqli->query($query);
+
+        // Handle errors.
+        if (!$result) {
+            var_dump($this->mysqli);
+        }
+
+        return $result;
     }
 
     private function runUpsertQuery($query) {
