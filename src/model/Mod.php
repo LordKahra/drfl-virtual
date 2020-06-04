@@ -2,7 +2,6 @@
 
 namespace drflvirtual\src\model;
 
-use Character;
 use DateTime;
 
 class Mod implements NamedObject {
@@ -21,6 +20,9 @@ class Mod implements NamedObject {
     protected $characters = array();
     protected $guides = array();
     protected $maps = array();
+
+    protected $calculatedStatus;
+    protected $errors = false;
 
     /**
      * Mod constructor.
@@ -74,6 +76,8 @@ class Mod implements NamedObject {
         foreach ($maps as $map) {
             $this->maps[$map->getId()] = $map;
         }
+
+        $this->calculatedStatus = false;
     }
 
     public static function constructFromArray(array $mod) {
@@ -243,6 +247,18 @@ class Mod implements NamedObject {
         return $this->maps;
     }
 
+    public function getCalculatedStatus(): int {
+        if (!$this->calculatedStatus) $this->calculatedStatus = $this->calculateStatus();
+
+        return $this->calculatedStatus;
+    }
+
+    public function getErrors() : array {
+        if($this->errors === false) $this->errors = $this->calculateErrors();
+
+        return $this->errors;
+    }
+
     private function validateDescription() : bool {
         if (!$this->getDescription() || strpos($this->getDescription(), static::INCOMPLETE_MARKER) !== false) {
             return false;
@@ -278,7 +294,7 @@ class Mod implements NamedObject {
         return $this->hasGuides();
     }
 
-    public function getErrors() : array {
+    private function calculateErrors() : array {
         $errors = array();
         if (!$this->validateDescription()) $errors[] = Mod::ERRORS["DESC_INCOMPLETE"];
         if (!$this->validateEvent()) $errors[] = Mod::ERRORS["NO_EVENT"];
@@ -348,7 +364,7 @@ class Mod implements NamedObject {
         return $errors;
     }
 
-    public function calculateStatus() : int {
+    private function calculateStatus() : int {
         ////////////////////////////////
         // WRITING /////////////////////
         ////////////////////////////////

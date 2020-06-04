@@ -5,7 +5,7 @@ namespace drflvirtual\src\view\page;
 
 use drflvirtual\src\model\Event;
 use drflvirtual\src\model\Mod;
-use ModCardComponent;
+use drflvirtual\src\view\component\ModCardComponent;
 
 class EventPage extends Page {
     protected $event;
@@ -30,7 +30,7 @@ class EventPage extends Page {
         //var_dump($this->getEvent()->getMods());
 
         foreach($this->getEvent()->getMods() as $mod) {
-            $status = $mod->calculateStatus();
+            $status = $mod->getCalculatedStatus();
 
             // If the spot doesn't exist, create it.
             if (!array_key_exists($status, $mod_statuses)) {

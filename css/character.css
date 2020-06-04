@@ -1,0 +1,6 @@
+img[data-type="character"] {
+    margin: 4px;
+    border-radius: 8px;
+    border: 4px solid #ddd;
+    max-height: 256px;
+}

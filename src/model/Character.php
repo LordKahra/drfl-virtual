@@ -1,8 +1,6 @@
 <?php
 
-use drflvirtual\src\model\NamedObject;
-use drflvirtual\src\model\Player;
-use drflvirtual\src\model\Skill;
+namespace drflvirtual\src\model;
 
 class Character implements NamedObject {
     private $id;

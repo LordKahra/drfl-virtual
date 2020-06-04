@@ -1,5 +1,8 @@
 <?php
 
+namespace drflvirtual\src\view\component;
+
+use Component;
 use drflvirtual\src\model\Mod;
 
 class ModCardComponent extends Component {

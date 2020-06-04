@@ -5,7 +5,7 @@ namespace drflvirtual\src\view\page;
 use DateTime;
 use drflvirtual\src\model\Event;
 use drflvirtual\src\model\Mod;
-use ModCardComponent;
+use drflvirtual\src\view\component\ModCardComponent;
 
 class EventSchedulePage extends Page {
     protected $event;

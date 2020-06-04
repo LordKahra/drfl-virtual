@@ -2,7 +2,7 @@
 
 namespace drflvirtual\src\view\page;
 
-use Character;
+use drflvirtual\src\model\Character;
 use drflvirtual\src\model\database\EventDatabase;
 
 class AdminCharacterPage extends Page {

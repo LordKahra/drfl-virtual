@@ -33,6 +33,7 @@ require_once SITE_ROOT . "/src/model/Event.php";
 
 // VIEW - COMPONENTS
 require_once SITE_ROOT . "/src/view/component/Component.php";
+require_once SITE_ROOT . "/src/view/component/CharacterCardComponent.php";
 require_once SITE_ROOT . "/src/view/component/ModCardComponent.php";
 
 // VIEW - PAGES
@@ -48,6 +49,8 @@ require_once SITE_ROOT . "/src/view/page/MapPage.php";
 require_once SITE_ROOT . "/src/view/page/ModPage.php";
 require_once SITE_ROOT . "/src/view/page/ModListPage.php";
 require_once SITE_ROOT . "/src/view/page/MapListPage.php";
+require_once SITE_ROOT . "/src/view/page/CharacterPage.php";
+require_once SITE_ROOT . "/src/view/page/CharacterListPage.php";
 
 // ADMIN
 require_once SITE_ROOT . "/src/view/page/AdminPage.php";

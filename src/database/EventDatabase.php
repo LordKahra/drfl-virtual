@@ -2,7 +2,7 @@
 
 namespace drflvirtual\src\model\database;
 
-use Character;
+use drflvirtual\src\model\Character;
 use drflvirtual\src\model\Event;
 use drflvirtual\src\model\Map;
 use drflvirtual\src\model\Mod;

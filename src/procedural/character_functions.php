@@ -1,6 +1,7 @@
 <?php
 
-    const CHARACTER_SELECT =
+use drflvirtual\src\view\component\CharacterCardComponent;
+const CHARACTER_SELECT =
 "SELECT
     toon.id AS id,
     toon.name AS `name`,

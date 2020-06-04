@@ -3,7 +3,7 @@
 namespace drflvirtual\src\view\page;
 
 
-use Character;
+use drflvirtual\src\model\Character;
 use drflvirtual\src\model\database\EventDatabase;
 use drflvirtual\src\model\Map;
 use drflvirtual\src\model\Mod;

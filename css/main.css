@@ -28,6 +28,10 @@ td {
     padding: 0;
 }
 
+img {
+    object-fit: scale-down;
+}
+
 .row {
     display: flex;
     flex-direction: row;
