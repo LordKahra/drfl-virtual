@@ -11,7 +11,7 @@ require_once 'src/procedural/character_functions.php';
 require_once 'src/procedural/event_functions.php';
 
 global /** @var mysqli $mysqli */ $mysqli;
-$db = new EventDatabase();
+global /** @var EventDatabase $db */ $db;
 
 // Load the ID.
 $event_id = (isset($_GET["id"])     ? $db->escape($_GET["id"])     : false);

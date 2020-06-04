@@ -19,7 +19,8 @@ class AdminCharacterPage extends Page {
     public function __construct(array $characters) {
         parent::__construct("Administration - Characters", "admin");
 
-        $this->db = new EventDatabase();
+        global /** @var EventDatabase $db */ $db;
+        $this->db = $db;
 
         $this->characters = $characters;
         $this->players = $this->db->getPlayers();

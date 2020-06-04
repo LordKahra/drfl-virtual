@@ -6,7 +6,7 @@ require_once '../config/app_config.php';
 require_once '../config/global_config.php';
 
 // Connect to database.
-$db = new EventDatabase();
+global /** @var EventDatabase $db */ $db;
 
 var_dump($_POST);
 

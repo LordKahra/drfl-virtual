@@ -93,7 +93,7 @@ use drflvirtual\src\model\database\EventDatabase;use drflvirtual\src\model\Named
 
     private function renderAdminHeaderMiddle() {
         // Need database.
-        $db = new EventDatabase();
+        global /** @var EventDatabase $db */ $db;
         // Need events without details.
         $events = $db->getEvents("", false);
         // Need guides.
@@ -135,7 +135,7 @@ use drflvirtual\src\model\database\EventDatabase;use drflvirtual\src\model\Named
 
     private function renderMapHeaderMiddle() {
         // Need database.
-        $db = new EventDatabase();
+        global /** @var EventDatabase $db */ $db;
         // Need events without details.
         $events = $db->getEvents("", false);
         // Need guides.
@@ -162,7 +162,7 @@ use drflvirtual\src\model\database\EventDatabase;use drflvirtual\src\model\Named
 
     private function renderModHeaderMiddle() {
         // Need database.
-        $db = new EventDatabase();
+        global /** @var EventDatabase $db */ $db;
         // Need events without details.
         $events = $db->getEvents("", false);
         // Need guides.

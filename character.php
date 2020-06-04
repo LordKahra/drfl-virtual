@@ -8,7 +8,7 @@ require_once 'src/config/global_config.php';
 require_once 'src/procedural/character_functions.php';
 
 // Load the database.
-$db = new EventDatabase();
+global /** @var EventDatabase $db */ $db;
 
 global /** @var mysqli $mysqli */ $mysqli;
 

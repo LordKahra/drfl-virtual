@@ -23,7 +23,8 @@ class MapListPage extends Page {
 
         $this->maps = $maps;
 
-        $this->db = new EventDatabase();
+        global /** @var EventDatabase $db */ $db;
+        $this->db = $db;
 
         // We're just going to need the mods.
         $map_ids = implode(",", array_keys($this->maps));

@@ -21,7 +21,8 @@ class AdminModPage extends Page {
 
         $this->mods = $mods;
 
-        $this->db = new EventDatabase();
+        global /** @var EventDatabase $db */ $db;
+        $this->db = $db;
 
         // Load data.
         $this->guides = $this->db->getGuides();

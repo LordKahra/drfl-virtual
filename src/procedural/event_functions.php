@@ -43,7 +43,7 @@ function getAllEventsWithMods(string $where="") {
 }
 
 function getEventMods(int $id) {
-    $db = new EventDatabase();
+    global /** @var EventDatabase $db */ $db;
 
     return getAllModsWithCharacters("event_id = $id");
 }

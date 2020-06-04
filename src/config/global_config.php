@@ -64,6 +64,8 @@ require_once SITE_ROOT . "/src/view/page/AdminModPage.php";
 // INSTANTIATE DATABASE
 $GLOBALS['db'] = new EventDatabase();
 
+// TEMP FIX
+error_reporting(E_ALL);
 
 // VIEW - RECORDS
 

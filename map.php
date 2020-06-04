@@ -9,7 +9,7 @@ require_once 'src/config/app_config.php';
 require_once 'src/config/global_config.php';
 
 // Load the database.
-$db = new EventDatabase();
+global /** @var EventDatabase $db */ $db;
 
 // Load the ID.
 $map_id =       (isset($_GET["id"])         ? $db->escape($_GET["id"])           : false);

@@ -6,7 +6,7 @@ require_once '../config/app_config.php';
 require_once '../config/global_config.php';
 
 // Connect to database.
-$db = new EventDatabase();
+global /** @var EventDatabase $db */ $db;
 
 $action = (isset($_POST["action"])     ? $db->escape($_POST["action"])     : false);
 $character_id = (isset($_POST["character_id"])     ? $db->escape($_POST["character_id"])     : false);

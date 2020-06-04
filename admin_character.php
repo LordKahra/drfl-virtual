@@ -11,7 +11,7 @@ require_once 'src/config/global_config.php';
 require_once SITE_ROOT . "/src/admin/auth.php";
 
 // Open the database.
-$db = new EventDatabase();
+global /** @var EventDatabase $db */ $db;
 
 // Get the mods.
 $filter_id = (isset($_GET["filter_id"])      ? $db->escape($_GET["filter_id"])     : false);
