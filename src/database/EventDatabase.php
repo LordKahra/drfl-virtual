@@ -89,7 +89,7 @@ LEFT JOIN z_character_types type ON lineage.type_id = type.id";
     /**
      * @param int $id
      * @return Map
-     * @throws MapNotFoundException
+     * @throws MapNotFoundException, PlayerNotFoundException
      */
     public function getMap(int $id) : Map {
         $array = $this->getRawMap($id);

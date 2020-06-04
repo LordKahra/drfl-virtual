@@ -3,6 +3,8 @@
 
 
 // Error Reporting.
+use drflvirtual\src\model\database\EventDatabase;
+
 error_reporting(DEBUG_MODE ? E_ALL : 0);
 
 // Session.
@@ -34,6 +36,8 @@ require_once SITE_ROOT . "/src/model/Event.php";
 // VIEW - COMPONENTS
 require_once SITE_ROOT . "/src/view/component/Component.php";
 require_once SITE_ROOT . "/src/view/component/CharacterCardComponent.php";
+require_once SITE_ROOT . "/src/view/component/MapComponent.php";
+require_once SITE_ROOT . "/src/view/component/ModComponent.php";
 require_once SITE_ROOT . "/src/view/component/ModCardComponent.php";
 
 // VIEW - PAGES
@@ -57,6 +61,8 @@ require_once SITE_ROOT . "/src/view/page/AdminPage.php";
 require_once SITE_ROOT . "/src/view/page/AdminCharacterPage.php";
 require_once SITE_ROOT . "/src/view/page/AdminModPage.php";
 
+// INSTANTIATE DATABASE
+$GLOBALS['db'] = new EventDatabase();
 
 
 // VIEW - RECORDS

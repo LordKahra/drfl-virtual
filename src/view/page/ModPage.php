@@ -7,6 +7,7 @@ use drflvirtual\src\model\Character;
 use drflvirtual\src\model\database\EventDatabase;
 use drflvirtual\src\model\Map;
 use drflvirtual\src\model\Mod;
+use drflvirtual\src\view\component\ModComponent;
 use PlayerNotFoundException;
 
 class ModPage extends Page {
@@ -28,36 +29,10 @@ class ModPage extends Page {
     }
 
     function renderBody() {
-        ?>
-        <div data-type="mod">
-            <header>
-                <div data-type="name"><a href="../../mod.php?id=<?=$this->getMod()->getId()?>"><?=$this->getMod()->getName()?></a></div>
-                <div class="row">
-                    <div><b>Location:</b> <?=$this->getMod()->getLocation()?></div>
-                    <div><b>Where: </b><?=$this->getMod()->getHost()?></div>
-                    <div><b>When: </b><?=$this->getMod()->getStartString()?></div>
-                </div>
-                <div class="row">
-                    <div></div>
-                    <div><b>Map Status:</b> <?=$this->getMod()->getMapStatus()?></div>
-                    <div><b>Tabletop Status:</b> <?=$this->getMod()->getTabletopStatus()?></div>
-                    <div><b>Ready:</b> <?=($this->getMod()->isReady() ? "Yes" : "No")?></div>
-                </div>
-            </header>
-            <div><?=nl2br($this->getMod()->getDescription())?></div>
-            <div><?php foreach($this->getMod()->getMaps() as $map) $this->renderMap($map); ?></div>
-            <?php
-            if($this->getMod()->getCharacters()) {
-            ?><div data-type="characters">
-                <header>Characters</header><?php
-                foreach ($this->getMod()->getCharacters() as $character) $this->renderCharacter($character);
-                }
-                ?></div>
-        </div>
-        <?php
+        (new ModComponent($this->mod, false))->render();
     }
 
-    function renderMap(Map $map) {
+    /*function renderMap(Map $map) {
         $player = false;
         try {
             $player = $this->db->getPlayer($map->getCreatorId());
@@ -77,9 +52,10 @@ class ModPage extends Page {
                 <img src="<?=SITE_HOST . "/res/images/maps/{$map->getId()}.png"?>">
             </main>
         </div>
-    <?php }
+        <?php
+    }*/
 
-    function renderCharacter(Character $character) {
+    /*function renderCharacter(Character $character) {
         ?>
         <div data-type="character">
             <header><a href="character.php?id=<?=$character->getId()?>"><?=$character->getName()?></a></header>
@@ -105,5 +81,5 @@ class ModPage extends Page {
 
         </div>
         <?php
-    }
+    }*/
 }

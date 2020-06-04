@@ -37,7 +37,7 @@ if ($mod_id) {
 } else {
     // Create the query, if any.
     $filter_query = "";
-    $filter_sort = "";
+    $filter_sort = "`name`";
 
     switch($filter) {
         case "unfinished":
@@ -60,6 +60,7 @@ if ($mod_id) {
         case "current":
         case false:
         default:
+            // Default filter is by current event.
             $filter_query = "event_id = " . CURRENT_EVENT;
             break;
     }
