@@ -46,6 +46,10 @@ if ($mod_id) {
         case "event":
             $filter_query = "event_id = $filter_id";
             break;
+        case "character":
+            $filter_query = "id IN (SELECT mod_id FROM r_mod_characters WHERE character_id = $filter_id)";
+            $filter_sort = 'start';
+            break;
         case "guide":
             $filter_query = "id IN (SELECT mod_id FROM r_mod_guides WHERE guide_id = $filter_id)";
             break;

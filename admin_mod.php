@@ -19,6 +19,9 @@ $filter = (isset($_GET["filter"])     ? $db->escape($_GET["filter"])     : false
 
 $mods = array();
 switch($filter) {
+    case "character":
+        $mods = $db->getMods("id IN (SELECT mod_id FROM r_mod_characters WHERE character_id = $filter_id)", '`start`');
+        break;
     case "event":
         $mods = $db->getMods("event_id = $filter_id", '`name`');
         break;

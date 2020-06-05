@@ -1,3 +1,11 @@
+[data-type="mod"][data-style="card"][data-status="100"] header {
+    background: #eeffee;
+}
+
+[data-type="mod"][data-style="card"][data-status="90"] header {
+    background: #ffffdd;
+}
+
 [data-type="mod"][data-style="admin"] {
     border-radius: 16px;
     background: #f8f8f8;

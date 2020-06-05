@@ -18,7 +18,7 @@ class ModCardComponent extends Component {
 
     function render() {
         ?>
-        <div data-type="mod" data-style="card" data-fold="true" data-active="false" id="mod_<?=$this->mod->getId();?>">
+        <div data-type="mod" data-style="card" data-fold="true" data-active="false" data-status="<?=$this->mod->getCalculatedStatus()?>" id="mod_<?=$this->mod->getId();?>">
             <header>
                 <button data-ui="button" href="#" onclick="toggleById('mod_<?=$this->mod->getId();?>')">🔎</button>
                 <span data-type="name"><b><a href="mod.php?id=<?=$this->mod->getId()?>"><?=$this->mod->getName()?></a></b></span>
