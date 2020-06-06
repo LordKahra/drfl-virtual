@@ -32,6 +32,10 @@ img {
     object-fit: scale-down;
 }
 
+img[data-type="figure"] {
+    max-width: 70%;
+}
+
 .row {
     display: flex;
     flex-direction: row;

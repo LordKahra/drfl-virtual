@@ -6,6 +6,7 @@ use Component;
 use drflvirtual\src\model\Character;
 use drflvirtual\src\model\Map;
 use drflvirtual\src\model\Mod;
+use drflvirtual\src\view\page\Page;
 
 class ModComponent extends Component {
     protected $mod;
@@ -66,7 +67,7 @@ class ModComponent extends Component {
                     </div>
                 </div>
 
-                <div><?=nl2br($this->mod->getDescription())?></div>
+                <div><?=Page::formatDescription($this->mod->getDescription())?></div>
 
                 <div><?php foreach($this->mod->getMaps() as $map) $this->renderMap($map); ?></div>
 

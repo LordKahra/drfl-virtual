@@ -2,7 +2,10 @@
 
 namespace drflvirtual\src\view\page;
 
-use drflvirtual\src\model\database\EventDatabase;use drflvirtual\src\model\NamedObject;abstract class Page {
+use drflvirtual\src\model\database\EventDatabase;
+use drflvirtual\src\model\NamedObject;
+
+abstract class Page {
     protected $title;
     protected $type;
 
@@ -226,4 +229,18 @@ use drflvirtual\src\model\database\EventDatabase;use drflvirtual\src\model\Named
     }
 
     abstract function renderBody();
+
+    public static function formatDescription(string $description) {
+        // First off, add <br/> for each line.
+        $description = nl2br($description);
+
+        // Show figures.
+        $description = preg_replace('/{!figure_(\d+)}/', "<img data-type='figure' src='" . SITE_HOST . "/res/images/figures/$1.png' />", $description);
+
+        return $description;
+    }
+
+    protected function renderFigure(int $id) {
+
+    }
 }

@@ -27,6 +27,7 @@ require_once SITE_ROOT . "/src/database/EventDatabase.php";
 // MODEL
 require_once SITE_ROOT . "/src/model/NamedObject.php";
 require_once SITE_ROOT . "/src/model/Strain.php";
+require_once SITE_ROOT . "/src/model/Figure.php";
 require_once SITE_ROOT . "/src/model/Player.php";
 require_once SITE_ROOT . "/src/model/Map.php";
 require_once SITE_ROOT . "/src/model/Skill.php";
@@ -37,6 +38,7 @@ require_once SITE_ROOT . "/src/model/Event.php";
 // VIEW - COMPONENTS
 require_once SITE_ROOT . "/src/view/component/Component.php";
 require_once SITE_ROOT . "/src/view/component/CharacterCardComponent.php";
+require_once SITE_ROOT . "/src/view/component/FigureComponent.php";
 require_once SITE_ROOT . "/src/view/component/MapComponent.php";
 require_once SITE_ROOT . "/src/view/component/ModComponent.php";
 require_once SITE_ROOT . "/src/view/component/ModCardComponent.php";
