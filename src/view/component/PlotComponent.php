@@ -3,6 +3,7 @@
 namespace drflvirtual\src\view\component;
 
 use Component;
+use drflvirtual\src\model\Mod;
 use drflvirtual\src\model\Plot;
 use drflvirtual\src\view\page\Page;
 
@@ -21,10 +22,15 @@ class PlotComponent extends Component {
                 <span data-type="name"><b><?= $this->plot->getId() ?> - <?= $this->plot->getName() ?></b></span>
 
             </header>
-            <main data-style="image">
+            <main>
                 <p><?= Page::formatDescription($this->plot->getDescription()) ?></p>
+                <?php foreach ($this->plot->getMods() as $mod) $this->renderMod($mod); ?>
             </main>
         </div>
         <?php
+    }
+
+    function renderMod(Mod $mod) {
+        (new ModComponent($mod))->render();
     }
 }

@@ -197,8 +197,8 @@ LEFT JOIN z_character_types type ON lineage.type_id = type.id";
      * @param string $where
      * @return Plot[]
      */
-    public function getPlots(string $where="") : array {
-        $arrays = $this->getRawPlots($where);
+    public function getPlots(string $where="", bool $details=true) : array {
+        $arrays = $details ? $this->getRawPlotsWithDetails($where) : $this->getRawPlots($where);
         if (!$arrays) return array();
 
         $plots = array();
@@ -274,6 +274,10 @@ LEFT JOIN z_character_types type ON lineage.type_id = type.id";
         return $this->getRawModsWithDetails("event_id = $event_id");
     }
 
+    private function getRawPlotMods($plot_id) {
+        return $this->getRawModsWithDetails("id IN (SELECT mod_id FROM r_plot_mods WHERE plot_id = $plot_id)", "`start`");
+    }
+
     private function getRawModCharacters($mod_id) {
         return $this->getRawCharactersWithDetails("toon.id IN (SELECT character_id FROM r_mod_characters WHERE mod_id = $mod_id)");
     }
@@ -298,7 +302,7 @@ LEFT JOIN z_character_types type ON lineage.type_id = type.id";
     }
 
     private function getRawPlot(int $id) {
-        $plots = $this->getRawPlots("id = $id");
+        $plots = $this->getRawPlotsWithDetails("id = $id");
         if (!$plots) return false;
         if (is_array($plots['0'])) return $plots['0'];
         return false;
@@ -316,6 +320,20 @@ LEFT JOIN z_character_types type ON lineage.type_id = type.id";
         }
 
         return $event_arrays;
+    }
+
+    private function getRawPlotsWithDetails(string $where) {
+        // Get the events.
+        $plot_arrays = $this->getRawPlots($where);
+
+        if (!$plot_arrays) return array();
+
+        // Add details.
+        foreach($plot_arrays as &$plot) {
+            $plot['mods'] = $this->getRawPlotMods($plot['id']);
+        }
+
+        return $plot_arrays;
     }
 
     private function getRawModsWithDetails(string $where="", $order="`name`") {

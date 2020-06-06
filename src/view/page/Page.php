@@ -235,7 +235,8 @@ abstract class Page {
         $description = nl2br($description);
 
         // Show figures.
-        $description = preg_replace('/{!figure_(\d+)}/', "<img data-type='figure' src='" . SITE_HOST . "/res/images/figures/$1.png' />", $description);
+        $description = preg_replace('/{!figure_(\d+)}/',
+            "<a href='" . SITE_HOST . "/res/images/figures/$1.png'><img data-ui='thumbnail' data-type='figure' src='" . SITE_HOST . "/res/images/figures/$1.png' /></a>", $description);
 
         return $description;
     }
