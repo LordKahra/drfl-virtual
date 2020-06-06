@@ -7,6 +7,7 @@ use drflvirtual\src\model\Event;
 use drflvirtual\src\model\Map;
 use drflvirtual\src\model\Mod;
 use drflvirtual\src\model\Player;
+use drflvirtual\src\model\Plot;
 use drflvirtual\src\model\Skill;
 use drflvirtual\src\model\Strain;
 use EventNotFoundException;
@@ -14,6 +15,7 @@ use MapNotFoundException;
 use ModNotFoundException;
 use mysqli;
 use PlayerNotFoundException;
+use PlotNotFoundException;
 
 class EventDatabase {
     const CHARACTER_SELECT =
@@ -106,6 +108,20 @@ LEFT JOIN z_character_types type ON lineage.type_id = type.id";
 
     /**
      * @param int $id
+     * @return Plot
+     * @throws PlotNotFoundException
+     */
+    public function getPlot(int $id) : Plot {
+        $array = $this->getRawPlot($id);
+        if (!$array) throw new PlotNotFoundException($id);
+
+        $plot = Plot::constructFromArray($array);
+
+        return $plot;
+    }
+
+    /**
+     * @param int $id
      * @return Player
      * @throws PlayerNotFoundException
      */
@@ -175,6 +191,22 @@ LEFT JOIN z_character_types type ON lineage.type_id = type.id";
         }
 
         return $characters;
+    }
+
+    /**
+     * @param string $where
+     * @return Plot[]
+     */
+    public function getPlots(string $where="") : array {
+        $arrays = $this->getRawPlots($where);
+        if (!$arrays) return array();
+
+        $plots = array();
+        foreach($arrays as $array) {
+            $plots[$array['id']] = Plot::constructFromArray($array);
+        }
+
+        return $plots;
     }
 
     /**
@@ -262,6 +294,13 @@ LEFT JOIN z_character_types type ON lineage.type_id = type.id";
         $events = $this->getRawEventsWithDetails("id = $id");
         if (!$events) return false;
         if (is_array($events['0'])) return $events['0'];
+        return false;
+    }
+
+    private function getRawPlot(int $id) {
+        $plots = $this->getRawPlots("id = $id");
+        if (!$plots) return false;
+        if (is_array($plots['0'])) return $plots['0'];
         return false;
     }
 
@@ -362,6 +401,10 @@ LEFT JOIN z_character_types type ON lineage.type_id = type.id";
 
     private function getRawSkills(string $where="", string $order_by="`name`") {
         return $this->runGetQuery("SELECT * FROM skills " . ($where ? " \nWHERE $where" : "") . ($order_by ? " \nORDER BY $order_by" : ""));
+    }
+
+    private function getRawPlots(string $where="", string $order_by="`name`") {
+        return $this->runGetQuery("SELECT * FROM plots " . ($where ? " \nWHERE $where" : "") . ($order_by ? " \nORDER BY $order_by" : ""));
     }
 
     private function getRawMod(int $id) {

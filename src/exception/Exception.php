@@ -16,6 +16,7 @@ class EventNotFoundException extends RecordNotFoundException {}
 class MapNotFoundException extends RecordNotFoundException {}
 class ModNotFoundException extends RecordNotFoundException {}
 class PlayerNotFoundException extends RecordNotFoundException {}
+class PlotNotFoundException extends RecordNotFoundException {}
 
 class SQLException extends Exception {
     private $query;
