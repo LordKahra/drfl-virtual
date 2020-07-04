@@ -238,6 +238,10 @@ abstract class Page {
         $description = preg_replace('/{!figure_(\d+)}/',
             "<a href='" . SITE_HOST . "/res/images/figures/$1.png'><img data-ui='thumbnail' data-type='figure' src='" . SITE_HOST . "/res/images/figures/$1.png' /></a>", $description);
 
+        // Show images.
+        $description = preg_replace('/{!misc_([\w-]+)}/',
+            "<a href='" . SITE_HOST . "/res/images/misc/$1.png'><img data-ui='thumbnail' data-type='figure' src='" . SITE_HOST . "/res/images/misc/$1.png' /></a>", $description);
+
         return $description;
     }
 
