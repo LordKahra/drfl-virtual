@@ -1,9 +1,9 @@
 <?php
 
-
+// Requirements.
+use drflvirtual\src\model\database\EventDatabase;
 
 // Error Reporting.
-use drflvirtual\src\model\database\EventDatabase;
 
 error_reporting(DEBUG_MODE ? E_ALL : 0);
 
@@ -11,7 +11,7 @@ error_reporting(DEBUG_MODE ? E_ALL : 0);
 session_start();
 
 // VARIABLES THAT WILL CHANGE FREQUENTLY
-define("CURRENT_EVENT", 2);
+define("CURRENT_EVENT", 3);
 
 ////////////////////////////
 //// SOURCE CODE ////////
