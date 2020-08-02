@@ -1,8 +1,27 @@
-[data-ui="card"] {
+figure {
     border: 0;
     border-radius: 16px;
     background: #f0f0f0;
     color: #111;
     margin: 4px;
     padding: 4px;
+    font-size: 12px;
+}
+
+figure * {
+    padding: 2px;
+}
+
+figure > header {
+    padding: 4px;
+}
+
+figure > header > [data-type="name"] {
+    font-size: 12px;
+}
+
+figure [data-ui="subtitle"]
+{
+    font-size: 10px;
+    margin: 2px;
 }

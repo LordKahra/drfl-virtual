@@ -10,13 +10,13 @@ namespace drflvirtual\src\view\page;
 
 
 use drflvirtual\src\model\Character;
-use drflvirtual\src\view\component\CharacterCardComponent;
+use drflvirtual\src\view\component\CharacterComponent;
 
 class CharacterListPage extends Page {
     protected $characters;
 
     public function __construct(array $characters) {
-        parent::__construct("Character List", "character");
+        parent::__construct("Character List", "character", "guide");
 
         $this->characters = $characters;
     }
@@ -28,6 +28,6 @@ class CharacterListPage extends Page {
     }
 
     function renderCharacter(Character $character) {
-        (new CharacterCardComponent($character))->render();
+        (new CharacterComponent($character))->render();
     }
 }

@@ -13,7 +13,7 @@ class PlotListPage extends Page {
      * @param Plot[] $plots
      */
     public function __construct(array $plots) {
-        parent::__construct("Plots", "plot");
+        parent::__construct("Plots", "plot", "guide");
         $this->plots = $plots;
     }
 

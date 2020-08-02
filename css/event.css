@@ -24,15 +24,7 @@ table[data-type="event"] td {
     padding: 4px;
 }
 
-[data-type="event"] [data-type="mod"] {
-
-}
-
-[data-type="mod"][data-style="card"] > header {
-    margin: 0;
-}
-
-[data-type="mod"][data-style="card"] > header > [data-type="name"] {
+figure[data-type="mod"] > header > [data-type="name"] {
     font-size: 12px;
 }
 
@@ -42,4 +34,8 @@ table[data-type="event"] td {
 
 [data-status="100"] [data-type="mod"] > header [data-ui="button"] {
     background-color: #ddeedd;
+}
+
+figure[data-type="mod"] > header {
+    margin: 0;
 }

@@ -1,8 +1,9 @@
 <?php
 
-use drflvirtual\src\view\page\AdminPage;
+use drflvirtual\src\view\page\AuthLogoutPage;
 
 require_once 'src/config/app_config.php';
 require_once 'src/config/global_config.php';
 
-(new AdminPage())->render();
+//Load the page.
+(new AuthLogoutPage())->render();

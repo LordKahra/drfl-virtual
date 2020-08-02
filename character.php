@@ -1,7 +1,9 @@
 <?php
 
 use drflvirtual\src\model\database\EventDatabase;
+use drflvirtual\src\view\page\CharacterPage;
 use drflvirtual\src\view\page\CharacterListPage;
+use drflvirtual\src\view\page\MissingPage;
 
 require_once 'src/config/app_config.php';
 require_once 'src/config/global_config.php';
@@ -10,22 +12,24 @@ require_once 'src/procedural/character_functions.php';
 // Load the database.
 global /** @var EventDatabase $db */ $db;
 
-global /** @var mysqli $mysqli */ $mysqli;
-
 // Load the ID.
 $character_id = (isset($_GET["id"])        ? $_GET["id"]                     : false);
 $filter =       (isset($_GET["filter"])    ? $db->escape($_GET["filter"])    : false);
 $filter_id =    (isset($_GET["filter_id"]) ? $db->escape($_GET["filter_id"]) : false);
 
+// Create the page.
+$page = false;
+
 // If valid ID, render single character page.
 if ($character_id) {
-
-// Get the character.
-    $character = getCharacterWithSkills($character_id);
-
-// Render.
-
-    renderSingleCharacterPage($character);
+    try {
+        // Get the character.
+        $character = $db->getCharacter($character_id);
+        // Create the page.
+        $page = new CharacterPage($character);
+    } catch (CharacterNotFoundException $e) {
+        $page = new MissingPage("Character not Found", "Character Not Found");
+    }
 } else {
     // Create the query, if any.
     $filter_query = "";
@@ -57,7 +61,8 @@ if ($character_id) {
     // Get all characters.
     $characters = $db->getCharacters($filter_query);
 
-    // Render.
-    (new CharacterListPage($characters))->render();
-    //renderMultiCharacterPage($characters);
+    // Create the page.
+    $page = new CharacterListPage($characters);
 }
+
+$page->render();

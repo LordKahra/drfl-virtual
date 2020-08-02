@@ -1,4 +1,6 @@
-
+[data-style="map"] > header {
+    font-weight: normal;
+}
 
 [data-style="image"] img {
     object-fit: scale-down;

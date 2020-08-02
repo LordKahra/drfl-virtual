@@ -5,6 +5,40 @@ img[data-type="character"] {
     max-height: 256px;
 }
 
+[data-type="characters"] {
+    border-radius: 16px;
+    padding: 8px;
+    /*background: #e8e8e8;*/
+}
+
+[data-type="characters"] > * {
+    padding: 8px;
+    margin: 8px;
+}
+
+[data-type="character"] {
+    border-radius: 16px;
+    background: #f0f0f0;
+    color: #111;
+    margin: 16px;
+    /*display: flex;402020*/
+    padding: 4px;
+}
+
+[data-type="character"] > [data-type="name"] {
+    font-weight: bold;
+}
+
 [data-type="character"] input[type="number"] {
     width: 50px;
+}
+
+[data-type="character"] [data-type="types"] {
+    text-align: center;
+    font-weight: bold;
+}
+
+[data-type="character"] [data-type="description"] {
+    font-style: italic;
+    text-align: center;
 }

@@ -2,16 +2,26 @@
 
 namespace drflvirtual\src\view\page;
 
-use drflvirtual\src\model\database\EventDatabase;
-use drflvirtual\src\model\NamedObject;
+use drflvirtual\src\admin\Authentication;use drflvirtual\src\model\database\EventDatabase;
+use drflvirtual\src\model\NamedObject;use const http\Client\Curl\AUTH_ANY;
 
 abstract class Page {
+    protected Authentication $auth;
+
     protected $title;
     protected $type;
 
-    public function __construct(string $title, string $type) {
+    protected string $security;
+
+    public function __construct(string $title, string $type, string $security="admin") {
+        global /** @var Authentication $auth */ $auth;
+        $this->auth = $auth;
+
         $this->title = $title;
         $this->type = $type;
+        $this->security = $security;
+
+        $this->auth->enforceSecurity($this->security);
     }
 
     // ACCESS
@@ -52,7 +62,9 @@ abstract class Page {
         <link rel="stylesheet" type="text/css" href="<?php echo SITE_HOST; ?>/css/main.css"/>
         <link rel="stylesheet" type="text/css" href="<?php echo SITE_HOST; ?>/css/nav.css"/>
         <link rel="stylesheet" type="text/css" href="<?php echo SITE_HOST; ?>/css/forms.css"/>
+        <link rel="stylesheet" type="text/css" href="<?php echo SITE_HOST; ?>/css/article.css"/>
         <link rel="stylesheet" type="text/css" href="<?php echo SITE_HOST; ?>/css/card.css"/>
+        <link rel="stylesheet" type="text/css" href="<?php echo SITE_HOST; ?>/css/list.css"/>
 
         <link rel="stylesheet" type="text/css" href="<?php echo SITE_HOST; ?>/css/event.css"/>
         <link rel="stylesheet" type="text/css" href="<?php echo SITE_HOST; ?>/css/map.css"/>
@@ -65,15 +77,22 @@ abstract class Page {
     <body>
     <header>
         <main>
-            <main><a href="../../index.php">DRFL Virtual Event</a></main>
+            <main><a href="index.php">DRFL Virtual Event</a></main>
             <nav>
                 <ul>
-                    <li><a href="character.php">Characters</a></li>
                     <li><a href="event.php">Events</a></li>
-                    <li><a href="map.php">Maps</a></li>
-                    <li><a href="mod.php">Mods</a></li>
                     <li><a href="event_schedule.php?id=<?=CURRENT_EVENT?>">Schedule</a></li>
+                    <li><a href="faction.php">Factions</a></li>
+                    <li><a href="mod.php">Mods</a></li>
+                    <li><a href="character.php">Characters</a></li>
+                    <li><a href="map.php">Maps</a></li>
                     <li><a href="admin.php">Admin</a></li>
+                    <li>
+                        <?=($this->auth->isLoggedIn()
+                            ? "Logged in: #" . $this->auth->getPlayer()->getId() . " <a href='logout.php'>Logout</a>"
+                            : "<a href='login.php'>Login</a>"
+                        )?>
+                    </li>
                 </ul>
             </nav>
         </main>

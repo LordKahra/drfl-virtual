@@ -12,7 +12,7 @@ class PlotPage extends Page {
     protected $plot;
 
     public function __construct(Plot $plot) {
-        parent::__construct("Plot - " . $plot->getName(), "mod");
+        parent::__construct("Plot - " . $plot->getName(), "mod", "guide");
         global /** @var EventDatabase $db */ $db;
         $this->db = $db;
         $this->plot = $plot;

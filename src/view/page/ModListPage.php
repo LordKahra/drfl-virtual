@@ -20,7 +20,7 @@ class ModListPage extends Page {
      * @param bool $folded
      */
     public function __construct(array $mods, bool $folded=true) {
-        parent::__construct("Mod List", "mod");
+        parent::__construct("Mod List", "mod", "guide");
 
         $this->mods = $mods;
 
@@ -29,7 +29,7 @@ class ModListPage extends Page {
 
     function renderBody() {
         foreach($this->mods as $mod) {
-            $this->renderMod($mod, $this->folded);
+            $this->renderMod($mod);
         }
     }
 

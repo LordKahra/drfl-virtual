@@ -14,7 +14,7 @@ class EventListPage extends Page {
      * @param Event[] $events
      */
     public function __construct(string $title, array $events) {
-        parent::__construct($title, "event_list");
+        parent::__construct($title, "event_list", "guide");
 
         foreach ($events as $event) {
             $this->events[$event->getId()] = $event;

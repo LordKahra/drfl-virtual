@@ -11,7 +11,7 @@ class EventPage extends Page {
     protected $event;
 
     public function __construct(string $title, Event $event) {
-        parent::__construct($title, "event");
+        parent::__construct($title, "event", "guide");
         $this->event = $event;
     }
 

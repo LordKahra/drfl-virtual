@@ -19,7 +19,7 @@ class MapListPage extends Page {
      * @param Map[] $maps
      */
     public function __construct(array $maps) {
-        parent::__construct("Map List", "map");
+        parent::__construct("Map List", "map", "guide");
 
         $this->maps = $maps;
 

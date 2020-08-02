@@ -2,8 +2,10 @@
 
 namespace drflvirtual\src\model\database;
 
+use CharacterNotFoundException;
 use drflvirtual\src\model\Character;
 use drflvirtual\src\model\Event;
+use drflvirtual\src\model\Faction;
 use drflvirtual\src\model\Map;
 use drflvirtual\src\model\Mod;
 use drflvirtual\src\model\Player;
@@ -11,6 +13,7 @@ use drflvirtual\src\model\Plot;
 use drflvirtual\src\model\Skill;
 use drflvirtual\src\model\Strain;
 use EventNotFoundException;
+use FactionNotFoundException;
 use MapNotFoundException;
 use ModNotFoundException;
 use mysqli;
@@ -57,6 +60,19 @@ LEFT JOIN z_character_types type ON lineage.type_id = type.id";
 
     /**
      * @param int $id
+     * @return Character
+     */
+    public function getCharacter(int $id) : Character {
+        $array = $this->getRawCharacter($id);
+        if (!$array) throw new CharacterNotFoundException($id);
+
+        $character = Character::constructFromArray($array);
+
+        return $character;
+    }
+
+    /**
+     * @param int $id
      * @return Mod
      * @throws ModNotFoundException
      */
@@ -94,6 +110,20 @@ LEFT JOIN z_character_types type ON lineage.type_id = type.id";
 
     /**
      * @param int $id
+     * @return Faction
+     * @throws FactionNotFoundException
+     */
+    public function getFaction(int $id) : Faction {
+        $array = $this->getRawFaction($id);
+        if (!$array) throw new FactionNotFoundException($id);
+
+        $faction = Faction::constructFromArray($array);
+
+        return $faction;
+    }
+
+    /**
+     * @param int $id
      * @return Map
      * @throws MapNotFoundException, PlayerNotFoundException
      */
@@ -104,6 +134,16 @@ LEFT JOIN z_character_types type ON lineage.type_id = type.id";
         $map = Map::constructFromArray($array);
 
         return $map;
+    }
+
+    /**
+     * @param int $id
+     * @return Player
+     * @throws PlayerNotFoundException
+     */
+    public function getPlayer(int $id) : Player {
+        if (!array_key_exists($id, $this->players)) throw new PlayerNotFoundException($id);
+        return $this->players[$id];
     }
 
     /**
@@ -121,18 +161,37 @@ LEFT JOIN z_character_types type ON lineage.type_id = type.id";
     }
 
     /**
-     * @param int $id
-     * @return Player
+     * @param int $player_id
+     * @param string $password
+     * @return bool
      * @throws PlayerNotFoundException
      */
-    public function getPlayer(int $id) : Player {
-        if (!array_key_exists($id, $this->players)) throw new PlayerNotFoundException($id);
-        return $this->players[$id];
+    public function isValidPassword(int $player_id, string $password) : bool {
+        // Find the player.
+        $player = $this->getPlayer($player_id);
+
+        // Check.
+        return $player->matchesPassword($password);
     }
 
     ////////////////////////////////
     // GET - PUBLIC - PLURAL
     ////////////////////////////////
+
+    /**
+     * @param string $where
+     * @return Character[]
+     */
+    public function getCharacters(string $where="") : array {
+        $arrays = $this->getRawCharactersWithDetails($where);
+
+        $characters = array();
+        foreach($arrays as $array) {
+            $characters[] = Character::constructFromArray($array);
+        }
+
+        return $characters;
+    }
 
     /**
      * @param string $where
@@ -149,6 +208,18 @@ LEFT JOIN z_character_types type ON lineage.type_id = type.id";
         }
 
         return $events;
+    }
+
+    public function getFactions(string $where="", string $order="`name`") : array {
+        $arrays = $this->getRawFactionsWithDetails($where, $order);
+
+        $factions = array();
+        foreach ($arrays as $faction_array) {
+            $faction = Faction::constructFromArray($faction_array);
+            $factions[$faction->getId()] = $faction;
+        }
+
+        return $factions;
     }
 
     public function getMods(string $where="", string $order="`name`") : array {
@@ -176,21 +247,6 @@ LEFT JOIN z_character_types type ON lineage.type_id = type.id";
         }
 
         return $players;
-    }
-
-    /**
-     * @param string $where
-     * @return Character[]
-     */
-    public function getCharacters(string $where="") : array {
-        $arrays = $this->getRawCharactersWithDetails($where);
-
-        $characters = array();
-        foreach($arrays as $array) {
-            $characters[] = Character::constructFromArray($array);
-        }
-
-        return $characters;
     }
 
     /**
@@ -274,8 +330,8 @@ LEFT JOIN z_character_types type ON lineage.type_id = type.id";
         return $this->getRawModsWithDetails("event_id = $event_id");
     }
 
-    private function getRawPlotMods($plot_id) {
-        return $this->getRawModsWithDetails("id IN (SELECT mod_id FROM r_plot_mods WHERE plot_id = $plot_id)", "`start`");
+    private function getRawFactionCharacters($faction_id) {
+        return $this->getRawCharactersWithDetails("toon.id IN (SELECT character_id FROM r_faction_characters WHERE faction_id = $faction_id)");
     }
 
     private function getRawModCharacters($mod_id) {
@@ -290,21 +346,25 @@ LEFT JOIN z_character_types type ON lineage.type_id = type.id";
         return $this->getRawMaps("id IN (SELECT map_id FROM r_mod_maps WHERE mod_id = $mod_id)");
     }
 
+    private function getRawPlotMods($plot_id) {
+        return $this->getRawModsWithDetails("id IN (SELECT mod_id FROM r_plot_mods WHERE plot_id = $plot_id)", "`start`");
+    }
+
     ////////////////////////////////
     // GET - PRIVATE - RAW WITH DETAILS
     ////////////////////////////////
+
+    private function getRawCharacter(int $id) {
+        $characters = $this->getRawCharactersWithDetails("toon.id = $id");
+        if (!$characters) return false;
+        if (is_array($characters['0'])) return $characters['0'];
+        return false;
+    }
 
     private function getRawEventWithDetails(int $id) {
         $events = $this->getRawEventsWithDetails("id = $id");
         if (!$events) return false;
         if (is_array($events['0'])) return $events['0'];
-        return false;
-    }
-
-    private function getRawPlot(int $id) {
-        $plots = $this->getRawPlotsWithDetails("id = $id");
-        if (!$plots) return false;
-        if (is_array($plots['0'])) return $plots['0'];
         return false;
     }
 
@@ -320,6 +380,33 @@ LEFT JOIN z_character_types type ON lineage.type_id = type.id";
         }
 
         return $event_arrays;
+    }
+
+    private function getRawFaction(int $id) {
+        $factions = $this->getRawFactionsWithDetails("id = $id");
+        if (!$factions) return false;
+        if (is_array($factions['0'])) return $factions['0'];
+        return false;
+    }
+
+    private function getRawFactionsWithDetails(string $where, $order="`name`") {
+        // Get the factions.
+        $arrays = $this->getRawFactions($where, $order);
+
+        if (!$arrays) return array();
+
+        foreach ($arrays as &$faction_array) {
+            $faction_array['characters'] = $this->getRawFactionCharacters($faction_array['id']);
+        }
+
+        return $arrays;
+    }
+
+    private function getRawPlot(int $id) {
+        $plots = $this->getRawPlotsWithDetails("id = $id");
+        if (!$plots) return false;
+        if (is_array($plots['0'])) return $plots['0'];
+        return false;
     }
 
     private function getRawPlotsWithDetails(string $where) {
@@ -389,16 +476,20 @@ LEFT JOIN z_character_types type ON lineage.type_id = type.id";
     // GET - PRIVATE - RAW
     ////////////////////////////////
 
-    private function getRawMaps(string $where="", string $order="`name`") {
-        return $this->runGetQuery("SELECT * FROM maps " . ($where ? "WHERE $where" : "") . ($order ? " ORDER BY $order " : ""));
-    }
-
     private function getRawEvent(int $id) {
         return $this->runGetQuery("SELECT * FROM events WHERE id = $id");
     }
 
     private function getRawEvents(string $where="") {
         return $this->runGetQuery("SELECT * FROM events " . ($where ? "WHERE $where" : ""));
+    }
+
+    private function getRawFactions(string $where="", string $order="`name`") {
+        return $this->runGetQuery("SELECT * FROM factions " . ($where ? " WHERE $where " : "") . ($order ? " ORDER BY $order " : ""));
+    }
+
+    private function getRawMaps(string $where="", string $order="`name`") {
+        return $this->runGetQuery("SELECT * FROM maps " . ($where ? "WHERE $where" : "") . ($order ? " ORDER BY $order " : ""));
     }
 
     private function getRawMods(string $where="", string $order="`name`") {
@@ -542,6 +633,24 @@ WHERE skills.id IN (SELECT skill_id FROM r_lineage_skills WHERE lineage_id = $id
         var_dump($result);
 
         return $result;
+    }
+
+    private function getSalt(int $player_id) {
+        $player = $this->getPlayer($player_id);
+    }
+
+    public function setPassword(int $player_id, string $password) : bool {
+        // Salt the password.
+        $crypt = password_hash($password, PASSWORD_DEFAULT);
+
+        // Set the password.
+        $this->setValue("players", $player_id, "password", $crypt);
+
+        // Reload the players.
+        $this->players = $this->getPlayers();
+
+        // Test the password.
+        return $this->isValidPassword($player_id, $crypt);
     }
 
     public function addGuideToMod(int $mod_id, int $guide_id) {

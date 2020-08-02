@@ -7,7 +7,7 @@ class MissingPage extends Page {
     protected $message;
 
     public function __construct(string $title, string $message) {
-        parent::__construct($title);
+        parent::__construct($title, "error", "public");
         $this->message = $message;
     }
 

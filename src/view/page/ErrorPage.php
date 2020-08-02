@@ -6,8 +6,8 @@ namespace drflvirtual\src\view\page;
 class ErrorPage extends Page {
     protected $error;
 
-    public function __construct(string $title, string $message) {
-        parent::__construct($title);
+    public function __construct(string $message) {
+        parent::__construct($message, "error", "public");
         $this->error = $message;
     }
 
@@ -19,6 +19,7 @@ class ErrorPage extends Page {
     }
 
     function renderBody() {
-        ?>That page was not found.<?php
+        echo $this->getError();
+        ?><?php
     }
 }

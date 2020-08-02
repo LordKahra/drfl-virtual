@@ -12,7 +12,9 @@ class RecordNotFoundException extends Exception {
     }
 }
 
+class CharacterNotFoundException extends RecordNotFoundException {}
 class EventNotFoundException extends RecordNotFoundException {}
+class FactionNotFoundException extends RecordNotFoundException {}
 class MapNotFoundException extends RecordNotFoundException {}
 class ModNotFoundException extends RecordNotFoundException {}
 class PlayerNotFoundException extends RecordNotFoundException {}

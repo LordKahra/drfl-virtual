@@ -5,33 +5,21 @@ namespace drflvirtual\src\view\component;
 use Component;
 use drflvirtual\src\model\Character;
 
-class CharacterCardComponent extends Component {
-    protected Character $character;
+class CharacterComponent extends Component {
+    protected $character;
 
     /**
      * ModCardComponent constructor.
      * @param Character $character
-     * @param string $tag
-     * @param bool $isFoldable
-     * @param bool $isFolded
      */
-    public function __construct(Character $character, string $tagPrefix="", bool $isFoldable=true, bool $isFolded=false) {
-        parent::__construct($tagPrefix . "character_" . $character->getId());
+    public function __construct(Character $character) {
         $this->character = $character;
-        $this->isFoldable = $isFoldable;
-        $this->isFolded = $isFolded;
-        //var_dump($this->tag);
     }
 
     function render() {
         ?>
-        <figure data-type="character" data-fold="true" data-active="<?=($this->isActiveString())?>" id="<?=$this->getTag();?>">
-            <header>
-                <button data-ui="button" href="#" <?php if ($this->isFoldable()) { ?> onclick="toggleById('<?=$this->getTag();?>')" <?php } ?>>🔎</button>
-                <span data-type="name"><a href="character.php?id=<?=$this->character->getId()?>"><?=$this->character->getName()?></a></span>
-            </header>
-
-            <main>
+        <article data-type="character">
+            <header><span data-type="name"><a href="character.php?id=<?=$this->character->getId()?>"><?=$this->character->getName()?></a></span></header>
 
             <div data-type="types"><?=$this->character->getType()?> - <?=$this->character->getLineage()?> - <?=$this->character->getStrain()?></div>
             <div data-type="description">
@@ -56,9 +44,7 @@ class CharacterCardComponent extends Component {
                 <div>💓️ <?=($this->character->getSuccesses() ? $this->character->getSuccesses() : '')?></div>
             </div>
 
-            </main>
-
-        </figure>
+        </article>
         <?php
     }
 }

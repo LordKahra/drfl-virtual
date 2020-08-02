@@ -284,80 +284,8 @@ function renderCharacterArray($character) {
     <?php
 }
 
-function renderModSmall(array $mod) {
-    ?>
-    <div data-type="mod" data-style="small" data-fold="true" data-active="false" id="mod_<?=$mod["id"];?>">
-        <header>
-            <button data-ui="button" href="#" onclick="toggleById('mod_<?=$mod["id"];?>')">🔎</button>
-            <span data-type="name"><b><a href="mod.php?id=<?=$mod['id']?>"><?=$mod['name']?></a></b></span>
-        </header>
-        <main>
-            <div class="row">
-                <div><b>Location:</b> <?=$mod['location']?></div>
-                <div><b>Where: </b><?=$mod['host']?></div>
-                <div><b>When: </b><?=$mod['start']?></div>
-            </div>
-            <div class="row">
-                <div>
-                    <b>Characters:</b>
-                    <?php if (array_key_exists('characters', $mod) && is_array($mod['characters'])) {
-                        $character_names = array();
-                        foreach ($mod['characters'] as $character) {
-                            //$character_names[] = "<a href='character.php?id=" . $character['id'] . "'>" . $character['name'] . "</a>";
-                            $character_names[] = $character['name'];
-                        }
-                        echo implode(", ", $character_names);
-                    } else {
-                        echo "None.";
-                    } ?>
-                </div>
-                <div><b>Map Status:</b> <?=$mod['map_status']?></div>
-                <div><b>Tabletop Status:</b> <?=$mod['tabletop_status']?></div>
-                <div><b>Ready:</b> <?=($mod['is_ready'] ? "Yes" : "No")?></div>
-            </div>
-
-            <div><?=
-                strlen($mod['description']) > 300 ?
-                    nl2br(substr($mod['description'], 0, 300)) . "..." :
-                    nl2br($mod['description'])
-                ?></div>
-        </main>
-
-
-
-    </div>
-    <?php
-}
-
-function renderModList(array $mods) {
-    ?>
-<ul>
-    <?php foreach ($mods as $mod) { ?>
-        <li><a href="mod.php?id=<?=$mod['id']?>"><?=$mod['name']?></a></li>
-    <?php } ?>
-</ul>
-    <?php
-}
-
 function renderSingleCharacterPage($character) {
     renderHeader($character['name']);
     renderCharacterArray($character);
 }
 
-function renderMultiCharacterPage($characters) {
-    renderHeader("Characters");
-    foreach($characters as $character) {
-        renderCharacterArray($character);
-    }
-}
-
-function renderMultiModPage($mods) {
-    renderHeader("Mods", "mod");
-    //renderModList($mods);
-    ?>
-
-    <?php
-    foreach($mods as $mod) {
-        renderModSmall($mod);
-    }
-}

@@ -16,7 +16,7 @@ class ModPage extends Page {
     protected $mod;
 
     public function __construct(string $title, Mod $mod) {
-        parent::__construct($title, "mod");
+        parent::__construct($title, "mod", "guide");
         global /** @var EventDatabase $db */ $db;
         $this->db = $db;
         $this->mod = $mod;

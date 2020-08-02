@@ -16,11 +16,12 @@ class ModComponent extends Component {
     public function __construct(Mod $mod, $folded=true) {
         $this->mod = $mod;
         $this->folded = $folded;
+        $this->isFolded = $folded;
     }
 
     function render() {
         ?>
-        <div data-type="mod" data-ui="list" data-fold="true" data-active="<?=(!$this->folded ? "true" : "false")?>" id="mod_<?=$this->mod->getId();?>">
+        <article data-type="mod" data-ui="list" data-fold="true" data-active="<?=$this->isActiveString()?>" id="mod_<?=$this->mod->getId();?>">
             <header>
                 <button data-ui="button" href="#" onclick="toggleById('mod_<?=$this->mod->getId();?>')">🔎</button>
                 <span data-type="name">
@@ -73,22 +74,22 @@ class ModComponent extends Component {
 
                 <?php
                 if($this->mod->getCharacters()) { ?>
-                    <div data-type="characters">
+                    <section data-type="characters">
                         <header>Characters</header>
                         <?php foreach ($this->mod->getCharacters() as $character) $this->renderCharacter($character); ?>
-                    </div>
+                    </section>
                 <?php } ?>
 
             </main>
 
 
 
-        </div>
+        </article>
         <?php
     }
 
     private function renderCharacter(Character $character) {
-        (new CharacterCardComponent($character))->render();
+        (new CharacterCardComponent($character, "mod_" . $this->mod->getId() . "_"))->render();
     }
 
     private function renderMap(Map $map) {

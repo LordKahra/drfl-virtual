@@ -45,7 +45,7 @@ class AdminCharacterPage extends Page {
             }
             ?>
 
-            <div data-type="character" data-ui="card">
+            <figure data-type="character">
                 <header id="add_character">Add Character</header>
                 <form  data-type="character" action="<?=SITE_HOST?>/src/admin/admin_character_add.php" method="post">
                     <input type="hidden" name="action" value="add">
@@ -65,11 +65,11 @@ class AdminCharacterPage extends Page {
                     <br/><b>Core:</b> <input type="checkbox" name="core" />
                     <input type="submit" value="Submit"/>
                 </form>
-            </div>
+            </figure>
 
             <br/><br/>
 
-            <div data-type="skill" data-ui="card">
+            <figure data-type="skill">
                 <header id="add_skill">Add Skill</header>
                 <form action="<?=SITE_HOST?>/src/admin/admin_skill_add.php" method="post">
                     <input type="hidden" name="action" value="add">
@@ -77,7 +77,7 @@ class AdminCharacterPage extends Page {
                     <b>Text:</b> <textarea name="text" rows="3" cols="50" required></textarea>
                     <input type="submit" value="Submit"/>
                 </form>
-            </div>
+            </figure>
             <br/>
             <br/>
             <br/>
@@ -91,7 +91,7 @@ class AdminCharacterPage extends Page {
 
     function renderCharacter(Character $character) {
         ?>
-        <div data-type="character" data-style="admin" id="character_<?=$character->getId()?>">
+        <figure data-type="character" data-style="admin" id="character_<?=$character->getId()?>">
             <header><?=$character->getId()?> <?=$character->getName()?></a></header>
 
             <div data-type="types"><?=$character->getType()?> - <?=$character->getLineage()?> - <?=$character->getStrain()?></div>
@@ -116,7 +116,7 @@ class AdminCharacterPage extends Page {
 
             <?php $this->renderCharacterDetailLists($character); ?>
             <?php $this->renderCharacterDropdowns($character); ?>
-        </div>
+        </figure>
         <?php
     }
 

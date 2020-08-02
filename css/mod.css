@@ -1,16 +1,20 @@
-[data-type="mod"][data-style="card"][data-status="100"] > header {
+figure[data-type="mod"][data-status="100"],
+figure[data-type="mod"][data-status="100"] > header
+{
     background: #eeffee;
 }
 
-[data-type="mod"][data-style="card"][data-status="90"] header {
+figure[data-type="mod"][data-status="90"],
+figure[data-type="mod"][data-status="90"] header
+{
     background: #ffffdd;
 }
 
-[data-type="mod"][data-style="card"][data-status="100"] > header [data-ui="button"] {
+figure[data-type="mod"][data-status="100"] > header [data-ui="button"] {
     background-color: #ddeedd;
 }
 
-[data-type="mod"][data-style="card"][data-status="90"] > header [data-ui="button"] {
+figure[data-type="mod"][data-status="90"] > header [data-ui="button"] {
     background-color: #eeeecc;
 }
 
@@ -24,46 +28,5 @@
 [data-type="mod"][data-style="admin"] > form {
     background: #ddd;
     border-radius: 8px;
-}
-
-[data-type="mod"] > header > [data-ui="subtitle"] {
-    font-size: 14px;
-}
-
-[data-type="mod"][data-ui="list"] {
-
-}
-
-[data-type="mod"][data-ui="list"] > header {
-    display: flex;
-    align-content: center;
-}
-
-[data-type="mod"][data-ui="list"] > header > * {
-    flex-grow: 0;
-    align-self: center;
-
-}
-
-[data-type="mod"][data-ui="list"] > header > button {
-    width: 40px;
-    height: 40px;
-}
-
-[data-type="mod"][data-ui="list"] > header > [data-type="name"] {
-    flex-grow: 1;
-    margin-left: 4px;
-}
-
-[data-type="mod"][data-ui="list"] > header > [data-ui="subtitle"] {
-    margin: 4px;
-}
-
-[data-type="mod"][data-ui="list"] > main {
-    margin: -4px 20px 4px;
-    border: 4px solid #eee;
-    border-top: 0;
-    border-radius: 0 0 20px 20px;
-
 }
 
