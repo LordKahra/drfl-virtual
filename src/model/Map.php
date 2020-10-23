@@ -6,9 +6,7 @@ namespace drflvirtual\src\model;
 use drflvirtual\src\model\database\EventDatabase;
 use PlayerNotFoundException;
 
-class Map implements NamedObject {
-    protected $id;
-    protected $name;
+class Map extends StoryObject {
     protected $status;
     protected $creator_id;
     protected $description;
@@ -45,20 +43,6 @@ class Map implements NamedObject {
     }
 
     /**
-     * @return int
-     */
-    public function getId(): int {
-        return $this->id;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName(): string {
-        return $this->name;
-    }
-
-    /**
      * @return string
      */
     public function getStatus(): string {
@@ -84,6 +68,13 @@ class Map implements NamedObject {
      */
     public function getDescription(): string {
         return $this->description;
+    }
+
+    public function toArray(): array {
+        return array(
+            "id" => $this->getId(),
+            "name" => $this->getName()
+        );
     }
 
 }

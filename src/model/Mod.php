@@ -4,9 +4,7 @@ namespace drflvirtual\src\model;
 
 use DateTime;
 
-class Mod implements NamedObject {
-    protected $id;
-    protected $name;
+class Mod extends StoryObject {
     protected $host;
     protected $start;
     protected $location;
@@ -108,20 +106,6 @@ class Mod implements NamedObject {
             $guides,
             $maps
         );
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getId() {
-        return $this->id;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getName() : string {
-        return $this->name;
     }
 
     /**
@@ -589,4 +573,26 @@ class Mod implements NamedObject {
         ),
     );
 
+    public function toArray(): array {
+        $mod = array(
+            "id" => $this->getId(),
+            "name" => $this->getName(),
+            "host" => $this->getHost(),
+            "start" => $this->getStartString(),
+            "location" => $this->getLocation(),
+            "description" => $this->getDescription(),
+            "map_status" => $this->getMapStatus(),
+            "tabletop_status" => $this->getTabletopStatus(),
+            "is_ready" => $this->isReady(),
+            "is_statted" => $this->isStatted(),
+            "event_id" => $this->getEventId(),
+            "characters" => array(),
+            "guides" => array(),
+            "maps" => array(),
+            "calculated_status" => $this->getCalculatedStatus(),
+            "errors" => $this->getErrors()
+        );
+
+        return $mod;
+    }
 }

@@ -3,9 +3,7 @@
 namespace drflvirtual\src\model;
 
 
-class Player implements NamedObject {
-    protected $id;
-    protected $name;
+class Player extends StoryObject {
     protected $is_guide;
     protected $is_admin;
     private $salt;
@@ -30,20 +28,6 @@ class Player implements NamedObject {
     }
 
     /**
-     * @return int
-     */
-    public function getId(): int {
-        return $this->id;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName(): string {
-        return $this->name;
-    }
-
-    /**
      * @return bool
      */
     public function isGuide(): bool {
@@ -60,5 +44,12 @@ class Player implements NamedObject {
 
         // Verify the password.
         return password_verify($password, $this->password);
+    }
+
+    public function toArray(): array {
+        return array(
+            "id" => $this->getId(),
+            "name" => $this->getName()
+        );
     }
 }

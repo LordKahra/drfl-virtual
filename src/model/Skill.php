@@ -2,9 +2,7 @@
 
 namespace drflvirtual\src\model;
 
-class Skill implements NamedObject {
-    protected $id;
-    protected $name;
+class Skill extends StoryObject {
     protected $text;
     protected $uses;
 
@@ -25,20 +23,6 @@ class Skill implements NamedObject {
     }
 
     /**
-     * @return int
-     */
-    public function getId(): int {
-        return $this->id;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName(): string {
-        return $this->name;
-    }
-
-    /**
      * @return string
      */
     public function getText(): string {
@@ -50,5 +34,14 @@ class Skill implements NamedObject {
      */
     public function getUses(): int {
         return $this->uses;
+    }
+
+    public function toArray(): array {
+        return array(
+            "id" => $this->getId(),
+            "name" => $this->getName(),
+            "text" => $this->getText(),
+            "uses" => $this->getUses()
+        );
     }
 }

@@ -3,9 +3,7 @@
 namespace drflvirtual\src\model;
 
 
-class Event implements NamedObject {
-    protected $id;
-    protected $name;
+class Event extends StoryObject {
     protected $start;
     protected $end;
     protected $soft_rp_open;
@@ -82,20 +80,6 @@ class Event implements NamedObject {
     }
 
     /**
-     * @return int
-     */
-    public function getId(): int {
-        return $this->id;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName() : string {
-        return $this->name;
-    }
-
-    /**
      * @return string
      */
     public function getStart(): string {
@@ -149,6 +133,13 @@ class Event implements NamedObject {
      */
     public function getMods(): array {
         return $this->mods;
+    }
+
+    public function toArray(): array {
+        return array(
+            "id" => $this->getId(),
+            "name" => $this->getName()
+        );
     }
 
 }

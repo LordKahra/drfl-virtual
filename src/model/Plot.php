@@ -4,8 +4,6 @@ namespace drflvirtual\src\model;
 
 
 class Plot {
-    protected $id;
-    protected $name;
     protected $description;
     protected $mods;
 
@@ -40,20 +38,6 @@ class Plot {
     }
 
     /**
-     * @return int
-     */
-    public function getId(): int {
-        return $this->id;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName(): string {
-        return $this->name;
-    }
-
-    /**
      * @return string
      */
     public function getDescription(): string {
@@ -65,5 +49,12 @@ class Plot {
      */
     public function getMods() {
         return $this->mods;
+    }
+
+    public function toArray(): array {
+        return array(
+            "id" => $this->getId(),
+            "name" => $this->getName()
+        );
     }
 }

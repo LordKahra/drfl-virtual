@@ -2,9 +2,7 @@
 
 namespace drflvirtual\src\model;
 
-class Faction implements NamedObject {
-    protected $id;
-    protected $name;
+class Faction extends StoryObject {
     protected $summary;
     protected $description;
 
@@ -44,17 +42,6 @@ class Faction implements NamedObject {
     }
 
     /**
-     * @return int
-     */
-    public function getId(): int {
-        return $this->id;
-    }
-
-    public function getName(): string {
-        return $this->name;
-    }
-
-    /**
      * @return string
      */
     public function getSummary(): string {
@@ -73,5 +60,12 @@ class Faction implements NamedObject {
      */
     public function getCharacters() {
         return $this->characters;
+    }
+
+    public function toArray(): array {
+        return array(
+            "id" => $this->getId(),
+            "name" => $this->getName()
+        );
     }
 }

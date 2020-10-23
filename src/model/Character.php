@@ -2,9 +2,7 @@
 
 namespace drflvirtual\src\model;
 
-class Character implements NamedObject {
-    private $id;
-    private $name;
+class Character extends StoryObject {
     private $strain_id;
     private $attack;
     private $defense;
@@ -100,14 +98,6 @@ class Character implements NamedObject {
         );
     }
 
-    public function getId() {
-        return $this->id;
-    }
-
-    public function getName() : string {
-        return $this->name;
-    }
-
     public function getStrainId() {
         return $this->strain_id;
     }
@@ -174,5 +164,12 @@ class Character implements NamedObject {
      */
     public function getStrain(): string {
         return $this->strain;
+    }
+
+    public function toArray(): array {
+        return array(
+            "id" => $this->getId(),
+            "name" => $this->getName()
+        );
     }
 }

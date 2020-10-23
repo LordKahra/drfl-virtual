@@ -2,9 +2,7 @@
 
 namespace drflvirtual\src\model;
 
-class Strain implements NamedObject {
-    protected $id;
-    protected $name;
+class Strain extends StoryObject {
     protected $lineage_id;
 
     public function __construct(int $id, string $name, int $lineage_id) {
@@ -20,18 +18,15 @@ class Strain implements NamedObject {
     /**
      * @return int
      */
-    public function getId(): int {
-        return $this->id;
-    }
-
-    public function getName(): string {
-        return $this->name;
-    }
-
-    /**
-     * @return int
-     */
     public function getLineageId(): int {
         return $this->lineage_id;
+    }
+
+    public function toArray(): array {
+        return array (
+            "id" => $this->getId(),
+            "name" => $this->getName(),
+            "lineage_id" => $this->getLineageId()
+        );
     }
 }

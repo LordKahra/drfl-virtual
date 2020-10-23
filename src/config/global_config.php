@@ -12,7 +12,7 @@ error_reporting(DEBUG_MODE ? E_ALL : 0);
 session_start();
 
 // VARIABLES THAT WILL CHANGE FREQUENTLY
-define("CURRENT_EVENT", 3);
+define("CURRENT_EVENT", 4);
 
 // GLOBALS
 define("SITE_NAME", "DRFL Virtual");
@@ -30,6 +30,8 @@ require_once SITE_ROOT . "/src/database/EventDatabase.php";
 
 // MODEL
 require_once SITE_ROOT . "/src/model/NamedObject.php";
+require_once SITE_ROOT . "/src/model/Serializable.php";
+require_once SITE_ROOT . "/src/model/StoryObject.php";
 require_once SITE_ROOT . "/src/model/Strain.php";
 require_once SITE_ROOT . "/src/model/Figure.php";
 require_once SITE_ROOT . "/src/model/Player.php";

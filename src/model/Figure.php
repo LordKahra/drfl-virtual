@@ -10,8 +10,6 @@ namespace drflvirtual\src\model;
 
 
 class Figure {
-    protected $id;
-    protected $name;
     protected $description;
 
     public function __construct(int $id, string $name, string $description) {
@@ -21,23 +19,16 @@ class Figure {
     }
 
     /**
-     * @return int
-     */
-    public function getId(): int {
-        return $this->id;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName(): string {
-        return $this->name;
-    }
-
-    /**
      * @return string
      */
     public function getDescription(): string {
         return $this->description;
+    }
+
+    public function toArray(): array {
+        return array(
+            "id" => $this->getId(),
+            "name" => $this->getName()
+        );
     }
 }
