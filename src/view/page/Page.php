@@ -89,7 +89,7 @@ abstract class Page {
                     <li><a href="admin.php">Admin</a></li>
                     <li>
                         <?=($this->auth->isLoggedIn()
-                            ? "Logged in: #" . $this->auth->getPlayer()->getId() . " <a href='logout.php'>Logout</a>"
+                            ? "Logged in: #" . Authentication::getPlayerId() . " <a href='logout.php'>Logout</a>"
                             : "<a href='login.php'>Login</a>"
                         )?>
                     </li>

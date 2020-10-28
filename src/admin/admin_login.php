@@ -33,3 +33,7 @@ if ($logged_in) {
 }
 
 echo "<br/>" . ($logged_in ? "Logged in!" : "Failed to log in.");
+
+//echo "<br/>";
+
+//var_dump($_SESSION);

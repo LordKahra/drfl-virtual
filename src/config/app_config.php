@@ -2,9 +2,11 @@
 
 //define("SITE_ROOT", "S:/Git/drfl-virtual");
 //define("SITE_HOST", "http://localhost:8080/git/drfl-virtual");
+//define("API_HOST", "http://localhost:8080/git/drfl-virtual-api");
 
 define("SITE_ROOT", getenv("SITE_ROOT_DRFL_VIRTUAL"));
 define("SITE_HOST", getenv("SITE_HOST_DRFL_VIRTUAL"));
+define("API_HOST", getenv("SITE_HOST_DRFL_VIRTUAL_API"));
 
 //define("SITE_ROOT", getenv("SITE_ROOT_TOURNAMENT_CLOUD"));
 //define("SITE_HOST", getenv("SITE_HOST_TOURNAMENT_CLOUD"));

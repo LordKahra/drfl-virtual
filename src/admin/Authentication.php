@@ -2,43 +2,44 @@
 
 namespace drflvirtual\src\admin;
 
+use drflvirtual\src\api\GameAPIConnection;
 use drflvirtual\src\model\database\EventDatabase;
 use drflvirtual\src\model\Player;
 use PlayerNotFoundException;
 
 class Authentication {
+    const TOKEN = "token";
     const PLAYER_ID = "player_id";
+    const PLAYER_NAME = "name";
     const IS_GUIDE = "is_guide";
     const IS_ADMIN = "is_admin";
 
-    private $player;
+    //private $player_id;
 
-    public function __construct() {
-        // Set the player.
-        try {
-            $this->player = self::loadPlayer();
-        } catch (PlayerNotFoundException $e) {
-            $this->player = false;
-        }
-    }
+    //private $player;
 
     function isLoggedIn() : bool {
-        return $this->player ? true : false;
+        // Is there a session?
+        if (!isset($_SESSION[static::TOKEN]) || !$_SESSION[static::TOKEN]) {
+            return false;
+        }
+
+        // Is there a player id? If so, they're logged in as that player.
+        return $_SESSION[static::TOKEN] ? true : false;
     }
 
-    private function setLoginDetails(Player $player) {
-        $this->player = $player;
-
-        $_SESSION[self::PLAYER_ID] = $player->getId();
-        $_SESSION[self::IS_GUIDE] = $player->isGuide();
-        $_SESSION[self::IS_ADMIN] = $player->isAdmin();
-
+    private function setLoginDetails(array $response) {
+        $_SESSION[static::TOKEN] = $response["data"][static::TOKEN];
+        $_SESSION[static::PLAYER_ID] = $response["data"][static::PLAYER_ID];
+        $_SESSION[static::PLAYER_NAME] = $response["data"][static::PLAYER_NAME];
+        $_SESSION[static::IS_GUIDE] = $response["data"][static::IS_GUIDE];
+        $_SESSION[static::IS_ADMIN] = $response["data"][static::IS_ADMIN];
     }
 
     private function clearLoginDetails() {
-        $this->player = false;
-
+        unset($_SESSION[self::TOKEN]);
         unset($_SESSION[self::PLAYER_ID]);
+        unset($_SESSION[self::PLAYER_NAME]);
         unset($_SESSION[self::IS_GUIDE]);
         unset($_SESSION[self::IS_ADMIN]);
     }
@@ -51,13 +52,17 @@ class Authentication {
     function login(int $player_id, string $password) {
         // Load the database.
         global /** @var EventDatabase $db */ $db;
-        // Get the player.
-        $player = $db->getPlayer($player_id);
 
-        // Validate the password.
-        if (self::isValidPassword($player->getId(), $password)) {
-            // Set proper session variables.
-            self::setLoginDetails($player);
+        // Call the API.
+        $response = GameAPIConnection::sendLoginRequest($player_id, $password);
+
+        // Echo API response.
+        echo "\n<br/>API Response:";
+        var_dump($response);
+
+        if ($response["code"] == 200) {
+            // Login successful.
+            self::setLoginDetails($response);
         }
 
         // Done. Return.
@@ -82,26 +87,16 @@ class Authentication {
         return $db->isValidPassword($player_id, $password);
     }
 
-    private static function loadPlayer() : Player {
-        // Is the player ID set?
-        if (!isset($_SESSION[self::PLAYER_ID]) || !$_SESSION[self::PLAYER_ID])
-            throw new PlayerNotFoundException(-1);
-
-        // Is the player ID an int?
-        if (!is_numeric($_SESSION[self::PLAYER_ID]))
-            throw new PlayerNotFoundException(-1);
-
-
-        global /** @var EventDatabase $db */ $db;
-
-        // Try to get the player.
-        return $db->getPlayer($_SESSION[self::PLAYER_ID]);
+    public static function getPlayerId() {
+        return (isset($_SESSION[static::PLAYER_ID]) && $_SESSION[static::PLAYER_ID]);
     }
 
-    public function getPlayer() : Player {
-        if ($this->player) return $this->player;
+    public static function isGuide() : bool {
+        return (isset($_SESSION[static::IS_GUIDE]) && $_SESSION[static::IS_GUIDE]);
+    }
 
-        throw new PlayerNotFoundException(-1);
+    public static function isAdmin() : bool {
+        return (isset($_SESSION[static::IS_ADMIN]) && $_SESSION[static::IS_ADMIN]);
     }
 
     public function enforceSecurity(string $level) {
@@ -133,7 +128,7 @@ class Authentication {
                 break;
             case "guide":
             case "admin":
-                if (!$this->getPlayer()->isGuide()) $this->redirectToError("You must be a guide to view that page.");
+                if (!static::isGuide()) $this->redirectToError("You must be a guide to view that page.");
                 break;
         }
     }
@@ -147,7 +142,7 @@ class Authentication {
                 // Do nothing.
                 break;
             case "admin":
-                if (!$this->getPlayer()->isAdmin()) $this->redirectToError("You must be an admin to view that page.");
+                if (!static::isAdmin()) $this->redirectToError("You must be an admin to view that page.");
                 break;
         }
     }

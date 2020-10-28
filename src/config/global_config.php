@@ -27,6 +27,8 @@ require_once SITE_ROOT . "/src/exception/Exception.php";
 // DATABASE
 require_once SITE_ROOT . "/src/config/database_connection.php";
 require_once SITE_ROOT . "/src/database/EventDatabase.php";
+require_once SITE_ROOT . "/src/api/GameAPIConnection.php";
+
 
 // MODEL
 require_once SITE_ROOT . "/src/model/NamedObject.php";
