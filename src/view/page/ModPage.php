@@ -18,10 +18,10 @@ class ModPage extends Page {
     public function __construct(string $title, Mod $mod) {
         parent::__construct($title, "mod", "guide");
         global /** @var EventDatabase $db */ $db;
-        echo "<script>console.log('ModPage.__construct(...): Entered.')</script>";
+        //echo "<script>console.log('ModPage.__construct(...): Entered.')</script>";
         $this->db = $db;
         $this->mod = $mod;
-        echo "<script>console.log('ModPage.__construct(...): Done.')</script>";
+        //echo "<script>console.log('ModPage.__construct(...): Done.')</script>";
     }
 
     /**

@@ -27,18 +27,22 @@ $page = false;
 // If valid ID, render single mod page.
 if ($mod_id) {
     try {
+        echo "<script>console.log('mod.php: Getting individual mod.')</script>";
+
         // Get the mod.
         $mod = $db->getMod($mod_id);
 
-        var_dump($mod);
+        //var_dump($mod);
 
         // Create the page.
         $page = new ModPage($mod->getName(), $mod);
     } catch (ModNotFoundException $e) {
+        echo "<script>console.log('mod.php: Mod not found.')</script>";
         // Rip.
         $page = new MissingPage("Mod Not Found", "Mod not found.");
     }
 } else {
+    echo "<script>console.log('mod.php: Getting list of mods.')</script>";
     // Create the query, if any.
     $filter_query = "";
     $filter_sort = "`name`";
@@ -82,5 +86,5 @@ if ($mod_id) {
 }
 
 echo "<script>console.log('mod.php: About to render page.')</script>";
-$page->render();
+//$page->render();
 echo "<script>console.log('mod.php: Done rendering page.')</script>";
