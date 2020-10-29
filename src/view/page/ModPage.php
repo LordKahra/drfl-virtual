@@ -33,7 +33,7 @@ class ModPage extends Page {
 
     function renderBody() {
         echo "<script>console.log('ModPage.renderBody(...): Entered.')</script>]";
-        (new ModComponent($this->mod, false))->render();
+        //(new ModComponent($this->mod, false))->render();
         echo "<script>console.log('ModPage.renderBody(...): Done.')</script>]";
     }
 
