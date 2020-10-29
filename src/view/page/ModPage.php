@@ -30,7 +30,7 @@ class ModPage extends Page {
     }
 
     function renderBody() {
-        (new ModComponent($this->mod, false))->render();
+        //TODO: (new ModComponent($this->mod, false))->render();
     }
 
     /*function renderMap(Map $map) {

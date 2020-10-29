@@ -79,4 +79,4 @@ if ($mod_id) {
 
 }
 
-//$page->render();
+$page->render();
