@@ -92,10 +92,10 @@ class ModPage extends Page {
     function render() {
         echo "<script>console.log('ModPage.render(): Entered.')</script>";
 
-        $this->renderHeader();
-        /*$this->renderBody();
+        //$this->renderHeader();
+        $this->renderBody();
         $this->renderFooter();
-*/
+
         echo "<script>console.log('ModPage.render(): Done.')</script>";
     }
 }
