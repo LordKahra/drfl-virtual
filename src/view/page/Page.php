@@ -44,11 +44,11 @@ abstract class Page {
 
     function render() {
         echo "<script>console.log('Page.render(): Entered.')</script>";
-        /*
+
         $this->renderHeader();
         $this->renderBody();
         $this->renderFooter();
-        */
+
         echo "<script>console.log('Page.render(): Done.')</script>";
     }
 
