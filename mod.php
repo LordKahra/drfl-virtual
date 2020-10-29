@@ -86,5 +86,5 @@ if ($mod_id) {
 }
 
 echo "<script>console.log('mod.php: About to render page.')</script>";
-//$page->render();
+$page->render();
 echo "<script>console.log('mod.php: Done rendering page.')</script>";
