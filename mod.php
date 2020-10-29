@@ -30,6 +30,8 @@ if ($mod_id) {
         // Get the mod.
         $mod = $db->getMod($mod_id);
 
+        var_dump($mod);
+
         // Create the page.
         $page = new ModPage($mod->getName(), $mod);
     } catch (ModNotFoundException $e) {
