@@ -87,10 +87,4 @@ class ModPage extends Page {
         </div>
         <?php
     }*/
-
-    /*function renderHeader() {
-        $this->renderHeaderStart();
-        /*$this->renderHeaderMiddle();*
-        $this->renderHeaderEnd();
-    }*/
 }
