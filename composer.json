@@ -1,0 +1,13 @@
+{
+    "name": "chaos/drfl-virtual",
+    "description": "The guide site for DRFL.",
+    "authors": [
+        {
+            "name": "LordKahra",
+            "email": "lordkahra@gmail.com"
+        }
+    ],
+    "require": {
+        "erusev/parsedown": "^1.7"
+    }
+}

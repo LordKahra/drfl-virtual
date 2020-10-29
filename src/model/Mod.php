@@ -356,7 +356,17 @@ class Mod extends StoryObject {
         return $errors;
     }
 
+    public function isSkipped() : bool {
+        return (strtolower($this->getHost()) == "skipped");
+    }
+
     private function calculateStatus() : int {
+        ////////////////////////////////
+        // SKIPPED /////////////////////
+        ////////////////////////////////
+
+        if ($this->isSkipped()) return static::STATUS_SKIPPED;
+
         ////////////////////////////////
         // WRITING /////////////////////
         ////////////////////////////////
@@ -490,6 +500,7 @@ class Mod extends StoryObject {
 
     const INCOMPLETE_MARKER = "???";
 
+    const STATUS_SKIPPED = 200;
     const STATUS_BEING_WRITTEN = 10;
     const STATUS_NEEDS_DETAILS = 20;
     const STATUS_UNSCHEDULED = 30;
@@ -500,6 +511,7 @@ class Mod extends StoryObject {
     const STATUS_READY = 100;
 
     const STATUS = array(
+        "SKIPPED" => Mod::STATUS_SKIPPED,
         "BEING_WRITTEN" => Mod::STATUS_BEING_WRITTEN,
         "NEEDS_DETAILS" => Mod::STATUS_NEEDS_DETAILS,
         "UNSCHEDULED" => Mod::STATUS_UNSCHEDULED,

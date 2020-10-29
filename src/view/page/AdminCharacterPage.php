@@ -39,11 +39,6 @@ class AdminCharacterPage extends Page {
         ?>
         <main>
             <header>Update Characters</header>
-            <?php
-            foreach ($this->getCharacters() as $character) {
-                $this->renderCharacter($character);
-            }
-            ?>
 
             <figure data-type="character">
                 <header id="add_character">Add Character</header>
@@ -57,11 +52,11 @@ class AdminCharacterPage extends Page {
                         <?php } ?>
                     </select>
 
-                    <br/><input type="number" name="attack" placeholder="ATK" maxlength="5" size="5" required />
-                    <input type="number" name="defense" placeholder="defense" required />
-                    <input type="number" name="successes" placeholder="successes" required />
+                    <br/><input value="0" type="number" name="attack" placeholder="ATK" maxlength="5" size="5" required />
+                    <input value="13" type="number" name="defense" placeholder="defense" required />
+                    <input value="2" type="number" name="successes" placeholder="successes" required />
 
-                    <br/><input type="text" name="description" placeholder="description" required />
+                    <br/><textarea name="description" placeholder="description" rows="3" cols="40" required></textarea>
                     <br/><b>Core:</b> <input type="checkbox" name="core" />
                     <input type="submit" value="Submit"/>
                 </form>
@@ -78,6 +73,12 @@ class AdminCharacterPage extends Page {
                     <input type="submit" value="Submit"/>
                 </form>
             </figure>
+
+            <?php
+            foreach ($this->getCharacters() as $character) {
+                $this->renderCharacter($character);
+            }
+            ?>
             <br/>
             <br/>
             <br/>

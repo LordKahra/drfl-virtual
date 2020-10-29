@@ -13,6 +13,7 @@ class EventSchedulePage extends Page {
     protected $schedule;
     protected $timestamps;
     protected $spaces;
+    protected $skipped;
 
     public function __construct(string $title, Event $event) {
         parent::__construct("Schedule - " . $event->getName(), "event", "guide");
@@ -43,8 +44,15 @@ class EventSchedulePage extends Page {
         $schedule = array();
         $timestamps = array();
         $spaces = array();
+        $skipped = array();
 
         foreach($this->getEvent()->getMods() as $mod) {
+            // If this mod is skipped, add it to the list of skipped mods.
+            if ($mod->isSkipped()) {
+                $skipped[$mod->getId()] = $mod;
+                continue;
+            }
+
             // Get the details.
             $date = $mod->getStart();
             $timestamp = $mod->getStartTimestamp();
