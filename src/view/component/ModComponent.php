@@ -14,6 +14,7 @@ class ModComponent extends Component {
     protected $folded;
 
     public function __construct(Mod $mod, $folded=true) {
+        parent::__construct("mod_" . $mod->getId());
         $this->mod = $mod;
         $this->folded = $folded;
         $this->isFolded = $folded;

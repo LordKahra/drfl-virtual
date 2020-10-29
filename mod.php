@@ -18,6 +18,8 @@ $mod_id =       (isset($_GET["id"])         ? $db->escape($_GET["id"])          
 $filter =       (isset($_GET["filter"])     ? $db->escape($_GET["filter"])       : false);
 $filter_id =    (isset($_GET["filter_id"])  ? $db->escape($_GET["filter_id"])    : false);
 
+// DEBUGGING.
+/*
 
 // Create the page.
 $page = false;
@@ -78,3 +80,4 @@ if ($mod_id) {
 }
 
 $page->render();
+*/

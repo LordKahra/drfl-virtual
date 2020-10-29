@@ -87,6 +87,7 @@ class Authentication {
         return $db->isValidPassword($player_id, $password);
     }
 
+
     public static function getPlayerId() {
         return (isset($_SESSION[static::PLAYER_ID]) && $_SESSION[static::PLAYER_ID]);
     }

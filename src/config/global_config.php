@@ -2,6 +2,7 @@
 
 // Requirements.
 use drflvirtual\src\admin\Authentication;
+use drflvirtual\src\api\GameAPIConnection;
 use drflvirtual\src\model\database\EventDatabase;
 
 // Error Reporting.
@@ -88,6 +89,7 @@ require_once SITE_ROOT . "/src/view/page/AdminModPage.php";
 
 // INSTANTIATE DATABASE
 $GLOBALS['db'] = new EventDatabase();
+$GLOBALS['api'] = new GameAPIConnection();
 $GLOBALS['auth'] = new Authentication();
 
 // TEMP FIX

@@ -13,6 +13,7 @@ class CharacterComponent extends Component {
      * @param Character $character
      */
     public function __construct(Character $character) {
+        parent::__construct();
         $this->character = $character;
     }
 
