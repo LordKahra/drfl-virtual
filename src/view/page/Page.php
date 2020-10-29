@@ -79,6 +79,7 @@ abstract class Page {
         <main>
             <main><a href="index.php">DRFL Virtual Event</a></main>
             <nav>
+                <script>console.log('Page.php: About to render unordered list.')</script>
                 <ul>
                     <li><a href="event.php">Events</a></li>
                     <li><a href="event_schedule.php?id=<?=CURRENT_EVENT?>">Schedule</a></li>
@@ -94,6 +95,7 @@ abstract class Page {
                         )?>
                     </li>
                 </ul>
+                <script>console.log('Page.php: Done rendering unordered list.')</script>
             </nav>
         </main>
         <?php

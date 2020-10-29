@@ -18,9 +18,10 @@ class ModPage extends Page {
     public function __construct(string $title, Mod $mod) {
         parent::__construct($title, "mod", "guide");
         global /** @var EventDatabase $db */ $db;
-        echo "console.log('ModPage.__construct(...): Entered.')";
+        echo "<script>console.log('ModPage.__construct(...): Entered.')</script>";
         $this->db = $db;
         $this->mod = $mod;
+        echo "<script>console.log('ModPage.__construct(...): Done.')</script>";
     }
 
     /**
@@ -31,8 +32,9 @@ class ModPage extends Page {
     }
 
     function renderBody() {
-        echo "console.log('ModPage.renderBody(...): Entered.')";
-        //(new ModComponent($this->mod, false))->render();
+        echo "<script>console.log('ModPage.renderBody(...): Entered.')</script>]";
+        (new ModComponent($this->mod, false))->render();
+        echo "<script>console.log('ModPage.renderBody(...): Done.')</script>]";
     }
 
     /*function renderMap(Map $map) {
