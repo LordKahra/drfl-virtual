@@ -193,6 +193,8 @@ abstract class Page {
     private function renderModHeaderMiddle() {
         // Need database.
         global /** @var EventDatabase $db */ $db;
+
+        /*
         // Need events without details.
         $events = $db->getEvents("", false);
         // Need characters without details.
@@ -218,6 +220,8 @@ abstract class Page {
             </ul>
         </nav>
         <?php
+
+        */
     }
 
         /**

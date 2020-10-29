@@ -32,9 +32,9 @@ class ModPage extends Page {
     }
 
     function renderBody() {
-        echo "<script>console.log('ModPage.renderBody(...): Entered.')</script>]";
+        echo "<script>console.log('ModPage.renderBody(...): Entered.')</script>";
         (new ModComponent($this->mod, false))->render();
-        echo "<script>console.log('ModPage.renderBody(...): Done.')</script>]";
+        echo "<script>console.log('ModPage.renderBody(...): Done.')</script>";
     }
 
     /*function renderMap(Map $map) {
@@ -88,9 +88,9 @@ class ModPage extends Page {
         <?php
     }*/
 
-    function renderHeader() {
+    /*function renderHeader() {
         $this->renderHeaderStart();
-        /*$this->renderHeaderMiddle();*/
+        /*$this->renderHeaderMiddle();*
         $this->renderHeaderEnd();
-    }
+    }*/
 }
