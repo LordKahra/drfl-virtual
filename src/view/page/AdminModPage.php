@@ -6,6 +6,7 @@ use drflvirtual\src\model\database\EventDatabase;
 use drflvirtual\src\model\Mod;
 use drflvirtual\src\model\Player;
 use drflvirtual\src\model\Map;
+use drflvirtual\src\view\component\ModCreateComponent;
 
 class AdminModPage extends Page {
     protected $db;
@@ -15,6 +16,7 @@ class AdminModPage extends Page {
     protected $guides;
     protected $characters;
     protected $maps;
+    protected $events;
 
     public function __construct(array $mods) {
         parent::__construct("Administration - Mods", "admin");
@@ -28,12 +30,18 @@ class AdminModPage extends Page {
         $this->guides = $this->db->getGuides();
         $this->characters = $this->db->getCharacters();
         $this->maps = $this->db->getMaps();
+        $this->events = $this->db->getEvents();
     }
 
     function renderBody() {
         ?>
         <main>
             <header>Update Mods</header>
+
+            <?php
+            (new ModCreateComponent($this->events, $this->guides))->render();
+            ?>
+
         <?php
         foreach ($this->getMods() as $mod) {
             $this->renderMod($mod, $this->guides);

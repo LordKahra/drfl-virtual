@@ -81,4 +81,51 @@ document.addEventListener("keydown", function(evt){
 
 function init() {
     //console.log("document.onload(): Entered.");
-};
+}
+
+// ICON SETTING
+
+function onEdit(element) {
+    // Get the relevant elements.
+    let form = document.getElementById($(element).data("form"));
+    let icon = document.getElementById($(form).data("icon"));
+    let button = document.getElementById($(form).data("button"));
+
+    // Set the upload icon.
+    setUploadIcon(element);
+
+    // Set submission to enabled.
+    button.disabled = false;
+}
+
+function onSubmit(element) {
+
+}
+
+function setIcon(element, file) {
+    // Get the relevant elements.
+    let form = document.getElementById($(element).data("form"));
+    let icon = document.getElementById($(form).data("icon"));
+    
+    console.log("form: " + form.id)
+    console.log("icon: " + icon.id)
+
+    console.log("Setting " + icon.id + " as " + file);
+    icon.src = SITE_HOST + SITE_IMAGES + file;
+}
+
+function setUploadIcon(element) {
+    setIcon(element, "upload.png");
+}
+
+function setLoadingIcon(element) {
+    setIcon(element, "loading.gif");
+}
+
+function setErrorIcon(element) {
+    setIcon(element, "error.png");
+}
+
+function setDoneIcon(element) {
+    setIcon(element, "check.png");
+}

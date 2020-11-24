@@ -9,11 +9,13 @@ class Mod extends StoryObject {
     protected $start;
     protected $location;
     protected $description;
+    protected $notes;
     protected $map_status;
     protected $tabletop_status;
-    protected $is_ready;
     protected $is_statted;
+    protected $is_ready;
     protected $event_id;
+    protected $author_id;
 
     protected $characters = array();
     protected $guides = array();
@@ -30,6 +32,7 @@ class Mod extends StoryObject {
      * @param string $start
      * @param string $location
      * @param string $description
+     * @param string $notes
      * @param Character[] $characters
      * @param Player[] $guides
      */
@@ -41,11 +44,13 @@ class Mod extends StoryObject {
         string $start,
         string $location,
         string $description,
+        string $notes,
         string $map_status,
         string $tabletop_status,
-        bool $is_ready,
         bool $is_statted,
+        bool $is_ready,
         int $event_id,
+        int $author_id,
         array $characters,
         array $guides,
         array $maps
@@ -57,11 +62,13 @@ class Mod extends StoryObject {
         $this->start = new DateTime($start);
         $this->location = $location;
         $this->description = $description;
+        $this->notes = $notes;
         $this->map_status = $map_status;
         $this->tabletop_status = $tabletop_status;
-        $this->is_ready = $is_ready;
         $this->is_statted = $is_statted;
+        $this->is_ready = $is_ready;
         $this->event_id = $event_id;
+        $this->author_id = $author_id;
 
         foreach ($characters as $character) {
             $this->characters[$character->getId()] = $character;
@@ -79,6 +86,8 @@ class Mod extends StoryObject {
     }
 
     public static function constructFromArray(array $mod) {
+
+        //var_dump($mod);
         // Create a holding array for characters.
         $characters = array();
         $guides = array();
@@ -94,14 +103,16 @@ class Mod extends StoryObject {
             $mod['name'],
             $mod['host'],
             $mod['space'],
-            $mod['start'],
+            ($mod['start'] ? $mod['start'] : ""),
             $mod['location'],
-            $mod['description'],
+            $mod['description'] ? $mod['description'] : "",
+            $mod['notes'] ? $mod['notes'] : "",
             $mod['map_status'] ? $mod['map_status'] : "",
             $mod['tabletop_status'] ? $mod['tabletop_status'] : "",
-            $mod['is_ready'],
             $mod['is_statted'],
+            $mod['is_ready'],
             $mod['event_id'],
+            $mod['author_id'],
             $characters,
             $guides,
             $maps
@@ -162,6 +173,13 @@ class Mod extends StoryObject {
     /**
      * @return string
      */
+    public function getNotes() : string {
+        return $this->notes;
+    }
+
+    /**
+     * @return string
+     */
     public function getMapStatus(): string {
         return $this->map_status;
     }
@@ -207,6 +225,13 @@ class Mod extends StoryObject {
      */
     public function getEventId(): int {
         return $this->event_id;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAuthorId(): int {
+        return $this->author_id;
     }
 
     /**
@@ -593,10 +618,11 @@ class Mod extends StoryObject {
             "start" => $this->getStartString(),
             "location" => $this->getLocation(),
             "description" => $this->getDescription(),
+            "notes" => $this->getNotes(),
             "map_status" => $this->getMapStatus(),
             "tabletop_status" => $this->getTabletopStatus(),
-            "is_ready" => $this->isReady(),
             "is_statted" => $this->isStatted(),
+            "is_ready" => $this->isReady(),
             "event_id" => $this->getEventId(),
             "characters" => array(),
             "guides" => array(),

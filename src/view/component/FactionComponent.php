@@ -35,7 +35,7 @@ class FactionComponent extends \Component {
                         ?>
                     </div>
                 </div>
-                <div><?=Page::formatDescription($this->faction->getDescription());?></div>
+                <div><?=Page::formatText($this->faction->getDescription());?></div>
                 <?php
                     foreach ($this->faction->getCharacters() as $character)
                         (new CharacterCardComponent($character))->render();

@@ -37,6 +37,12 @@ class ModListPage extends Page {
         (new ModComponent($mod, $this->folded))->render();
     }
 
+    private function renderModAdditionForm(Mod $mod) {
+        ?>
+
+        <?php
+    }
+
     private function renderCharacter(Character $character) {
         (new CharacterCardComponent($character))->render();
     }

@@ -69,7 +69,14 @@ class ModComponent extends Component {
                     </div>
                 </div>
 
-                <div><?=Page::formatDescription($this->mod->getDescription())?></div>
+                <div>
+                    <header>Description</header>
+                    <?=Page::formatText($this->mod->getDescription())?>
+                </div>
+                <div>
+                    <header>Notes</header>
+                    <?=Page::formatText($this->mod->getNotes())?>
+                </div>
 
                 <div><?php foreach($this->mod->getMaps() as $map) $this->renderMap($map); ?></div>
 

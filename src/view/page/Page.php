@@ -2,10 +2,12 @@
 
 namespace drflvirtual\src\view\page;
 
-use drflvirtual\src\admin\Authentication;use drflvirtual\src\model\database\EventDatabase;
-use drflvirtual\src\model\NamedObject;use const http\Client\Curl\AUTH_ANY;
+use drflvirtual\src\admin\Authentication;
+use drflvirtual\src\model\database\EventDatabase;
+use drflvirtual\src\model\NamedObject;
+use drflvirtual\src\view\View;
 
-abstract class Page {
+abstract class Page extends View {
     protected Authentication $auth;
 
     protected $title;
@@ -77,6 +79,7 @@ abstract class Page {
         <link rel="stylesheet" type="text/css" href="<?php echo SITE_HOST; ?>/css/visible.css"/>
         <script src="<?php echo SITE_HOST; ?>/js/jquery-1.12.3.js"></script>
         <script src="<?php echo SITE_HOST; ?>/js/view.js"></script>
+        <script src="<?php echo SITE_HOST; ?>/js/api.js"></script>
     </head>
     <body>
     <header>
@@ -259,19 +262,19 @@ abstract class Page {
 
     abstract function renderBody();
 
-    public static function formatDescription(string $description) {
+    public static function formatText(string $text) {
         // First off, add <br/> for each line.
-        $description = nl2br($description);
+        $text = nl2br($text);
 
         // Show figures.
-        $description = preg_replace('/{!figure_(\d+)}/',
-            "<a href='" . SITE_HOST . "/res/images/figures/$1.png'><img data-ui='thumbnail' data-type='figure' src='" . SITE_HOST . "/res/images/figures/$1.png' /></a>", $description);
+        $text = preg_replace('/{!figure_(\d+)}/',
+            "<a href='" . SITE_HOST . "/res/images/figures/$1.png'><img data-ui='thumbnail' data-type='figure' src='" . SITE_HOST . "/res/images/figures/$1.png' /></a>", $text);
 
         // Show images.
-        $description = preg_replace('/{!misc_([\w-]+)}/',
-            "<a href='" . SITE_HOST . "/res/images/misc/$1.png'><img data-ui='thumbnail' data-type='figure' src='" . SITE_HOST . "/res/images/misc/$1.png' /></a>", $description);
+        $text = preg_replace('/{!misc_([\w-]+)}/',
+            "<a href='" . SITE_HOST . "/res/images/misc/$1.png'><img data-ui='thumbnail' data-type='figure' src='" . SITE_HOST . "/res/images/misc/$1.png' /></a>", $text);
 
-        return $description;
+        return $text;
     }
 
     protected function renderFigure(int $id) {

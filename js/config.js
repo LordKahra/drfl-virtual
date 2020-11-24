@@ -1,0 +1,1 @@
+const SITE_IMAGES = "/res/images/site/";

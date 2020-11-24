@@ -3,6 +3,7 @@
 namespace drflvirtual\src\admin;
 
 use drflvirtual\src\api\GameAPIConnection;
+use drflvirtual\src\api\GameAPIResponse;
 use drflvirtual\src\model\database\EventDatabase;
 use drflvirtual\src\model\Player;
 use PlayerNotFoundException;
@@ -24,16 +25,31 @@ class Authentication {
             return false;
         }
 
-        // Is there a player id? If so, they're logged in as that player.
+        // Is it current?
+        $heartbeatResponse = GameAPIConnection::sendHeartbeatRequest();
+        //if (!$heartbeatResponse->isSuccess()) return false;
+
+        // Is there a token? If so, they're logged in with that token.
         return $_SESSION[static::TOKEN] ? true : false;
     }
 
-    private function setLoginDetails(array $response) {
-        $_SESSION[static::TOKEN] = $response["data"][static::TOKEN];
-        $_SESSION[static::PLAYER_ID] = $response["data"][static::PLAYER_ID];
-        $_SESSION[static::PLAYER_NAME] = $response["data"][static::PLAYER_NAME];
-        $_SESSION[static::IS_GUIDE] = $response["data"][static::IS_GUIDE];
-        $_SESSION[static::IS_ADMIN] = $response["data"][static::IS_ADMIN];
+    public function getToken() {
+        // Is there a session?
+        if (!isset($_SESSION[static::TOKEN]) || !$_SESSION[static::TOKEN]) {
+            return null;
+        }
+
+        return $_SESSION[static::TOKEN];
+    }
+
+    private function setLoginDetails(GameAPIResponse $response) {
+        $data = $response->getData();
+
+        $_SESSION[static::TOKEN] = $data[static::TOKEN];
+        $_SESSION[static::PLAYER_ID] = $data[static::PLAYER_ID];
+        $_SESSION[static::PLAYER_NAME] = $data[static::PLAYER_NAME];
+        $_SESSION[static::IS_GUIDE] = $data[static::IS_GUIDE];
+        $_SESSION[static::IS_ADMIN] = $data[static::IS_ADMIN];
     }
 
     private function clearLoginDetails() {
@@ -50,9 +66,6 @@ class Authentication {
      * @throws PlayerNotFoundException
      */
     function login(int $player_id, string $password) {
-        // Load the database.
-        global /** @var EventDatabase $db */ $db;
-
         // Call the API.
         $response = GameAPIConnection::sendLoginRequest($player_id, $password);
 
@@ -60,7 +73,7 @@ class Authentication {
         echo "\n<br/>API Response:";
         var_dump($response);
 
-        if ($response["code"] == 200) {
+        if ($response->isSuccess()) {
             // Login successful.
             self::setLoginDetails($response);
         }

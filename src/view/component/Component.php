@@ -1,6 +1,8 @@
 <?php
 
-abstract class Component {
+use drflvirtual\src\view\View;
+
+abstract class Component extends View {
     protected bool $isFoldable=false;
     protected bool $isFolded=false;
     protected string $tag;
@@ -8,8 +10,6 @@ abstract class Component {
     public function __construct(string $tag="") {
         $this->tag = $tag;
     }
-
-    abstract function render();
 
     /**
      * @return bool

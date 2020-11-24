@@ -13,7 +13,7 @@ error_reporting(DEBUG_MODE ? E_ALL : 0);
 session_start();
 
 // VARIABLES THAT WILL CHANGE FREQUENTLY
-define("CURRENT_EVENT", 4);
+define("CURRENT_EVENT", 5);
 
 // GLOBALS
 define("SITE_NAME", "DRFL Virtual");
@@ -25,10 +25,11 @@ define("SITE_NAME", "DRFL Virtual");
 // EXCEPTION
 require_once SITE_ROOT . "/src/exception/Exception.php";
 
-// DATABASE
+// DATABASE AND API
 require_once SITE_ROOT . "/src/config/database_connection.php";
 require_once SITE_ROOT . "/src/database/EventDatabase.php";
 require_once SITE_ROOT . "/src/api/GameAPIConnection.php";
+require_once SITE_ROOT . "/src/api/GameAPIResponse.php";
 
 
 // MODEL
@@ -46,6 +47,10 @@ require_once SITE_ROOT . "/src/model/Event.php";
 require_once SITE_ROOT . "/src/model/Plot.php";
 require_once SITE_ROOT . "/src/model/Faction.php";
 
+// VIEW
+require_once SITE_ROOT . "/src/view/View.php";
+require_once SITE_ROOT . "/src/view/Route.php";
+
 // VIEW - COMPONENTS
 require_once SITE_ROOT . "/src/view/component/Component.php";
 require_once SITE_ROOT . "/src/view/component/CharacterComponent.php";
@@ -57,6 +62,10 @@ require_once SITE_ROOT . "/src/view/component/ModComponent.php";
 require_once SITE_ROOT . "/src/view/component/ModCardComponent.php";
 require_once SITE_ROOT . "/src/view/component/PlotComponent.php";
 require_once SITE_ROOT . "/src/view/component/FactionComponent.php";
+    // VIEW - COMPONENTS - CREATE
+require_once SITE_ROOT . "/src/view/component/ModCreateComponent.php";
+    // VIEW - COMPONENTS - EDIT
+require_once SITE_ROOT . "/src/view/component/ModEditComponent.php";
 
 // VIEW - PAGES
 require_once SITE_ROOT . "/src/view/page/Page.php";

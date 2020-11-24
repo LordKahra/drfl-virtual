@@ -23,7 +23,7 @@ class PlotComponent extends Component {
 
             </header>
             <main>
-                <p><?= Page::formatDescription($this->plot->getDescription()) ?></p>
+                <p><?= Page::formatText($this->plot->getDescription()) ?></p>
                 <?php foreach ($this->plot->getMods() as $mod) $this->renderMod($mod); ?>
             </main>
         </div>
