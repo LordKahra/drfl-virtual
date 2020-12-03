@@ -20,6 +20,7 @@ echo ($auth->isLoggedIn() ? "LOGGED IN" : "NOT LOGGED IN") . "<br/><br/>";
 <script>
     const SITE_HOST = "<?php echo SITE_HOST; ?>";
     const API_HOST = "<?php echo API_HOST; ?>";
+    //const API_HOST = "https://drfl-virtual-api-staging.herokuapp.com";
     const TOKEN = "<?php echo $auth->getToken() ? $auth->getToken() : null; ?>";
 </script>
 <script src="<?php echo SITE_HOST; ?>/js/jquery-1.12.3.js"></script>
@@ -64,8 +65,7 @@ echo ($auth->isLoggedIn() ? "LOGGED IN" : "NOT LOGGED IN") . "<br/><br/>";
         }
         data[type] = id;
 
-        //sendPutRequest(API_HOST + "/mod.php", data, onRequestReturn, icon);
-        sendPutRequest("https://drfl-virtual-api-production.herokuapp.com" + "/mod.php", data, onRequestReturn, icon);
+        sendPutRequest(API_HOST + "/mod.php", data, onRequestReturn, icon);
 
         // Don't return by returning false.
         return false;
